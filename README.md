@@ -2,8 +2,8 @@
 
 ## Description
 
-Décrire ici le projet en quelque phrases.
-Mentionner le contexte (cours, sigle, université, etc.)
+Ce projet est un jeu en vue isométrique où un personnage nommé Bob doit miner toutes les pierres dans une carte sans manquer d'eau, de nourriture ou de sommeil. Ce projet est un travail réaliser pour monsieur *Alexandre Blondin Massé* dans le cadre du cours *INF3135 - Construction et maintenance de logiciel*  réalisé à l'*Université du Québec à Montréal*.
+Tout le code est réalisé en *C* à l'exception d'un validateur de carte qui sera réalisé en *Python*.
 
 ## Auteur(s)
 
@@ -13,9 +13,8 @@ Mentionner le contexte (cours, sigle, université, etc.)
 
 ## Dépendances
 
-Indiquez ici toutes librairies que vous avez utilisées et dont votre projet
-dépend. En particulier, indiquez les versions de chacune de ces librairies (par
-exemple SDL 2.0, Doxygen 1.8.10, etc.).
+- SDL 2.0.4
+- Doxygen 1.8.11
 
 ## Fonctionnement
 
@@ -29,11 +28,8 @@ Expliquez comment faire fonctionner votre projet :
 
 ## Plateformes supportées
 
-Indiquez ici les plateformes sur lesquelles vous avez testé le projet, avec la
-version exacte (par exemple MacOS 10.10.5, Debian 8.3, etc.) Dans un scénario
-idéal, vous devriez tester au moins deux plateformes, mais aucune pénalité ne
-sera appliquée si vous n'en testez qu'une seule (en autant qu'il s'agisse d'une
-plateforme Unix!).
+- Mac OS X El Capitan V.10.11.3
+- Arch Linux 4.4.1-2-ARCH
 
 ## Contenu du projet
 
@@ -64,4 +60,4 @@ Citez vos sources ici.
 
 ## Statut
 
-Indiquer si le projet est complété, si tout est fonctionnel, etc.
+Projet en développement

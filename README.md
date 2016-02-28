@@ -14,6 +14,7 @@ Tout le code est réalisé en *C* à l'exception d'un validateur de carte qui se
 ## Dépendances
 
 - SDL 2.0.4
+- SDL2 Image 2.0.1
 - Doxygen 1.8.11
 
 ## Fonctionnement
@@ -42,17 +43,19 @@ projet. Utilisez le format suivant :
 
 ## Division des tâches
 
-Pendant le projet, vous devez indiquer dans cette section la liste des
-tâches à effectuer (*todo list*), et qui est responsable de chacune des
-tâches. Utilisez le format suivant :
-
-- [X] Tâche 1 (nom du responsable de la tâche)
-- [ ] Tâche 2 (nom du responsable de la tâche)
-- [ ] Tâche 3 (nom du responsable de la tâche)
-- etc.
-
-(Un X indique que la tâche est complétée, alors que des crochets vides
-indiquent que la tâche n'est pas complétée)
+- [ ] Créer le makefile (Marc-Antoine Sauvé)
+- [ ] Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
+- [ ] Créer le menu d'accueil ()
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
 
 ## Références
 

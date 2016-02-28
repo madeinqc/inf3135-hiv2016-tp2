@@ -7,9 +7,9 @@ Mentionner le contexte (cours, sigle, université, etc.)
 
 ## Auteur(s)
 
-- Prénom et nom (Code permanent)
-- Prénom et nom (Code permanent)
-- Prénom et nom (Code permanent)
+- Giulia Cantoni (CANG21529205)
+- Samuel Pilon (PILS01059008)
+- Marc-Antoine Sauvé (SAUM13119008)
 
 ## Dépendances
 

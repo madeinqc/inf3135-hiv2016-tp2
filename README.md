@@ -43,8 +43,8 @@ projet. Utilisez le format suivant :
 
 ## Division des tâches
 
-- [ ] Créer le makefile (Marc-Antoine Sauvé)
-- [ ] Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
+- [X] Créer le makefile (Marc-Antoine Sauvé)
+- [X] Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
 - [ ] Créer le menu d'accueil ()
 - [ ] 
 - [ ] 

@@ -5,7 +5,7 @@ LDFLAGS = `sdl2-config --libs` -lSDL2_image
 CCFLAGS = `sdl2-config --cflags`
 OS = -D`uname`
 
-.PHONY: all clean
+.PHONY: all clean test doc
 
 all: $(EXEC)
 

@@ -59,7 +59,8 @@ projet. Utilisez le format suivant :
 
 ## Références
 
-Citez vos sources ici.
+- Documentation Doxygen: https://www.stack.nl/~dimitri/doxygen/manual/index.html
+- SDL Wiki: https://wiki.libsdl.org/FrontPage
 
 ## Statut
 

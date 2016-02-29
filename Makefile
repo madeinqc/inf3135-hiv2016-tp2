@@ -22,4 +22,4 @@ test:
 	echo "TODO"
 
 doc:
-	echo "TODO"
+	doxygen config.doxygen

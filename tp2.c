@@ -1,10 +1,10 @@
-#include "tp2.h"
-#include <unistd.h>
-#include <stdio.h>
+/**
+ * @file
+ * Le module TP2 est le module par défaut.
+ * C'est lui qui s'occupe du chargement, de la boucle de jeu et de la fermeture.
+ */
 
-#define WINDOW_TITLE "Bob le mineur"
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#include "tp2.h"
 
 int main() {
   struct Application app;
@@ -36,10 +36,17 @@ bool initialize(struct Application *application) {
   return true;
 }
 
+// Chargement des ressources
+bool loadMedia(struct Application *application) {
+  return true;
+}
+
+// Boucle de jeu
 void gameLoop(struct Application *application) {
   bool isRunning = true;
   while (isRunning) {
 
+    // Boucle de lecture d'événement
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
@@ -47,13 +54,9 @@ void gameLoop(struct Application *application) {
       }
     }
 
+    // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);
   }
-}
-
-// Chargement des ressources
-bool loadMedia(struct Application *application) {
-  return true;
 }
 
 // Liberation des ressources et de SDL

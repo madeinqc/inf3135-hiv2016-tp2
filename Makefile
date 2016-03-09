@@ -10,7 +10,7 @@ OS = -D`uname`
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(LDFLAGS) $< -o $@
+	$(CC) $< $(LDFLAGS) -o $@
 
 %.o: %.c
 	$(CC) $(CCFLAGS) $(OS) -c $< -o $@

@@ -46,23 +46,24 @@ projet. Utilisez le format suivant :
 
 ## Division des tâches
 
-- [X] Créer le makefile (Marc-Antoine Sauvé)
-- [X] Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
-- [ ] Créer le menu d'accueil ()
-- [ ] Créer le menu de pause ()
-- [ ] Créer des cartes de test ()
-- [ ] Chargement aléatoire d'une carte / lecture TMX ()
-- [ ] Gestion des collisions et des cases marchable ()
-- [ ] Gestion des transitions entre cartes ()
-- [ ] Création de Drawables qui savent se dessiner ()
-- [ ] Création de Scenes pour gérer les Drawable et les Event SDL ()
-- [ ] Gestion des animations du personnage et animation d'escalier ()
-- [ ] Gestion des événements faisant perdre ()
-- [ ] Gestion de la condition de victoire ()
-- [ ] Minage des pierres, boire de l'eau et dormir ()
-- [ ] Gestion des jauges
-- [ ] Gestion de la difficulté et de son menu ()
-- [ ] Tests automatisés pour les cartes ()
+- [X] (2) Créer le makefile (Marc-Antoine Sauvé)
+- [X] (5) Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
+- [ ] (3) Design du menu d'accueil ()
+- [ ] (5) Gestion des événements du menu d'accueil ()
+- [ ] (5) Créer le menu de pause ()
+- [ ] (8) Créer des cartes de test ()
+- [ ] (5) Chargement aléatoire d'une carte / lecture TMX ()
+- [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX
+- [ ] (3) Gestion des collisions et des cases marchable ()
+- [ ] (5) Gestion des transitions entre cartes ()
+- [ ] (8) Création de Drawables qui savent se dessiner/charger/libérer ()
+- [ ] (8) Création de Scenes pour gérer les Drawable et les Event SDL ()
+- [ ] (8) Gestion des animations et mouvement du personnage et animation d'escalier ()
+- [ ] (5) Gestion de la condition de victoire et de défaite et message approprié ()
+- [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) ()
+- [ ] (5) Gestion des jauges ()
+- [ ] (5) Chargement des cartes en python ()
+- [ ] (8) Tests automatisés pour les cartes ()
 
 ## Références
 

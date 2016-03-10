@@ -31,6 +31,7 @@ Expliquez comment faire fonctionner votre projet :
 
 - Mac OS X El Capitan V.10.11.3
 - Arch Linux 4.4.1-2-ARCH
+- Kali Linux 4.0.0-kalil-amd64
 
 ## Contenu du projet
 

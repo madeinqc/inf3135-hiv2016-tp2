@@ -17,6 +17,7 @@ $(EXEC): $(OBJECTS)
 
 clean:
 	rm -f *.o $(EXEC)
+	rm -rf doc
 
 test:
 	echo "TODO"

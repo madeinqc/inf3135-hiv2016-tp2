@@ -49,19 +49,20 @@ projet. Utilisez le format suivant :
 - [X] Créer le makefile (Marc-Antoine Sauvé)
 - [X] Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
 - [ ] Créer le menu d'accueil ()
-- [ ] Créer le menu de pause
+- [ ] Créer le menu de pause ()
 - [ ] Créer des cartes de test ()
-- [ ] Chargement aléatoire d'une carte
-- [ ] Gestion des collisions et des cases marchable
-- [ ] Gestion des transitions
-- [ ] Création de Drawables qui savent se dessiner
-- [ ] Création de Scenes pour gérer les Drawable et les Event SDL
-- [ ] Gestion des animations du personnage et animation d'escalier
-- [ ] Gestion des événements faisant perdre
-- [ ] Gestion de la condition de victoire
-- [ ] Minage des pierres, boire de l'eau et dormir
-- [ ] Gestion de la difficulté et de son menu
-- [ ] Tests automatisés pour les cartes
+- [ ] Chargement aléatoire d'une carte / lecture TMX ()
+- [ ] Gestion des collisions et des cases marchable ()
+- [ ] Gestion des transitions entre cartes ()
+- [ ] Création de Drawables qui savent se dessiner ()
+- [ ] Création de Scenes pour gérer les Drawable et les Event SDL ()
+- [ ] Gestion des animations du personnage et animation d'escalier ()
+- [ ] Gestion des événements faisant perdre ()
+- [ ] Gestion de la condition de victoire ()
+- [ ] Minage des pierres, boire de l'eau et dormir ()
+- [ ] Gestion des jauges
+- [ ] Gestion de la difficulté et de son menu ()
+- [ ] Tests automatisés pour les cartes ()
 
 ## Références
 

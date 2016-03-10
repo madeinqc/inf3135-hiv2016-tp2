@@ -48,16 +48,16 @@ projet. Utilisez le format suivant :
 
 - [X] (2) Créer le makefile (Marc-Antoine Sauvé)
 - [X] (5) Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
-- [ ] (3) Design du menu d'accueil ()
+- [ ] (3) Design du menu d'accueil (En groupe)
 - [ ] (5) Gestion des événements du menu d'accueil (Samuel Pilon)
 - [ ] (5) Créer le menu de pause ()
 - [ ] (8) Créer des cartes de test (Samuel Pilon)
-- [ ] (5) Chargement aléatoire d'une carte / lecture TMX ()
-- [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX
+- [ ] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
+- [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)
 - [ ] (3) Gestion des collisions et des cases marchable (Samuel Pilon)
 - [ ] (5) Gestion des transitions entre cartes (Samuel Pilon)
 - [ ] (8) Création de Drawables qui savent se dessiner/charger/libérer (Samuel Pilon)
-- [ ] (8) Création de Scenes pour gérer les Drawable et les Event SDL ()
+- [ ] (8) Création de Scenes pour gérer les Drawable et les Event SDL (Marc-Antoine Sauvé)
 - [ ] (8) Gestion des animations et mouvement du personnage et animation d'escalier (Samuel Pilon)
 - [ ] (5) Gestion de la condition de victoire et de défaite et message approprié ()
 - [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) ()
@@ -73,3 +73,4 @@ projet. Utilisez le format suivant :
 ## Statut
 
 Projet en développement
+Compilable sans erreurs

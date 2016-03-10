@@ -33,6 +33,7 @@ bool initialize(struct Application *application) {
   application->gScreenSurface = SDL_GetWindowSurface(application->gWindow);
   SDL_FillRect(application->gScreenSurface, NULL,
       SDL_MapRGB(application->gScreenSurface->format, 0xFF, 0xFF, 0xFF));
+  SDL_UpdateWindowSurface(application->gWindow);
   return true;
 }
 

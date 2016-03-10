@@ -5,6 +5,8 @@
 Ce projet est un jeu en vue isométrique où un personnage nommé Bob doit miner toutes les pierres dans une carte sans manquer d'eau, de nourriture ou de sommeil. Ce projet est un travail réaliser pour monsieur *Alexandre Blondin Massé* dans le cadre du cours *INF3135 - Construction et maintenance de logiciel*  réalisé à l'*Université du Québec à Montréal*.
 Tout le code est réalisé en *C* à l'exception d'un validateur de carte qui sera réalisé en *Python*.
 
+Ce projet utilise le systême de branchage (Git Flow)[http://nvie.com/posts/a-successful-git-branching-model/]. Les versions officielles sont toutes sur la branche **master** avec un **tag** et les versions en développement sont sur la branche **develop**.
+
 ## Auteur(s)
 
 - Giulia Cantoni (CANG21529205)

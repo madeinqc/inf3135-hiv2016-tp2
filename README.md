@@ -50,7 +50,7 @@ projet. Utilisez le format suivant :
 - [X] (5) Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
 - [ ] (3) Design du menu d'accueil ()
 - [ ] (5) Gestion des événements du menu d'accueil ()
-- [ ] (5) Créer le menu de pause ()
+- [ ] (5) Créer le menu de pause (Giulia Cantoni)
 - [ ] (8) Créer des cartes de test ()
 - [ ] (5) Chargement aléatoire d'une carte / lecture TMX ()
 - [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX
@@ -59,11 +59,11 @@ projet. Utilisez le format suivant :
 - [ ] (8) Création de Drawables qui savent se dessiner/charger/libérer ()
 - [ ] (8) Création de Scenes pour gérer les Drawable et les Event SDL ()
 - [ ] (8) Gestion des animations et mouvement du personnage et animation d'escalier ()
-- [ ] (5) Gestion de la condition de victoire et de défaite et message approprié ()
-- [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) ()
-- [ ] (5) Gestion des jauges ()
-- [ ] (5) Chargement des cartes en python ()
-- [ ] (8) Tests automatisés pour les cartes ()
+- [ ] (5) Gestion de la condition de victoire et de défaite et message approprié (Giulia Cantoni)
+- [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) (Giulia Cantoni)
+- [ ] (5) Gestion des jauges (Giulia Cantoni)
+- [ ] (5) Chargement des cartes en python (Giulia Cantoni)
+- [ ] (8) Tests automatisés pour les cartes (Giulia Cantoni)
 
 ## Références
 

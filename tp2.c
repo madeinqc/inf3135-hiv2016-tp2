@@ -39,6 +39,11 @@ bool initialize(struct Application *application) {
 
 // Chargement des ressources
 bool loadMedia(struct Application *application) {
+  application->gImage = SDL_LoadBMP(IMAGE_MENU);
+  if(application->gImage == NULL){
+    printf("Unable to load image %s! SDL Error : %s\n", IMAGE_MENU, SDL_GetError());
+    return false;
+  }
   return true;
 }
 

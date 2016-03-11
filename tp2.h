@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #ifdef Darwin
   #include <SDL2/SDL.h>
+  #include <SDL2_image/SDL_image.h>
 #else
   #include <SDL.h>
 #endif
@@ -27,7 +28,7 @@
 /**
  * Image du menu principal
  */
-#define IMAGE_MENU "./assets/ecran-acceuil.png"
+#define IMAGE_MENU "assets/ecran-accueil.png"
 
 /**
  * La structure Application contient toutes les informations requises par la SDL.
@@ -68,6 +69,13 @@ bool initialize(struct Application *application);
  * @return True si le chargement a réussi.
  */
 bool loadMedia(struct Application *application);
+
+/**
+ * Charge une image dans un SDL_Surface.
+ * @params application Un pointeur vers la structure Application à utiliser.
+ * @return SDL_Surface contenant l'image ou NULL.
+ */
+SDL_Surface* loadImage(struct Application *application);
 
 /**
  * Effectue la boucle de jeu en traitant les messages reçu par la SDL.

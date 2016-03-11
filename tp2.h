@@ -25,6 +25,11 @@
 #define SCREEN_HEIGHT 480
 
 /**
+ * Image du menu principal
+ */
+#define IMAGE_MENU "./assets/ecran-acceuil.png"
+
+/**
  * La structure Application contient toutes les informations requises par la SDL.
  */
 struct Application {
@@ -36,6 +41,10 @@ struct Application {
    * La surface de rendu.
    */
   SDL_Surface* gScreenSurface;
+  /**
+   * L'image chargée sur la surface.
+   */
+  SDL_Surface* gImage;
 };
 
 

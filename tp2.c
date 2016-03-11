@@ -39,12 +39,27 @@ bool initialize(struct Application *application) {
 
 // Chargement des ressources
 bool loadMedia(struct Application *application) {
-  application->gImage = SDL_LoadBMP(IMAGE_MENU);
+  application->gImage = loadImage(application);
   if(application->gImage == NULL){
     printf("Unable to load image %s! SDL Error : %s\n", IMAGE_MENU, SDL_GetError());
     return false;
   }
   return true;
+}
+
+SDL_Surface* loadImage(struct Application *application){
+  SDL_Surface* newSurface = NULL;
+  SDL_Surface* loadedSurface = IMG_Load(IMAGE_MENU);
+  if(loadedSurface == NULL){
+    printf("Unable to load image %s! SDL Error : %s\n", IMAGE_MENU, "Probleme...");
+  } else {
+    newSurface = SDL_ConvertSurface(loadedSurface, application->gScreenSurface->format, 0);
+    if(newSurface == NULL){
+      printf("Unable to optimize image %s! SDL Error: %s\n", IMAGE_MENU, SDL_GetError());
+    }
+    SDL_FreeSurface(loadedSurface);
+  }
+  return newSurface;
 }
 
 // Boucle de jeu
@@ -59,6 +74,8 @@ void gameLoop(struct Application *application) {
         isRunning = false;
       }
     }
+    SDL_BlitSurface(application->gImage, NULL, application->gScreenSurface, NULL);
+    SDL_UpdateWindowSurface(application->gWindow);
 
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);

@@ -5,11 +5,7 @@
  */
 
 #include <stdbool.h>
-#ifdef Darwin
-  #include <SDL2/SDL.h>
-#else
-  #include <SDL.h>
-#endif
+#include "sdl2.h"
 
 /**
  * Title de la fenêtre principale.

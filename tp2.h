@@ -23,7 +23,7 @@
 /**
  * Image du menu principal
  */
-#define IMAGE_MENU "assets/ecran-accueil.png"
+#define IMAGE_MENU "assets/imagesAccueil/PlayEasy.png"
 
 /**
  * La structure Application contient toutes les informations requises par la SDL.

@@ -10,10 +10,10 @@ OS = -D`uname`
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $< $(LDFLAGS) -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
-	$(CC) $(CCFLAGS) $(OS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(OS) -c $<
 
 clean:
 	rm -f *.o $(EXEC)

@@ -6,6 +6,7 @@
 
 #include <stdbool.h>
 #include "sdl2.h"
+#include "tp2_acceuil.h"
 
 /**
  * Title de la fenêtre principale.

@@ -1,7 +1,7 @@
 CC = gcc
 EXEC = tp2
 OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
-LDFLAGS = `sdl2-config --libs` -lSDL2_image
+LDFLAGS = `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
 CCFLAGS = `sdl2-config --cflags`
 OS = -D`uname`
 

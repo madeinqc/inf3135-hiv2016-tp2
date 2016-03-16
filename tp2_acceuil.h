@@ -5,6 +5,7 @@
 */
 #include "sdl2.h"
 #include <stdbool.h>
+#include "tp2_application.h"
 
 /**
  * Image du menu principal
@@ -24,25 +25,6 @@
  */
 #define SCREEN_HEIGHT 480
 
-
-
-/**
- * La structure Application contient toutes les informations requises par la SDL.
- */
-struct Application {
-  /**
-   * La fenêtre utilisée par le jeu.
-   */
-  SDL_Window* gWindow;
-  /**
-   * La surface de rendu.
-   */
-  SDL_Surface* gScreenSurface;
-  /**
-   * L'image chargée sur la surface.
-   */
-  SDL_Surface* gImage;
-};
 
 /**
  * Initialise la SDL et remplis {@link #Application application}.

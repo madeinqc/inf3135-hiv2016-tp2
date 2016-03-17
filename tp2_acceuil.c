@@ -33,7 +33,12 @@ SDL_Surface* loadImage(struct Application *application, char *imagePath){
 
 bool loopMenu(struct Application *application){
 	struct Menu menu = {PLAY, EASY, {PE, PM, PH, DE, DM, DH, QE, QM, QH}};
+
+	// Initialisation de la musique et des sons
+	openSound();
 	Mix_Chunk* choiceSound = loadShortSound(SOUND_PICKAXE);
+	Mix_Music* backMusic = loadLongSound(SOUND_ACCEUIL);
+	playLongSound(backMusic);
 	bool isRunning = true;
 	bool isPlay = true;
 

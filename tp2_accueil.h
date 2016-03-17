@@ -33,19 +33,33 @@ enum Difficulty{EASY, MEDIUM, HARD};
 struct Menu{
 	enum State state;
 	enum Difficulty diff;
-	char *tabImages[9];
+	SDL_Surface *tabImages[9];
+  Mix_Chunk* choiceSound;
+  Mix_Music* backMusic;
 };
+
+struct Menu* tp2Accueil_init(struct Application *app);
 
 /**
  * Charge les ressources graphiques en mémoire.
- * @param application Un pointeur vers la structure Application à utiliser.
+ * @param app Un pointeur vers la structure Application à utiliser.
  * @return True si le chargement a réussi.
  */
-bool loadMedia(struct Application *application);
+bool tp2Accueil_loadMedia(struct Application *app, struct Menu *menu);
 
 /**
  * 
- * @params application Un pointeur vers la structure Application à utiliser.
+ * @params app Un pointeur vers la structure Application à utiliser.
  * @return True si on commence le jeu, False si on quitte.
  */
-bool loopMenu(struct Application *application);
+bool tp2Accueil_handleEvents(struct Application *app, struct Menu *menu, SDL_Event *event);
+
+/**
+ *
+ */
+void tp2Accueil_draw(struct Application *app, struct Menu *menu);
+
+/**
+ *
+ */
+void tp2Accueil_release(struct Application *app, struct Menu *menu);

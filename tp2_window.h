@@ -39,6 +39,10 @@ struct Application {
    * L'image chargée sur la surface.
    */
   SDL_Surface* gImage;
+  /**
+   * Is the game running
+   */
+  bool isRunning;
 };
 
 /**

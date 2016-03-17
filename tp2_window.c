@@ -27,14 +27,14 @@ bool initialize(struct Application *application) {
 
 // Boucle de jeu
 void gameLoop(struct Application *application) {
-  bool isRunning = true;
-  while (isRunning) {
+  application->isRunning = true;
+  while (application->isRunning) {
 
     // Boucle de lecture d'événement
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
-        isRunning = false;
+        application->isRunning = false;
       }
       // TODO Scene events
     }

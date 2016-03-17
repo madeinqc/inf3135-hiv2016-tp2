@@ -17,7 +17,7 @@ Mix_Chunk* loadShortSound(const char *pathToSound){
 }
 
 void playShortSound(Mix_Chunk* toPlay){
-	if(Mix_PlayChannel(0, toPlay, 0)){
+	if(Mix_PlayChannel(-1, toPlay, 0)){
 		printf("Sound could not be played! SDL_Error: %s\n", Mix_GetError());
 	}
 }

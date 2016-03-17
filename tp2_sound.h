@@ -4,7 +4,6 @@
  *
 */
 #include "sdl2.h"
-#include "SDL_mixer.h"
 #include <stdbool.h>
 
 /**

@@ -33,7 +33,7 @@ SDL_Surface* loadImage(struct Application *application, char *imagePath){
 
 bool loopMenu(struct Application *application){
 	struct Menu menu = {PLAY, EASY, {PE, PM, PH, DE, DM, DH, QE, QM, QH}};
-
+	Mix_Chunk* choiceSound = loadShortSound(SOUND_PICKAXE);
 	bool isRunning = true;
 	bool isPlay = true;
 
@@ -50,17 +50,20 @@ bool loopMenu(struct Application *application){
       			case SDLK_UP:
       				if(i != 0){
       					i--;
+      					playShortSound(choiceSound);
       				}
       				break;
       			case SDLK_DOWN:
       				if(i != 2){
       					i++;
+      					playShortSound(choiceSound);
       				}
       				break;
       			case SDLK_RIGHT:
       				if(i == 1){
       					if(j != 2){
       						j++;
+      						playShortSound(choiceSound);
       					}
       				}
       				break;
@@ -68,6 +71,7 @@ bool loopMenu(struct Application *application){
       				if(i == 1){
       					if(j != 0){
       						j--;
+      						playShortSound(choiceSound);
       					}
       				}
       				break;
@@ -90,5 +94,6 @@ bool loopMenu(struct Application *application){
     	SDL_UpdateWindowSurface(application->gWindow);
     }
   }
+  freeShortSound(choiceSound);
   return isPlay;
 }

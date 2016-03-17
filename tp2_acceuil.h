@@ -20,6 +20,10 @@
 #define QE "assets/imagesAccueil/QuitEasy.png"
 #define QM "assets/imagesAccueil/QuitMedium.png"
 #define QH "assets/imagesAccueil/QuitHard.png"
+/**
+ * Sons du menu principal
+ */
+#define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
 
 enum State{PLAY, DIFFICULTY, QUIT};
 enum Difficulty{EASY, MEDIUM, HARD};

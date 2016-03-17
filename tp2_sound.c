@@ -3,6 +3,10 @@
  * Description a venir...
  *
 */
+
+#ifndef TP2_SOUND_H
+#define TP2_SOUND_H
+
 #include "tp2_sound.h"
 
 void openSound(){
@@ -44,3 +48,4 @@ void freeShortSound(Mix_Chunk* toFree){
 	Mix_FreeChunk(toFree);
 	Mix_Quit();
 }
+#endif

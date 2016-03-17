@@ -4,31 +4,18 @@
  *
 */
 
-#include "tp2_acceuil.h"
+#ifndef TP2_ACCUEIL_H
+#define TP2_ACCUEIL_H
+#include "tp2_accueil.h"
 
 // Chargement des ressources
 bool loadMedia(struct Application *application) {
-  application->gImage = loadImage(application, PE);
+  application->gImage = tp2image_load(application, PE);
   if(application->gImage == NULL){
     printf("Unable to load image %s! SDL Error : %s\n",  PE, SDL_GetError());
     return false;
   }
-  return loopMenu(application);
-}
-
-SDL_Surface* loadImage(struct Application *application, char *imagePath){
-  SDL_Surface* newSurface = NULL;
-  SDL_Surface* loadedSurface = IMG_Load(imagePath);
-  if(loadedSurface == NULL){
-    printf("Unable to load image %s! SDL Error : %s\n", imagePath, "Probleme...");
-  } else {
-    newSurface = SDL_ConvertSurface(loadedSurface, application->gScreenSurface->format, 0);
-    if(newSurface == NULL){
-      printf("Unable to optimize image %s! SDL Error: %s\n", imagePath, SDL_GetError());
-    }
-    SDL_FreeSurface(loadedSurface);
-  }
-  return newSurface;
+  return true;
 }
 
 bool loopMenu(struct Application *application){
@@ -97,7 +84,7 @@ bool loopMenu(struct Application *application){
       		break;
       	default: break;
       }
-      application->gImage = loadImage(application, menu.tabImages[(i*3)+j]);
+      application->gImage = tp2image_load(application, menu.tabImages[(i*3)+j]);
       SDL_BlitSurface(application->gImage, NULL, application->gScreenSurface, NULL);
     	SDL_UpdateWindowSurface(application->gWindow);
     }
@@ -105,3 +92,4 @@ bool loopMenu(struct Application *application){
   freeShortSound(choiceSound);
   return isPlay;
 }
+#endif

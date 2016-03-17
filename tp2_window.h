@@ -3,6 +3,10 @@
  * Description a venir...
  *
 */
+
+#ifndef TP2_WINDOW_H
+#define TP2_WINDOW_H
+
 #include "sdl2.h"
 #include <stdbool.h>
 
@@ -57,3 +61,5 @@ void gameLoop(struct Application *application);
  * @return True si la libération des ressources a réussi.
  */
 void shutDown(struct Application *application);
+
+#endif

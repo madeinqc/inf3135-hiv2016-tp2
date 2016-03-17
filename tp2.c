@@ -4,12 +4,11 @@
  * C'est lui qui s'occupe du chargement, de la boucle de jeu et de la fermeture.
  */
 
-#include "tp2_acceuil.h"
+#include "tp2_window.h"
 
 int main() {
   struct Application app;
   if (initialize(&app)) {
-    loadMedia(&app);
     gameLoop(&app);
     shutDown(&app);
   } else {

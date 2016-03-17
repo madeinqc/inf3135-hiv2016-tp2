@@ -36,7 +36,9 @@ void gameLoop(struct Application *application) {
       if (e.type == SDL_QUIT) {
         isRunning = false;
       }
+      // TODO Scene events
     }
+    // TODO Scene rendering
     SDL_BlitSurface(application->gImage, NULL, application->gScreenSurface, NULL);
     SDL_UpdateWindowSurface(application->gWindow);
 

@@ -25,10 +25,35 @@ bool initialize(struct Application *application) {
   return true;
 }
 
+void initMainScene(struct Application *app) {
+  app->nextScene = tp2Accueil_getScene(app);
+}
+
 // Boucle de jeu
 void gameLoop(struct Application *application) {
   application->isRunning = true;
+  void* currentState = NULL;
+
   while (application->isRunning) {
+
+    // Charge un scène au besoin
+    if (application->nextScene != NULL) {
+      if (application->scene != NULL) {
+        application->scene->releaseMedia(application, currentState);
+      }
+      application->scene = application->nextScene;
+      application->nextScene = NULL;
+
+      currentState = application->scene->initScene(application);
+      if (application->scene->loadMedia(application, currentState)) {
+        application->scene->viewWillAppear(application, currentState);
+      } else {
+        printf("Could not load scene");
+        application->isRunning = false;
+        application->scene->releaseMedia(application, currentState);
+        break;
+      }
+    }
 
     // Boucle de lecture d'événement
     SDL_Event e;
@@ -36,15 +61,17 @@ void gameLoop(struct Application *application) {
       if (e.type == SDL_QUIT) {
         application->isRunning = false;
       }
-      // TODO Scene events
+      application->scene->handleEvents(application, currentState, &e);
     }
     // TODO Scene rendering
-    SDL_BlitSurface(application->gImage, NULL, application->gScreenSurface, NULL);
+    application->scene->drawScene(application, currentState);
     SDL_UpdateWindowSurface(application->gWindow);
 
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);
   }
+
+  application->scene->releaseMedia(application, currentState);
 }
 
 // Liberation des ressources et de SDL

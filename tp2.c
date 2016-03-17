@@ -7,8 +7,9 @@
 #include "tp2_window.h"
 
 int main() {
-  struct Application app;
+  struct Application app = {NULL, NULL, NULL, true, NULL, NULL};
   if (initialize(&app)) {
+    initMainScene(&app);
     gameLoop(&app);
     shutDown(&app);
   } else {

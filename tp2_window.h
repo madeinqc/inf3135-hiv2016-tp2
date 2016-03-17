@@ -2,13 +2,16 @@
  * @file
  * Description a venir...
  *
-*/
+ */
 
 #ifndef TP2_WINDOW_H
 #define TP2_WINDOW_H
 
 #include "sdl2.h"
 #include <stdbool.h>
+#include "tp2_application.h"
+#include "tp2_scene.h"
+#include "tp2_accueil.h"
 
 /**
  * Title de la fenêtre principale.
@@ -24,33 +27,16 @@
 #define SCREEN_HEIGHT 480
 
 /**
- * La structure Application contient toutes les informations requises par la SDL.
- */
-struct Application {
-  /**
-   * La fenêtre utilisée par le jeu.
-   */
-  SDL_Window* gWindow;
-  /**
-   * La surface de rendu.
-   */
-  SDL_Surface* gScreenSurface;
-  /**
-   * L'image chargée sur la surface.
-   */
-  SDL_Surface* gImage;
-  /**
-   * Is the game running
-   */
-  bool isRunning;
-};
-
-/**
  * Initialise la SDL et remplis {@link #Application application}.
  * @param application Un pointeur vers la structure Application à remplir.
  * @return True si l'initialisation a réussi.
  */
 bool initialize(struct Application *application);
+
+/**
+ * Initialise la scène d'accueil.
+ */
+void initMainScene(struct Application *app);
 
 /**
  * Effectue la boucle de jeu en traitant les messages reçu par la SDL.

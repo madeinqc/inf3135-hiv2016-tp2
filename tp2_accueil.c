@@ -4,11 +4,22 @@
  *
 */
 
-#ifndef TP2_ACCUEIL_H
-#define TP2_ACCUEIL_H
 #include "tp2_accueil.h"
 
-struct Menu* tp2Accueil_init(struct Application *app) {
+struct Scene* tp2Accueil_getScene(struct Application *app) {
+  struct Scene *scene = calloc(1, sizeof(struct Scene));
+
+  scene->initScene = &tp2Accueil_initScene;
+  scene->loadMedia = &tp2Accueil_loadMedia;
+  scene->viewWillAppear = &tp2Accueil_viewWillAppear;
+  scene->handleEvents = &tp2Accueil_handleEvents;
+  scene->drawScene = &tp2Accueil_draw;
+  scene->releaseMedia = &tp2Accueil_release;
+
+  return scene;
+}
+
+void* tp2Accueil_initScene(struct Application *app) {
   struct Menu* menu = calloc(1, sizeof(struct Menu));
   return menu;
 }
@@ -18,7 +29,8 @@ struct Menu* tp2Accueil_init(struct Application *app) {
  * @param app Un pointeur vers la structure Application à utiliser.
  * @return True si le chargement a réussi.
  */
-bool tp2Accueil_loadMedia(struct Application *app, struct Menu *menu) {
+bool tp2Accueil_loadMedia(struct Application *app, void *state) {
+  struct Menu *menu = (struct Menu*) state;
   char *images[] = {PE, PM, PH, DE, DM, DH, QE, QM, QH};
   int i;
   for (i = 0; i < 9; ++i) {
@@ -37,7 +49,8 @@ bool tp2Accueil_loadMedia(struct Application *app, struct Menu *menu) {
   return true;
 }
 
-void tp2Accueil_viewWillAppear(struct Application *app, struct Menu *menu) {
+void tp2Accueil_viewWillAppear(struct Application *app, void *state) {
+  struct Menu *menu = (struct Menu*) state;
   tp2Sound_playLong(menu->backMusic);
 }
 
@@ -46,7 +59,8 @@ void tp2Accueil_viewWillAppear(struct Application *app, struct Menu *menu) {
  * @params app Un pointeur vers la structure Application à utiliser.
  * @return True si on commence le jeu, False si on quitte.
  */
-bool tp2Accueil_handleEvents(struct Application *app, struct Menu *menu, SDL_Event *event) {
+bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event) {
+  struct Menu *menu = (struct Menu*) state;
   bool isConsumed = false;
 
   switch(event->type){
@@ -86,9 +100,8 @@ bool tp2Accueil_handleEvents(struct Application *app, struct Menu *menu, SDL_Eve
           break;
         case SDLK_RETURN:
           if(menu->state == QUIT){
-            isConsumed = false;
+            app->isRunning = false;
           }
-          app->isRunning = false;
           isConsumed = true;
           break;
         default: break;
@@ -103,7 +116,8 @@ bool tp2Accueil_handleEvents(struct Application *app, struct Menu *menu, SDL_Eve
 /**
  *
  */
-void tp2Accueil_draw(struct Application *app, struct Menu *menu) {
+void tp2Accueil_draw(struct Application *app, void *state) {
+  struct Menu *menu = (struct Menu*) state;
   int imageIndex = (menu->state * 3) + menu->diff;
   SDL_Surface *image = menu->tabImages[imageIndex];
   SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
@@ -113,7 +127,8 @@ void tp2Accueil_draw(struct Application *app, struct Menu *menu) {
 /**
  *
  */
-void tp2Accueil_release(struct Application *app, struct Menu *menu) {
+void tp2Accueil_release(struct Application *app, void *state) {
+  struct Menu *menu = (struct Menu*) state;
   int i;
   for (i = 0; i < 9; ++i) {
     SDL_FreeSurface(menu->tabImages[i]);
@@ -121,6 +136,5 @@ void tp2Accueil_release(struct Application *app, struct Menu *menu) {
   }
   tp2Sound_freeShort(menu->choiceSound);
   tp2Sound_freeLong(menu->backMusic);
+  free(menu);
 }
-
-#endif

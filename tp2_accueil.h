@@ -3,8 +3,14 @@
  * Description a venir...
  *
 */
-#include "sdl2.h"
+
+#ifndef TP2_ACCUEIL_H
+#define TP2_ACCUEIL_H
+
 #include <stdbool.h>
+#include "sdl2.h"
+#include "tp2_application.h"
+#include "tp2_scene.h"
 #include "tp2_window.h"
 #include "tp2_sound.h"
 #include "tp2_image.h"
@@ -38,28 +44,34 @@ struct Menu{
   Mix_Music* backMusic;
 };
 
-struct Menu* tp2Accueil_init(struct Application *app);
+struct Scene* tp2Accueil_getScene(struct Application *app);
+
+void* tp2Accueil_initScene(struct Application *app);
 
 /**
  * Charge les ressources graphiques en mémoire.
  * @param app Un pointeur vers la structure Application à utiliser.
  * @return True si le chargement a réussi.
  */
-bool tp2Accueil_loadMedia(struct Application *app, struct Menu *menu);
+bool tp2Accueil_loadMedia(struct Application *app, void *state);
+
+void tp2Accueil_viewWillAppear(struct Application *app, void *state);
 
 /**
  * 
  * @params app Un pointeur vers la structure Application à utiliser.
  * @return True si on commence le jeu, False si on quitte.
  */
-bool tp2Accueil_handleEvents(struct Application *app, struct Menu *menu, SDL_Event *event);
+bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event);
 
 /**
  *
  */
-void tp2Accueil_draw(struct Application *app, struct Menu *menu);
+void tp2Accueil_draw(struct Application *app, void *state);
 
 /**
  *
  */
-void tp2Accueil_release(struct Application *app, struct Menu *menu);
+void tp2Accueil_release(struct Application *app, void *state);
+
+#endif

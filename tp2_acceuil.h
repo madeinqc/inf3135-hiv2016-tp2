@@ -6,6 +6,7 @@
 #include "sdl2.h"
 #include <stdbool.h>
 #include "tp2_window.h"
+#include "tp2_sound.h"
 
 /**
  * Image du menu principal

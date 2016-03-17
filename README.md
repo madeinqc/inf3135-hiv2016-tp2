@@ -5,7 +5,7 @@
 Ce projet est un jeu en vue isométrique où un personnage nommé Bob doit miner toutes les pierres dans une carte sans manquer d'eau, de nourriture ou de sommeil. Ce projet est un travail réaliser pour monsieur *Alexandre Blondin Massé* dans le cadre du cours *INF3135 - Construction et maintenance de logiciel*  réalisé à l'*Université du Québec à Montréal*.
 Tout le code est réalisé en *C* à l'exception d'un validateur de carte qui sera réalisé en *Python*.
 
-Ce projet utilise le systême de branchage [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/). Les versions officielles sont toutes sur la branche **master** avec un **tag** et les versions en développement sont sur la branche **develop**.
+Ce projet utilise le système de branchage [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/). Les versions officielles sont toutes sur la branche **master** avec un **tag** et les versions en développement sont sur la branche **develop**.
 
 ## Auteur(s)
 
@@ -50,13 +50,13 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - `Makefile` : Fichier Makefile pour compiler, tester, nettoyer et générer la documentation du projet;
 - `README.md` : Ceci est ce fichier. Explique le projet et les informations associées;
 - `sdl2.h` : Inclue les fichiers requis pour la librarie SDL2;
-- `tp2_accueil.c/.h` : Fichier pour la scène du menu d'accueil;
+- `tp2_accueil.c/tp2_accueil.h` : Fichier pour la scène du menu d'accueil;
 - `tp2_application.h` : Fichier définissant la struct Application utilisée pour conserver l'état global de l'application;
 - `tp2.c` : Point d'entrée qui appelle les fonctions nécessaire à l'initialisation de l'application;
-- `tp2_image.c/.h` : Module d'aide pour la gestion des images;
+- `tp2_image.c/tp2_image.h` : Module d'aide pour la gestion des images;
 - `tp2_scene.h` : Fichier définissant la struct Scene utilisé pour simuler un polymorphisme pour les scènes;
-- `tp2_sound.c/.h` : Module d'aide pour la gestion des sons;
-- `tp2_window.c/.h` : Module contenant la création de la fenêtre et la gestion de la boucle de jeu;
+- `tp2_sound.c/tp2_sound.h` : Module d'aide pour la gestion des sons;
+- `tp2_window.c/tp2_window.h` : Module contenant la création de la fenêtre et la gestion de la boucle de jeu;
 
 ## Division des tâches
 

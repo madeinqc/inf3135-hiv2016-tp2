@@ -85,6 +85,7 @@ bool loopMenu(struct Application *application){
       		break;
       	default: break;
       }
+      application->gImage = loadImage(application, menu.tabImages[(i*3)+j]);
       SDL_BlitSurface(application->gImage, NULL, application->gScreenSurface, NULL);
     	SDL_UpdateWindowSurface(application->gWindow);
     }

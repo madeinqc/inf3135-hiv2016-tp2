@@ -87,6 +87,9 @@ bool loopMenu(struct Application *application){
       			default: break;
       		}
       		break;
+      	case SDL_QUIT:
+      		isRunning = false;
+      		break;
       	default: break;
       }
       application->gImage = loadImage(application, menu.tabImages[(i*3)+j]);

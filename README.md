@@ -42,6 +42,7 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - Mac OS X El Capitan V.10.11.3
 - Arch Linux 4.4.1-2-ARCH
 - Kali Linux 4.0.0-kalil-amd64
+- Ubuntu 14.04.4 LTS
 
 ## Contenu du projet
 

@@ -1,7 +1,7 @@
 CC = gcc
 EXEC = tp2
 OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
-LDFLAGS = `sdl2-config --libs` -lSDL2_image
+LDFLAGS = `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 CCFLAGS = `sdl2-config --cflags`
 OS = -D`uname`
 
@@ -10,10 +10,10 @@ OS = -D`uname`
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $< $(LDFLAGS) -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
-	$(CC) $(CCFLAGS) $(OS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(OS) -c $<
 
 clean:
 	rm -f *.o $(EXEC)

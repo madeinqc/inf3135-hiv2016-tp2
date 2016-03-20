@@ -31,7 +31,7 @@
  * Sons du menu principal
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
-#define SOUND_ACCEUIL "assets/sounds/acceuilSong.wav"
+#define SOUND_ACCEUIL "assets/sounds/acceuilSong2.wav"
 
 enum State{PLAY, DIFFICULTY, QUIT};
 enum Difficulty{EASY, MEDIUM, HARD};

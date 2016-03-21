@@ -67,17 +67,13 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
         case SDLK_UP:
-          if(menu->state != PLAY){
-            menu->state--;
-            tp2Sound_playShort(menu->choiceSound);
-          }
+          menu->state = (menu->state+2)%3;
+          tp2Sound_playShort(menu->choiceSound);
           isConsumed = true;
           break;
         case SDLK_DOWN:
-          if(menu->state != QUIT){
-            menu->state++;
+            menu->state = (menu->state+1)%3;
             tp2Sound_playShort(menu->choiceSound);
-          }
           isConsumed = true;
           break;
         case SDLK_RIGHT:

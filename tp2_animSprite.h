@@ -4,8 +4,8 @@
  *
 */
 
-#ifndef TP2_CHARACTER_H
-#define TP2_CHARACTER_H
+#ifndef TP2_ANIMSPRITE_H
+#define TP2_ANIMSPRITE_H
 
 #include <stdbool.h>
 #include "sdl2.h"
@@ -24,7 +24,7 @@
 /*
 	Structure de la sprite
 */
-struct{
+typedef struct{
 	int nbColumns;
 	int nbRows;
 	int nbFrames;
@@ -37,6 +37,13 @@ struct{
 	SDL_Texture *texture;
 }Sprite;
 
+/*
+	Creer un spritesheet
+*/
+Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+														int initialFrame, int delayBetweenFrame, SDL_Renderer* renderer);
 
+void DeleteSprite(Sprite *sprite);
 
+void RenderSprite(Sprite *sprite, int x, int y);
 #endif

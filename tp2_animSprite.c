@@ -19,16 +19,14 @@ Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numF
 	newSprite->texture = NULL;
 	SDL_Surface *surface = IMG_Load(filename);
 	if (surface == NULL) {
-		printf("Unable to load image %s! SDL_image Error: %s\n",
-               filename, IMG_GetError());
+		printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
 	} else {
-        spritesheet->texture = SDL_CreateTextureFromSurface(renderer, surface);
-		if (spritesheet->texture == NULL) {
-			printf("Unable to create texture from %s! SDL Error: %s\n",
-                   filename, SDL_GetError());
-        }
-        spritesheet->spriteWidth = surface->w / numColumns;
-        spritesheet->spriteHeight = surface->h / numRows;
+        newSprite->texture = SDL_CreateTextureFromSurface(renderer, surface);
+		if (newSprite->texture == NULL) {
+			printf("Unable to create texture from %s! SDL Error: %s\n", filename, SDL_GetError());
+    }
+        newSprite->spriteWidth = surface->w / numColumns;
+        newSprite->spriteHeight = surface->h / numRows;
 	}
 
 

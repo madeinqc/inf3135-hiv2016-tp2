@@ -19,7 +19,7 @@
 /*
 	Image du personnage principal
 */
-#define IMG_PERSO "assets/character.png"
+#define IMG_PERSO "assets/walking.png"
 
 /*
 	Structure de la sprite
@@ -30,6 +30,9 @@ struct{
 	int nbFrames;
 	int spriteWidth;
 	int spriteHeight;
+	int currentFrame;
+	int delayBetweenFrame;
+	int lastUpdate;
 	SDL_Renderer *renderer;
 	SDL_Texture *texture;
 }Sprite;

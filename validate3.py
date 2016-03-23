@@ -36,9 +36,19 @@ def validate_level0():
 		return False 
 	else:
 		# print('Valid Map')
-		return True 
+		return True
+
+def validate_level1():
+	tileSet = set()
+	tileList = []
+	for tile in data.get_tile_properties_by_layer(1):
+		print(tile)
+		tileList.append(tile[0])
+	#print(tileList)
+
 
 #--------------------------------#
 print_GID()
 setGID = get_set_GID()
-validate_level0()
+print('----')
+validate_level1()

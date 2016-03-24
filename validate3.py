@@ -83,14 +83,18 @@ def is_valide_tile(tile):
 	if is_tile_type(underTile, 'vide'):
 		return False
 	elif is_tile_type(underTile, 'water'):
-		if is_tile_type(tile, 'earth'):
-			return True
-		else:
+		#if is_tile_type(tile, 'earth'):
+			#return True
+		#else:
 			return False
-	else:
-		return True
 
 	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
+	if tile[2] != 3:
+		temp[2] += 2
+		upperTile = tuple(temp)
+		if not is_tile_type(upperTile, 'vide'):
+			return False
+	return True
 
 def validate_levels():
 	positionList = []
@@ -101,17 +105,14 @@ def validate_levels():
 	while positionList != []:
 		tile = positionList.pop()
 		if not is_valide_tile(tile):
-			print "Invalid Map! Position error: %s " %(str(tile))
+			print " Position error: %s " %(str(tile))
 			return False
-	print('Valid Map')
 	return True
-
 			 
-
-
 #--------------------------------#
-print_GID()
-setGID = get_set_GID()
-print('----')
-print('00000000')
-validate_levels()
+if not validate_level0():
+	print 'Invalid Map! Level 0 contains invalid tiles'
+elif not validate_levels():
+	print 'Invalid Map! Position Error'
+else:
+	print 'Valid Map'

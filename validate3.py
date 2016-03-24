@@ -50,10 +50,8 @@ def validate_level0():
 	for tile in data.get_tile_properties_by_layer(0):
 		tileSet.add(tile[0])
 	if tileSet.difference(tileAllowed) != set():
-		# print('Invalid Map')
 		return False 
 	else:
-		# print('Valid Map')
 		return True
 
 def validate_level1():
@@ -79,22 +77,16 @@ def is_valide_tile(tile):
 	temp = list(tile)
 	temp[2] -= 1
 	underTile = tuple(temp)
+	temp[2] += 1
 
 	if is_tile_type(underTile, 'vide'):
 		return False
 	elif is_tile_type(underTile, 'water'):
-		#if is_tile_type(tile, 'earth'):
-			#return True
-		#else:
-			return False
-
-	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
-	if tile[2] != 3:
-		temp[2] += 2
-		upperTile = tuple(temp)
-		if not is_tile_type(upperTile, 'vide'):
+		if not is_tile_type(tile, 'earth'):
 			return False
 	return True
+
+	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
 
 def validate_levels():
 	positionList = []

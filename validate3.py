@@ -25,7 +25,12 @@ def get_set_GID():
 	tileSet = sorted(tileSet)
 	return tileSet
 
-def get_dict_GID():
+def get_dict_by_GID(gid):
+	tileSet = get_set_GID()
+	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
+	return tileDict[gid]
+
+def get_dict_by_type():
 	tileSet = get_set_GID()
 	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
 	return tileDict
@@ -51,18 +56,27 @@ def validate_level1():
 		tileList.append(tile[0])
 	#print(tileList)
 
+def is_tile_type(tile, tileType):
+	''' Retourne True sur le type de la tuile est celui demande ''' 
+	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
+	tileName = get_dict_by_GID(tileGID)
+	if tileName != tileType:
+		return False
+	else:
+		return True
+
 def validate_tile(tile):
 	''' Retourne False si la tuile n'est pas valide '''
 	# on verifie si la tuile est sur l'eau ou sur une case vide 
-	unterTile = list(tile)
-	print underTile[2]
-	return False
-	underTile[2] = underTile[2] -1
-	underTile = tuple(underTile)
+	temp = list(tile)
+	temp[2] -= 1
+	underTile = tuple(temp)
+	if is_tile_type(underTile, 'water'):
+		return False
 	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
 	return True
 
-def big_fat_function():
+def validate_levels():
 	positionList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:
@@ -83,6 +97,5 @@ def big_fat_function():
 print_GID()
 setGID = get_set_GID()
 print('----')
-#print(get_dict_GID())
 print('00000000')
-big_fat_function()
+validate_levels()

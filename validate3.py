@@ -54,14 +54,6 @@ def validate_level0():
 	else:
 		return True
 
-def validate_level1():
-	tileSet = set()
-	tileList = []
-	for tile in data.get_tile_properties_by_layer(1):
-		print(tile)
-		tileList.append(tile[0])
-	#print(tileList)
-
 def is_tile_type(tile, tileType):
 	''' Retourne True sur le type de la tuile est celui demande ''' 
 	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
@@ -84,9 +76,7 @@ def is_valide_tile(tile):
 	elif is_tile_type(underTile, 'water'):
 		if not is_tile_type(tile, 'earth'):
 			return False
-	return True
-
-	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
+	return True 
 
 def validate_levels():
 	positionList = []
@@ -100,7 +90,10 @@ def validate_levels():
 			print " Position error: %s " %(str(tile))
 			return False
 	return True
-			 
+
+#def complete_map():
+
+
 #--------------------------------#
 if not validate_level0():
 	print 'Invalid Map! Level 0 contains invalid tiles'

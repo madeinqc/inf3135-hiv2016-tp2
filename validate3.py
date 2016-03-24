@@ -60,12 +60,12 @@ def is_tile_type(tile, tileType):
 	''' Retourne True sur le type de la tuile est celui demande ''' 
 	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
 	tileName = get_dict_by_GID(tileGID)
-	if tileName != tileType:
-		return False
-	else:
+	if tileName == tileType:
 		return True
+	else:
+		return False
 
-def validate_tile(tile):
+def is_valide_tile(tile):
 	''' Retourne False si la tuile n'est pas valide '''
 	# on verifie si la tuile est sur l'eau ou sur une case vide 
 	temp = list(tile)
@@ -84,7 +84,7 @@ def validate_levels():
 	positionList = filter(lambda x: x[2] != 0, positionList) #enleve les tuples du level 0
 	while positionList != []:
 		tile = positionList.pop()
-		if not validate_tile(tile):
+		if not is_valide_tile(tile):
 			print "Invalid Map! Position error: %s " %(str(tile))
 			return False
 	print('Valid Map')

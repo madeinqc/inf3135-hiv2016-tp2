@@ -1,3 +1,9 @@
+''' 
+NOTES:
+	j'assume qu'on peut avoir des elements sur le sable, terre et gason. Seules les tules d'eau et vides ne sont pas valides 
+	a l"exeption de terre qui peut etre sur l'eau (pont)
+'''
+
 import pytmx
 data = pytmx.TiledMap("assets/map1.tmx")
 
@@ -28,11 +34,13 @@ def get_set_GID():
 def get_dict_by_GID(gid):
 	tileSet = get_set_GID()
 	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
+	tileDict[0] = 'vide'
 	return tileDict[gid]
 
 def get_dict_by_type():
 	tileSet = get_set_GID()
 	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
+	tileDict['vide'] = 0
 	return tileDict
 
 def validate_level0():
@@ -71,10 +79,18 @@ def is_valide_tile(tile):
 	temp = list(tile)
 	temp[2] -= 1
 	underTile = tuple(temp)
-	if is_tile_type(underTile, 'water'):
+
+	if is_tile_type(underTile, 'vide'):
 		return False
+	elif is_tile_type(underTile, 'water'):
+		if is_tile_type(tile, 'earth'):
+			return True
+		else:
+			return False
+	else:
+		return True
+
 	# si la tuile est un arbre, roche, maison, bonhomme, escaliers,  on verifie qu'il n'y ait rien en haut 
-	return True
 
 def validate_levels():
 	positionList = []

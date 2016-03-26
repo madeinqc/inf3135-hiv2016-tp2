@@ -18,8 +18,12 @@ struct Application {
    */
   SDL_Surface* gImage;
   /**
-   * Is the game running
+   * Renderer pour les sprites
    */
+  SDL_Renderer* renderer;
+  /**
+   * Is the game running
+   */ 
   bool isRunning;
   /**
    * The current scene

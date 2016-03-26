@@ -41,7 +41,7 @@ typedef struct{
 	Creer un spritesheet
 */
 Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
-														int initialFrame, int delayBetweenFrame, SDL_Renderer* renderer);
+					 int initialFrame, int delayBetweenFrame, struct Application* app);
 
 void DeleteSprite(Sprite *sprite);
 

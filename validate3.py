@@ -1,7 +1,8 @@
 ''' 
 NOTES:
-	j'assume qu'on peut avoir des elements sur le sable, terre et gason. Seules les tules d'eau et vides ne sont pas valides 
-	a l"exeption de terre qui peut etre sur l'eau (pont)
+	On assume qu'on peut avoir des elements sur le sable, terre et gason seulement a l'exeption de la terre qui peut etre sur une case d'eau (pont).
+	On peut avoir qu'une maison et personnage par carte. 
+	Il faut avoir au moins une roche par carte. 
 '''
 
 import pytmx
@@ -97,26 +98,41 @@ def validate_levels():
 			return False
 	return True
 
-"""def complete_map():
+
+def is_map_complete():
 	''' Verifie qu'il y a seulement une maison et un seul personnage sur la carte et au moins une roche.'''
 	elemList = []
-	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('tree'))))
-	if len(elemList) < 1:
+	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('house'))))
+	if len(elemList) != 1:
 		return False
 	elemList.pop()
 	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('character'))))
-	if len(elemList) < 1:
+	if len(elemList) != 1:
 		return False
 	elemList.pop()
 	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('rock'))))
 	if len(elemList) < 1:
 		return False
-	return True """
+	return True
+
+def continuous_levels():
+	layerList = list(data.visible_tile_layers)
+	if len(layerList) != 4:
+		return False
+	for i in range(len(layerList) -2):
+		if i+1-i != 1:
+			return False
+	return True
+
 
 #--------------------------------#
-if not validate_level0():
-	print 'Invalid Map! Level 0 contains invalid tiles'
+if not continuous_levels():
+	print 'Invalid Map! It is required to have 4 continuous levels'
+elif not validate_level0():
+	print 'Invalid Map! Level 0 contains invalid tiles.'
 elif not validate_levels():
-	print 'Invalid Map! Position Error'
+	print 'Invalid Map! Position Error.'
+elif not is_map_complete():
+	print 'Invalid Map! Missing a required element.'
 else:
 	print 'Valid Map'

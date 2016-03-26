@@ -5,7 +5,7 @@ NOTES:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/invalid_maps/invalid_level0.tmx")
+data = pytmx.TiledMap("assets/map1.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
@@ -32,12 +32,16 @@ def get_set_GID():
 	return tileSet
 
 def get_dict_by_GID(gid):
+	''' Retourne le le nom correspondant au GID demande
+	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
 	tileSet = get_set_GID()
 	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
 	tileDict[0] = 'vide'
 	return tileDict[gid]
 
 def get_dict_by_type(name):
+	''' Retourne le le GID correspondant au nom demande
+	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
 	tileSet = get_set_GID()
 	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
 	tileDict['vide'] = 0
@@ -55,7 +59,7 @@ def validate_level0():
 		return True
 
 def is_tile_type(tile, tileType):
-	''' Retourne True sur le type de la tuile est celui demande ''' 
+	''' Retourne True si le type de la tuile est celui demande. ''' 
 	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
 	tileName = get_dict_by_GID(tileGID)
 	if tileName == tileType:
@@ -64,21 +68,23 @@ def is_tile_type(tile, tileType):
 		return False
 
 def is_valide_tile(tile):
-	''' Retourne False si la tuile n'est pas valide '''
-	# on verifie si la tuile est sur l'eau ou sur une case vide 
+	''' Retourne False si la tuile n'est pas valide 
+	La tuile est valide seulement si elle est sur la terre, sur du sable ou sur du gazon a l'exeption de la terre qui peu etre sur l'eau. '''
 	temp = list(tile)
 	temp[2] -= 1
 	underTile = tuple(temp)
 	temp[2] += 1
 
-	if is_tile_type(underTile, 'vide'):
-		return False
-	elif is_tile_type(underTile, 'water'):
-		if not is_tile_type(tile, 'earth'):
+	if not is_tile_type(underTile, 'grass') and not is_tile_type(underTile, 'sand') and not is_tile_type(underTile, 'earth'):
+		if is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
+			return True
+		else:
 			return False
-	return True 
+	return True
 
 def validate_levels():
+	''' Recupere chaque tuple de tuile qui n'est pas au level 0. Pour chaque tuile recuperees, appelle la function is_valide_tile(). 
+	Retourne False si un truile est trouvee invalide.'''
 	positionList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:

@@ -5,7 +5,7 @@ NOTES:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1.tmx")
+data = pytmx.TiledMap("assets/invalid_maps/invalid_level0.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''

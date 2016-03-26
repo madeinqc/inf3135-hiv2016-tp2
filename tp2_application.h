@@ -22,8 +22,12 @@ struct Application {
    */
   SDL_Renderer* renderer;
   /**
+   * Le sprite courrant
+   */
+  struct Sprite *currSprite;
+  /**
    * Is the game running
-   */ 
+   */
   bool isRunning;
   /**
    * The current scene

@@ -37,11 +37,11 @@ def get_dict_by_GID(gid):
 	tileDict[0] = 'vide'
 	return tileDict[gid]
 
-def get_dict_by_type():
+def get_dict_by_type(name):
 	tileSet = get_set_GID()
 	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
 	tileDict['vide'] = 0
-	return tileDict
+	return tileDict[name]
 
 def validate_level0():
 	''' Verifie que le level 0 ait seulement des tuiles valides. Retourne False si invalide. '''
@@ -91,8 +91,21 @@ def validate_levels():
 			return False
 	return True
 
-#def complete_map():
-
+"""def complete_map():
+	''' Verifie qu'il y a seulement une maison et un seul personnage sur la carte et au moins une roche.'''
+	elemList = []
+	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('tree'))))
+	if len(elemList) < 1:
+		return False
+	elemList.pop()
+	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('character'))))
+	if len(elemList) < 1:
+		return False
+	elemList.pop()
+	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('rock'))))
+	if len(elemList) < 1:
+		return False
+	return True """
 
 #--------------------------------#
 if not validate_level0():

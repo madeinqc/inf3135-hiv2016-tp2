@@ -86,13 +86,13 @@ def is_valide_tile(tile):
 def validate_levels():
 	''' Recupere chaque tuple de tuile qui n'est pas au level 0. Pour chaque tuile recuperees, appelle la function is_valide_tile(). 
 	Retourne False si un truile est trouvee invalide.'''
-	positionList = []
+	locationList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:
-		positionList.extend(list(data.get_tile_locations_by_gid(gid)))
-	positionList = filter(lambda x: x[2] != 0, positionList) #enleve les tuples du level 0
-	while positionList != []:
-		tile = positionList.pop()
+		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
+	locationList = filter(lambda x: x[2] != 0, locationList) #enleve les tuples du level 0
+	while locationList != []:
+		tile = locationList.pop()
 		if not is_valide_tile(tile):
 			print " Position error: %s " %(str(tile))
 			return False
@@ -116,6 +116,7 @@ def is_map_complete():
 	return True
 
 def continuous_levels():
+	''' Verifie qu'il y ait 4 niveaux consecutifs. '''
 	layerList = list(data.visible_tile_layers)
 	if len(layerList) != 4:
 		return False
@@ -124,10 +125,21 @@ def continuous_levels():
 			return False
 	return True
 
+def transitive_tiles():
+	locationList = []
+	tileSet = get_set_GID()
+	for gid in tileSet:
+		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
+	locationList = filter(lambda x: x[0] == 15 or x[1] == 15, locationList)
+	print (locationList)
+	return True
+
 
 #--------------------------------#
+transitive_tiles()
+
 if not continuous_levels():
-	print 'Invalid Map! It is required to have 4 continuous levels'
+	print 'Invalid Map! It is required to have 4 continuous levels.'
 elif not validate_level0():
 	print 'Invalid Map! Level 0 contains invalid tiles.'
 elif not validate_levels():

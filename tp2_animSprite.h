@@ -25,7 +25,7 @@
 /*
 	Structure de la sprite
 */
-typedef struct{
+struct Sprite{
 	int nbColumns;
 	int nbRows;
 	int nbFrames;
@@ -36,15 +36,15 @@ typedef struct{
 	int lastUpdate;
 	SDL_Renderer *renderer;
 	SDL_Texture *texture;
-}Sprite;
+};
 
 /*
 	Creer un spritesheet
 */
-Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, struct Application* app);
 
-void DeleteSprite(Sprite *sprite);
+void DeleteSprite(struct Sprite *sprite);
 
-void RenderSprite(Sprite *sprite, int x, int y);
+void RenderSprite(struct Sprite *sprite, int x, int y);
 #endif

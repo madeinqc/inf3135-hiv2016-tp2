@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "sdl2.h"
 #include "tp2_application.h"
+#include "tp2_animSprite.h"
 #include "tp2_scene.h"
 #include "tp2_window.h"
 #include "tp2_sound.h"

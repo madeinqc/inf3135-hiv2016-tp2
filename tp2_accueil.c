@@ -46,6 +46,8 @@ bool tp2Accueil_loadMedia(struct Application *app, void *state) {
 	menu->choiceSound = tp2Sound_loadShort(SOUND_PICKAXE);
 	menu->backMusic = tp2Sound_loadLong(SOUND_ACCEUIL);
 
+  // Test SPRITE
+  CreateSprite("assets/walking.png",4,20,80,0,40,app);
   return true;
 }
 

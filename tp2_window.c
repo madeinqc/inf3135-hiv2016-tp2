@@ -18,6 +18,11 @@ bool initialize(struct Application *application) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
+  application->renderer = SDL_CreateRenderer(application->gWindow, -1, SDL_RENDERER_ACCELERATED);
+  if (application->renderer == NULL) {
+      printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+      return false;
+  }
   application->gScreenSurface = SDL_GetWindowSurface(application->gWindow);
   SDL_FillRect(application->gScreenSurface, NULL,
       SDL_MapRGB(application->gScreenSurface->format, 0xFF, 0xFF, 0xFF));

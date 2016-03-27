@@ -5,9 +5,9 @@
 */
 #include "tp2_animSprite.h"
 
-Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, struct Application* app){
-	Sprite *newSprite = (Sprite*)malloc(sizeof(Sprite));
+	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
 	newSprite->nbRows = numRows;
 	newSprite->nbColumns = numColumns;
 	newSprite->nbFrames = numFrames;
@@ -27,20 +27,15 @@ Sprite *CreateSprite(const char* filename, int numRows, int numColumns, int numF
     newSprite->spriteWidth = surface->w / numColumns;
     newSprite->spriteHeight = surface->h / numRows;
 	}
-	app->renderer = SDL_CreateRenderer(app->gWindow, -1, SDL_RENDERER_ACCELERATED);
-  if (app->renderer == NULL){
-    printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-    return false;
-  }
-  SDL_SetRenderDrawColor(app->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	return newSprite;
+  app->currSprite = newSprite;
+	return true;
 }
 
-void DeleteSprite(Sprite *sprite){
+void DeleteSprite(struct Sprite *sprite){
   free(sprite);
 }
 
-void RenderSprite(Sprite *sprite, int x, int y){
+void RenderSprite(struct Sprite *sprite, int x, int y){
 	if (sprite->lastUpdate == -1){
 		sprite->lastUpdate == SDL_GetTicks();
 	}

@@ -1,6 +1,7 @@
 #ifndef TP2_APPLICATION_H
 #define TP2_APPLICATION_H
 
+
 /**
  * La structure Application contient toutes les informations requises par la SDL.
  */

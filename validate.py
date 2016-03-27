@@ -3,6 +3,10 @@ NOTES:
 	On assume qu'on peut avoir des elements sur le sable, terre et gason seulement a l'exeption de la terre qui peut etre sur une case d'eau (pont).
 	On peut avoir qu'une maison et personnage par carte. 
 	Il faut avoir au moins une roche par carte. 
+
+	TOCHECK:
+		source water, stairs etc
+		sous-carte map 1 15x14
 '''
 
 import pytmx
@@ -49,7 +53,7 @@ def get_dict_by_type(name):
 	return tileDict[name]
 
 def validate_level0():
-	''' Verifie que le level 0 ait seulement des tuiles valides. Retourne False si invalide. '''
+	''' Verifie que le level 0 ait seulement des tuiles valides (eau, terre, sable et gazon). Retourne False si invalide. '''
 	tileSet = set()
 	tileAllowed = [1, 2, 3, 4, 5, 6, 7]
 	for tile in data.get_tile_properties_by_layer(0):
@@ -130,8 +134,21 @@ def transitive_tiles():
 	tileSet = get_set_GID()
 	for gid in tileSet:
 		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
-	locationList = filter(lambda x: x[0] == 15 or x[1] == 15, locationList)
-	print (locationList)
+	width = max(locationList, key=lambda item: item[0])[0] +1
+	height = max(locationList, key=lambda item: item[1])[1] +1
+	'''print width, height
+	print width // 14 != width % 14 +1
+	print width // 14
+	print width % 14
+	if (width // 14 != width % 14 +1):
+		return False
+	elif (height // 14 != height % 14 +1):
+		return False
+	else:
+		print width, height 
+		return True '''
+	#locationList = filter(lambda x: x[0] == 15 or x[1] == 14, locationList)
+	#print (locationList)
 	return True
 
 

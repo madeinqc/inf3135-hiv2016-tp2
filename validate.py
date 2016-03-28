@@ -10,7 +10,7 @@ NOTES:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1.tmx")
+data = pytmx.TiledMap("assets/map2.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
@@ -84,6 +84,8 @@ def is_valide_tile(tile):
 		if is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
 			return True
 		else:
+			print underTile, data.get_tile_properties(underTile[0], underTile[1], underTile[2])
+			print tile, data.get_tile_properties(tile[0], tile[1], tile[2])
 			return False
 	return True
 
@@ -152,8 +154,9 @@ def transitive_tiles():
 	return True
 
 
-#--------------------------------#
-transitive_tiles()
+#---------------------------------#
+
+
 
 if not continuous_levels():
 	print 'Invalid Map! It is required to have 4 continuous levels.'

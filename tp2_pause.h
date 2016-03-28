@@ -17,9 +17,9 @@
 /**
  * Image du menu de pause
  */
-#define CO "assets/imagesPause/Continue.png"
-#define RE "assets/imagesPause/Restart.png"
-#define QU "assets/imagesPause/Quit.png"
+#define CO "assets/imagesPause/PauseContinue.png"
+#define RE "assets/imagesPause/PauseRestart.png"
+#define QU "assets/imagesPause/PauseQuit.png"
 
 enum State{CONTINUE, RESTART, QUIT};
 

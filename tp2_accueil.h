@@ -14,6 +14,7 @@
 #include "tp2_window.h"
 #include "tp2_sound.h"
 #include "tp2_image.h"
+#include "tp2_pause.h"
 
 /**
  * Image du menu principal

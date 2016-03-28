@@ -21,10 +21,10 @@
 #define RE "assets/imagesPause/PauseRestart.png"
 #define QU "assets/imagesPause/PauseQuit.png"
 
-enum State{CONTINUE, RESTART, QUIT};
+enum pauseState{CONTINUE, RESTART, PQUIT};
 
 struct Pause{
-	enum State state;
+	enum pauseState state;
 	SDL_Surface *tabImages[3];
 };
 

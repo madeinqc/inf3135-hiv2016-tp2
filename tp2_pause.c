@@ -33,7 +33,7 @@ bool tp2Pause_loadMedia(struct Application *app, void *state) {
   struct Pause *pause = (struct Pause*) state;
   char *images[] = {CO, RE, QU};
   int i;
-  for (i = 0; i < 9; ++i) {
+  for (i = 0; i < 3; ++i) {
     SDL_Surface *image = tp2image_load(app, images[i]);
     if(image == NULL){
       printf("Unable to load image %s! SDL Error : %s\n", images[i], SDL_GetError());
@@ -62,21 +62,21 @@ bool tp2Pause_handleEvents(struct Application *app, void *state, SDL_Event *even
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
         case SDLK_UP:
-          if(pause->state != PLAY){
+          if(pause->state != CONTINUE){
             pause->state--;
             /*tp2Sound_playShort(pause->choiceSound);*/
           }
           isConsumed = true;
           break;
         case SDLK_DOWN:
-          if(pause->state != QUIT){
+          if(pause->state != PQUIT){
             pause->state++;
             /*tp2Sound_playShort(pause->choiceSound);*/
           }
           isConsumed = true;
           break;
         case SDLK_RETURN:
-          if(pause->state == QUIT){
+          if(pause->state == PQUIT){
             app->isRunning = false;
           }
           isConsumed = true;

@@ -5,6 +5,9 @@
 */
 #include "tp2_animSprite.h"
 
+/**
+ * Creation du sprite anime
+ */
 bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, struct Application* app){
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
@@ -28,29 +31,34 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
     newSprite->spriteHeight = surface->h / numRows;
 	}
   app->currSprite = newSprite;
+  SDL_FreeSurface(surface);
 	return true;
 }
 
-void DeleteSprite(struct Sprite *sprite){
+/**
+ * Libere les ressources du sprite
+ */
+void DeleteSprite(struct Sprite *sprite, struct Application* app){
   free(sprite);
+  app->currSprite = NULL;
 }
 
-void RenderSprite(struct Sprite *sprite, int x, int y){
+/*
+ * Ajoute le sprite a render dans le renderer
+ */
+void RenderSprite(struct Sprite *sprite, int x, int y, int direction){
 	if (sprite->lastUpdate == -1) {
-        sprite->lastUpdate = SDL_GetTicks();
-    }
-    int elapsed = SDL_GetTicks() - sprite->lastUpdate;
-    if (elapsed > sprite->delayBetweenFrame) {
-        int f = elapsed / sprite->delayBetweenFrame;
-        sprite->currentFrame = (sprite->currentFrame + f) %
-                                     sprite->nbFrames;
-        sprite->lastUpdate += elapsed;
-    }
-    int srcx = sprite->spriteWidth *
-               (sprite->currentFrame % sprite->nbColumns);
-    int srcy = sprite->spriteHeight *
-               (sprite->currentFrame / sprite->nbColumns);
-    SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
-    SDL_Rect dstrect = {x, y, sprite->spriteWidth, sprite->spriteHeight};
+    sprite->lastUpdate = SDL_GetTicks();
+  }
+  int elapsed = SDL_GetTicks() - sprite->lastUpdate;
+  if (elapsed > sprite->delayBetweenFrame) {
+    int f = elapsed / sprite->delayBetweenFrame;
+    sprite->currentFrame = ((sprite->currentFrame + f) % sprite->nbFrames)+(20*direction);
+    sprite->lastUpdate += elapsed;
+  }
+  int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
+  int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
+  SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
+  SDL_Rect dstrect = {x, y, sprite->spriteWidth, sprite->spriteHeight};
 	SDL_RenderCopy(sprite->renderer, sprite->texture, &srcrect, &dstrect);
 }

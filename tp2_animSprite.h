@@ -21,7 +21,10 @@
 	Image du personnage principal
 */
 #define IMG_PERSO "assets/walking.png"
-
+/*
+	Enumeration des directions
+*/
+enum Direction{EAST,SOUTH,WEST,NORTH};
 /*
 	Structure de la sprite
 */
@@ -44,7 +47,7 @@ struct Sprite{
 bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, struct Application* app);
 
-void DeleteSprite(struct Sprite *sprite);
+void DeleteSprite(struct Sprite *sprite, struct Application* app);
 
-void RenderSprite(struct Sprite *sprite, int x, int y);
+void RenderSprite(struct Sprite *sprite, int x, int y, int direction);
 #endif

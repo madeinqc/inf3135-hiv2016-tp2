@@ -76,7 +76,7 @@ void gameLoop(struct Application *application) {
 
     SDL_RenderClear(application->renderer);
     SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
-    RenderSprite(application->currSprite, 20, 25);
+    RenderSprite(application->currSprite, 100, 200, SOUTH);
     SDL_RenderPresent(application->renderer);
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);

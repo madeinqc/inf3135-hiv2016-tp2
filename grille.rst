@@ -9,14 +9,28 @@ Partie 1
 +-------------------------+-----------+-----------+
 | Critère                 | Résultat  | Sur       |
 +=========================+===========+===========+
-| Exécutable minimal      |           | 10        |
+| Exécutable minimal      | 10        | 10        |
 +-------------------------+-----------+-----------+
-| Makefile                |           | 10        |
+| Makefile                | 10        | 10        |
 +-------------------------+-----------+-----------+
-| Division des tâches     |           | 20        |
+| Division des tâches     | 20        | 20        |
 +-------------------------+-----------+-----------+
-| **Total**               |           | **40**    |
+| **Total**               | **40**    | **40**    |
 +-------------------------+-----------+-----------+
+
+Commentaires
+------------
+
+Impeccable. Cependant, j'ai dû modifier les inclusions des bibliothèques SDL
+(aucune pénalité, car c'est ma faute) : elles sont exactement les mêmes que
+pour Linux. Par conséquent, votre fichier ``sdl2.h`` devrait être simplement::
+
+    #ifndef SDL2_h
+    #define SDL2_h
+    #include <SDL.h>
+    #include <SDL_image.h>
+    #include <SDL_mixer.h>
+    #endif
 
 Partie 2
 --------

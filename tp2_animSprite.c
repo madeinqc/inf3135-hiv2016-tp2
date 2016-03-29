@@ -49,15 +49,6 @@ void DeleteSprite(struct Sprite *sprite, struct Application* app){
  * Ajoute le sprite a render dans le renderer
  */
 void RenderSprite(struct Sprite *sprite){
-  if (sprite->lastUpdate == -1) {
-    sprite->lastUpdate = SDL_GetTicks();
-  }
-  int elapsed = SDL_GetTicks() - sprite->lastUpdate;
-  /*if (elapsed > sprite->delayBetweenFrame) {
-    int f = elapsed / sprite->delayBetweenFrame;
-    sprite->currentFrame = ((sprite->currentFrame + f) % sprite->nbFrames)+(20*(sprite->lastDirection));
-    sprite->lastUpdate += elapsed;
-  }*/
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
@@ -115,7 +106,7 @@ void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Applicat
 			}
 			break;
 		case SDL_KEYUP:
-			sprite->currentFrame = (sprite->currentFrame+1)%(sprite->nbFrames)+20*(sprite->lastDirection);
+			sprite->currentFrame = sprite->lastDirection*20;
 			break;
 	}
 }

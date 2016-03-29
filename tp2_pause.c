@@ -79,6 +79,9 @@ bool tp2Pause_handleEvents(struct Application *app, void *state, SDL_Event *even
           if(pause->state == PQUIT){
             app->isRunning = false;
           }
+          else if(pause->state == RESTART){
+            app->nextScene = tp2Accueil_getScene(app);
+          }
           isConsumed = true;
           break;
         default: break;

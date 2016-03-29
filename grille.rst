@@ -21,7 +21,7 @@ Partie 1
 Partie 2
 --------
 
-(Date de remise : au plus tard le **8 avril 2016**)
+(Date de remise : au plus tard le **17 avril 2016**)
 
 +-------------------------+----------------------------+-----------+
 | Critère                 | Sous-critère               | Points    |

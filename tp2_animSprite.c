@@ -19,6 +19,8 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
 	newSprite->lastUpdate = -1;
 	newSprite->renderer = app->renderer;
 	newSprite->texture = NULL;
+	newSprite->posX = 20;
+	newSprite->posY = 20;
 	SDL_Surface *surface = IMG_Load(filename);
 	if (surface == NULL) {
 	  printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
@@ -46,7 +48,7 @@ void DeleteSprite(struct Sprite *sprite, struct Application* app){
 /*
  * Ajoute le sprite a render dans le renderer
  */
-void RenderSprite(struct Sprite *sprite, int x, int y, int direction){
+void RenderSprite(struct Sprite *sprite, int direction){
 	if (sprite->lastUpdate == -1) {
     sprite->lastUpdate = SDL_GetTicks();
   }
@@ -59,6 +61,6 @@ void RenderSprite(struct Sprite *sprite, int x, int y, int direction){
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
-  SDL_Rect dstrect = {x, y, sprite->spriteWidth, sprite->spriteHeight};
+  SDL_Rect dstrect = {sprite->posX, sprite->posY, sprite->spriteWidth, sprite->spriteHeight};
 	SDL_RenderCopy(sprite->renderer, sprite->texture, &srcrect, &dstrect);
 }

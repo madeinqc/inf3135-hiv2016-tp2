@@ -37,6 +37,8 @@ struct Sprite{
 	int currentFrame;
 	int delayBetweenFrame;
 	int lastUpdate;
+	int posX;
+	int posY;
 	SDL_Renderer *renderer;
 	SDL_Texture *texture;
 };
@@ -49,5 +51,5 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
 
 void DeleteSprite(struct Sprite *sprite, struct Application* app);
 
-void RenderSprite(struct Sprite *sprite, int x, int y, int direction);
+void RenderSprite(struct Sprite *sprite, int direction);
 #endif

@@ -66,7 +66,8 @@ void gameLoop(struct Application *application) {
       if (e.type == SDL_QUIT) {
         application->isRunning = false;
       }
-      application->scene->handleEvents(application, currentState, &e);
+
+      //application->scene->handleEvents(application, currentState, &e);
     }
     // TODO Scene rendering
     SDL_SetRenderDrawColor(application->renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -76,7 +77,7 @@ void gameLoop(struct Application *application) {
 
     SDL_RenderClear(application->renderer);
     SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
-    RenderSprite(application->currSprite, 100, 200, SOUTH);
+    RenderSprite(application->currSprite, SOUTH);
     SDL_RenderPresent(application->renderer);
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);

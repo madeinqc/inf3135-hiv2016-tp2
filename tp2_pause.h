@@ -12,6 +12,7 @@
 #include "tp2_application.h"
 #include "tp2_scene.h"
 #include "tp2_window.h"
+#include "tp2_sound.h"
 #include "tp2_image.h"
 
 /**
@@ -21,11 +22,17 @@
 #define RE "assets/imagesPause/PauseRestart.png"
 #define QU "assets/imagesPause/PauseQuit.png"
 
+ /**
+ * Sons du menu de pause
+ */
+#define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
+
 enum pauseState{CONTINUE, RESTART, PQUIT};
 
 struct Pause{
 	enum pauseState state;
 	SDL_Surface *tabImages[3];
+	Mix_Chunk* choiceSound;
 };
 
 struct Scene* tp2Pause_getScene(struct Application *app);

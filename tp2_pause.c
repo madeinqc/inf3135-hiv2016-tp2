@@ -42,6 +42,9 @@ bool tp2Pause_loadMedia(struct Application *app, void *state) {
     pause->tabImages[i] = image;
   }
 
+  tp2Sound_openChannel();
+  pause->choiceSound = tp2Sound_loadShort(SOUND_PICKAXE);
+
   return true;
 }
 
@@ -64,14 +67,14 @@ bool tp2Pause_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_UP:
           if(pause->state != CONTINUE){
             pause->state--;
-            /*tp2Sound_playShort(pause->choiceSound);*/
+            tp2Sound_playShort(pause->choiceSound);
           }
           isConsumed = true;
           break;
         case SDLK_DOWN:
           if(pause->state != PQUIT){
             pause->state++;
-            /*tp2Sound_playShort(pause->choiceSound);*/
+            tp2Sound_playShort(pause->choiceSound);
           }
           isConsumed = true;
           break;

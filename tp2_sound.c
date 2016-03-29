@@ -33,6 +33,7 @@ Mix_Music* tp2Sound_loadLong(const char *pathToSound){
 		printf("Sound could not be loaded! SDL_Error: %s\n", Mix_GetError());
 		return NULL;
 	}
+    Mix_VolumeMusic(30);
 	return longSound;
 }
 

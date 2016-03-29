@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "sdl2.h"
 #include "tp2_application.h"
+#include "tp2_animSprite.h"
 #include "tp2_scene.h"
 #include "tp2_window.h"
 #include "tp2_sound.h"
@@ -32,7 +33,7 @@
  * Sons du menu principal
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
-#define SOUND_ACCEUIL "assets/sounds/acceuilSong.wav"
+#define SOUND_ACCEUIL "assets/sounds/acceuilSong2.wav"
 
 enum State{PLAY, DIFFICULTY, QUIT};
 enum Difficulty{EASY, MEDIUM, HARD};

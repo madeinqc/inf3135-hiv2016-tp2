@@ -39,6 +39,7 @@ struct Sprite{
 	int lastUpdate;
 	int posX;
 	int posY;
+	int lastDirection;
 	SDL_Renderer *renderer;
 	SDL_Texture *texture;
 };
@@ -51,5 +52,9 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
 
 void DeleteSprite(struct Sprite *sprite, struct Application* app);
 
-void RenderSprite(struct Sprite *sprite, int direction);
+void RenderSprite(struct Sprite *sprite);
+
+void moveSprite(struct Sprite *sprite, int direction);
+
+void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
 #endif

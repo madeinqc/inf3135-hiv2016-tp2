@@ -48,14 +48,14 @@ void DeleteSprite(struct Sprite *sprite, struct Application* app){
 /*
  * Ajoute le sprite a render dans le renderer
  */
-void RenderSprite(struct Sprite *sprite, int direction){
+void RenderSprite(struct Sprite *sprite){
 	if (sprite->lastUpdate == -1) {
     sprite->lastUpdate = SDL_GetTicks();
   }
   int elapsed = SDL_GetTicks() - sprite->lastUpdate;
   if (elapsed > sprite->delayBetweenFrame) {
     int f = elapsed / sprite->delayBetweenFrame;
-    sprite->currentFrame = ((sprite->currentFrame + f) % sprite->nbFrames)+(20*direction);
+    sprite->currentFrame = ((sprite->currentFrame + f) % sprite->nbFrames)+(20*(sprite->lastDirection));
     sprite->lastUpdate += elapsed;
   }
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
@@ -63,4 +63,53 @@ void RenderSprite(struct Sprite *sprite, int direction){
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
   SDL_Rect dstrect = {sprite->posX, sprite->posY, sprite->spriteWidth, sprite->spriteHeight};
 	SDL_RenderCopy(sprite->renderer, sprite->texture, &srcrect, &dstrect);
+}
+
+void moveSprite(struct Sprite *sprite, int direction){
+	int movement = 2;
+	switch(direction){
+		case EAST:
+			sprite->posX-=movement;
+			sprite->posY+=movement;
+			break;
+		case WEST:
+			sprite->posX+=movement;
+			sprite->posY-=movement;
+			break;
+		case SOUTH:
+			sprite->posX+=movement;
+			sprite->posY+=movement;
+			break;
+		case NORTH:
+			sprite->posX-=movement;
+			sprite->posY-=movement;
+			break;
+	}
+}
+
+void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app){
+	while(event->type == SDL_KEYDOWN){
+		switch(event->key.keysym.sym){
+			case SDLK_UP:
+				moveSprite(sprite, NORTH);
+				sprite->lastDirection = NORTH;
+				break;
+			case SDLK_DOWN:
+				moveSprite(sprite, SOUTH);
+				sprite->lastDirection = SOUTH;
+				break;
+			case SDLK_RIGHT:
+				moveSprite(sprite, WEST);
+				sprite->lastDirection = WEST;
+				break;
+			case SDLK_LEFT:
+				moveSprite(sprite, EAST);
+				sprite->lastDirection = EAST;
+				break;
+		}
+		RenderSprite(sprite);
+    SDL_RenderPresent(app->renderer);
+		SDL_PollEvent(event);
+		SDL_Delay(16);
+	}
 }

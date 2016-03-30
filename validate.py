@@ -36,6 +36,7 @@ def get_set_GID():
 	return tileSet
 
 def get_tile_dict():
+	''' Retourne un dictionnaire qui a pour cle le nom de la tuile et pour valeur le GID correspondant.'''
 	tileSet = get_set_GID()
 	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
 	return tileDict
@@ -48,10 +49,8 @@ def get_dict_by_GID(gid):
 	return tileDict[gid]
 
 def get_dict_by_type(name):
-	''' Retourne le le GID correspondant au nom demande
-	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
-	tileSet = get_set_GID()
-	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
+	''' Retourne le le GID correspondant au nom demande.'''
+	tileDict = get_tile_dict()
 	tileDict['vide'] = 0
 	return tileDict[name]
 

@@ -40,8 +40,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->xSection = 0;
   carte->ySection = 0;
 
-  carte->maxXSection = carte->map->width / 15 + 1;
-  carte->maxYSection = carte->map->height / 15 + 1;
+  carte->maxXSection = (carte->map->height + 1)/ 15;
+  carte->maxYSection = (carte->map->width + 1)/ 15;
 
   return true;
 }
@@ -62,19 +62,19 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
-        case SDLK_UP:
+        case SDLK_q:
           carte->ySection -= carte->ySection == 0 ? 0 : 1;
           isConsumed = true;
           break;
-        case SDLK_DOWN:
+        case SDLK_s:
           carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
           isConsumed = true;
           break;
-        case SDLK_RIGHT:
+        case SDLK_a:
           carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
           isConsumed = true;
           break;
-        case SDLK_LEFT:
+        case SDLK_w:
           carte->xSection -= carte->xSection == 0 ? 0 : 1;
           isConsumed = true;
           break;

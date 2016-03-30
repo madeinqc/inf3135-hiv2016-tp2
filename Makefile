@@ -9,6 +9,9 @@ OS = -D`uname`
 
 all: $(EXEC)
 
+debug: CCFLAGS += -DDEBUG -g
+debug: $(EXEC)
+
 $(EXEC): $(OBJECTS)
 	$(CC) $^ $(LDFLAGS) -o $@
 

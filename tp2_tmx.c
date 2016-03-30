@@ -103,7 +103,8 @@ void* sdl_img_loader(const char *path) {
   return texture;
 }
 
-void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sectionX, int sectionY, int displacementX, int displacementY) {
+void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sectionX, int sectionY,
+                      int displacementX, int displacementY) {
 	unsigned int i, j, tileX, tileY, modX, modY, halfMapWidth, halfMapHeight;
 	unsigned int gid;
 	tmx_tileset *tileset;
@@ -113,23 +114,20 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sec
 	SDL_Texture* texture;
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
-      tileX = i + sectionX * 15
-        - (sectionX == 0 ? 1 : 0)
-        + (sectionX == (map->width / 15) + 1 ? 1 : 0);
-      tileY = j + sectionY * 15
-        - (sectionY == 0 ? 1 : 0)
-        + (sectionY == (map->height / 15) + 1 ? 1 : 0);
+
+      tileX = i + sectionX * 15 - 1;
+      tileY = j + sectionY * 15 - 1;
 
       if (tileX == -1 || tileY == -1 ||
-          tileX > (sectionX + 1) * 15 || tileY > (sectionY + 1) * 15)
+          tileX >= map->height || tileY >= map->width)
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * map->width) + tileY];
 
-      if (gid == 18) continue; // Skip rendering the character as it will be rendered differently
-
 			tile = map->tiles[gid];
 			if (tile != NULL) {
+        if (map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
+
 				tileset = map->tiles[gid]->tileset;
 				image = map->tiles[gid]->image;
 				srcrect.x = map->tiles[gid]->ul_x;
@@ -147,7 +145,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sec
 				if (image) {
 					texture = (SDL_Texture*)image->resource_image;
 				}
-				//SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
 				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
 			}
 		}
@@ -163,6 +160,7 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, tmx_map *map, int xSection, int
 	h = (map->height < 16 ? map->height : 16) * map->tile_height;
   h += 1 * map->tile_height; // Allow more space for higher layers
 
+  // TODO Calculate max displacement once
   while (layer) {
     if (abs(layer->offsetx) > maxXDisplacement)
       maxXDisplacement = abs(layer->offsetx);

@@ -3,9 +3,9 @@ NOTES:
 	On assume qu'on peut avoir des elements sur le sable, terre et gason seulement a l'exeption de la terre qui peut etre sur une case d'eau (pont).
 	On peut avoir qu'une maison et personnage par carte. 
 	Il faut avoir au moins une roche par carte. 
-
-	TOCHECK:
-		source water, stairs etc
+TODOS:
+	Check pourquoi carte invalide. 
+	Test toutes les cartes d'un dossier
 '''
 
 import pytmx
@@ -138,6 +138,7 @@ def continuous_levels():
 	return True
 
 def validate_size():
+	''' Verifie que la largeur et la longueur de la carte permet d'avoir des sous-cates de 14x14 avec des tules de transition entre chanque sous-carte.'''
 	locationList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:

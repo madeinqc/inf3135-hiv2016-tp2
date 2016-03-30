@@ -3,20 +3,24 @@ NOTES:
 	On assume qu'on peut avoir des elements sur le sable, terre et gason seulement a l'exeption de la terre qui peut etre sur une case d'eau (pont).
 	On peut avoir qu'une maison et personnage par carte. 
 	Il faut avoir au moins une roche par carte. 
+	On permet des tuiles dur des tules vides (sinon map2 invalide)
+
 TODOS:
 	Check pourquoi carte invalide. 
 	Test toutes les cartes d'un dossier
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1.tmx")
+data = pytmx.TiledMap("assets/map2_modified.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
 	tileSet = set()
 
 	for noLayer in data.visible_tile_layers:
+		print noLayer
 		for tile in data.get_tile_properties_by_layer(noLayer):
+			print tile 	
 			tileSet.add(tile[0])
 	tileSet = sorted(tileSet)
 
@@ -45,13 +49,13 @@ def get_dict_by_GID(gid):
 	''' Retourne le le nom correspondant au GID demande'''
 	tileSet = get_set_GID()
 	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
-	tileDict[0] = 'vide'
+	tileDict[0] = 'empty'
 	return tileDict[gid]
 
 def get_dict_by_type(name):
 	''' Retourne le le GID correspondant au nom demande.'''
 	tileDict = get_tile_dict()
-	tileDict['vide'] = 0
+	tileDict['empty'] = 0
 	return tileDict[name]
 
 def validate_level0():
@@ -87,7 +91,7 @@ def is_valide_tile(tile):
 	underTile = tuple(temp)
 	temp[2] += 1
 
-	if not is_tile_type(underTile, 'grass') and not is_tile_type(underTile, 'sand') and not is_tile_type(underTile, 'earth'):
+	if not is_tile_type(underTile, 'grass') and not is_tile_type(underTile, 'sand') and not is_tile_type(underTile, 'earth') and not is_tile_type(underTile, 'empty'):
 		if is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
 			return True
 		else:
@@ -156,7 +160,11 @@ def validate_size():
 
 
 #---------------------------------#
-
+print_GID()
+print data.get_tile_gid(33, 29, 0)
+print data.get_tile_properties_by_gid(0)
+print get_dict_by_type('character')
+print get_dict_by_GID(0)
 
 if not continuous_levels():
 	print 'Invalid Map! It is required to have 4 continuous levels.'

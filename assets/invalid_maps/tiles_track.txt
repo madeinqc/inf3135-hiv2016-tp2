@@ -1,0 +1,4 @@
+invalid_level0:
+	position (8, 6, 0)
+invalid_level1
+	position (1, 1, 1)

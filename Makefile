@@ -23,7 +23,7 @@ clean:
 	rm -rf doc
 
 test:
-	echo "TODO"
+	python validate.py
 
 doc:
 	doxygen config.doxygen

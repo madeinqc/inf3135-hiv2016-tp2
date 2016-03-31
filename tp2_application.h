@@ -18,7 +18,9 @@ struct Application {
    * L'image chargée sur la surface.
    */
   SDL_Surface* gImage;
-
+  /**
+   * Texture principale de l'application
+   */
   SDL_Texture* texture;
   /**
    * Renderer pour les sprites

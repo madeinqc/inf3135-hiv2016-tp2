@@ -1,6 +1,6 @@
 /**
  * @file
- * Description a venir...
+ * Gestion de tout ce qui touche la fenetre
  *
 */
 #include "tp2_window.h"
@@ -67,19 +67,20 @@ void gameLoop(struct Application *application) {
         application->isRunning = false;
       }
 
-      //application->scene->handleEvents(application, currentState, &e);
-      handleEventsSprite(application->currSprite, &e, application);
+      application->scene->handleEvents(application, currentState, &e);
+
+      // Test pour le sprite
+      //handleEventsSprite(application->currSprite, &e, application);
     }
-    // TODO Scene rendering
-    SDL_SetRenderDrawColor(application->renderer, 0x00, 0x00, 0x00, 0xFF);
 
     application->scene->drawScene(application, currentState);
-    //SDL_UpdateWindowSurface(application->gWindow);
 
+    // Render les elements dans le renderer
     SDL_RenderClear(application->renderer);
     SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
-    RenderSprite(application->currSprite);
+    RenderSprite(application->currSprite, application);
     SDL_RenderPresent(application->renderer);
+
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);
   }
@@ -87,7 +88,6 @@ void gameLoop(struct Application *application) {
   application->scene->releaseMedia(application, currentState);
 }
 
-// Liberation des ressources et de SDL
 void shutDown(struct Application *application) {
   SDL_DestroyWindow(application->gWindow);
   application->gWindow = NULL;

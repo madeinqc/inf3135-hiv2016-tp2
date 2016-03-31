@@ -14,6 +14,8 @@
 #include "tp2_window.h"
 #include "tp2_sound.h"
 #include "tp2_image.h"
+#include "tp2_pause.h"
+#include "tp2_carte.h"
 
 /**
  * Image du menu de pause
@@ -31,7 +33,7 @@ enum pauseState{CONTINUE, RESTART, PQUIT};
 
 struct Pause{
 	enum pauseState state;
-	SDL_Surface *tabImages[3];
+	SDL_Texture *tabImages[3];
 	Mix_Chunk* choiceSound;
 };
 

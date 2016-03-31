@@ -18,15 +18,6 @@ bool initialize(struct Application *app) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
-  application->renderer = SDL_CreateRenderer(application->gWindow, -1, SDL_RENDERER_ACCELERATED);
-  if (application->renderer == NULL) {
-      printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-      return false;
-  }
-  application->gScreenSurface = SDL_GetWindowSurface(application->gWindow);
-  SDL_FillRect(application->gScreenSurface, NULL,
-      SDL_MapRGB(application->gScreenSurface->format, 0xFF, 0xFF, 0xFF));
-  SDL_UpdateWindowSurface(application->gWindow);
 	if (!(app->gRenderer = SDL_CreateRenderer(app->gWindow, -1, SDL_RENDERER_ACCELERATED))) {
 		printf("SDL create renderer not working: %s", SDL_GetError());
 	}
@@ -72,19 +63,9 @@ void gameLoop(struct Application *application) {
 
       application->scene->handleEvents(application, currentState, &e);
     }
-
-<<<<<<< HEAD
-    application->scene->drawScene(application, currentState);
-
-    // Render les elements dans le renderer
-    SDL_RenderClear(application->renderer);
-    SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
-    SDL_RenderPresent(application->renderer);
-=======
     SDL_RenderClear(application->gRenderer);
     application->scene->drawScene(application, currentState);
     SDL_RenderPresent(application->gRenderer);
->>>>>>> c4508611f5e26231511c46d34dd0c02cce586ba5
 
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);

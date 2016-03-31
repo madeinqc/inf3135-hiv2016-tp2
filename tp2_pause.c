@@ -34,7 +34,7 @@ bool tp2Pause_loadMedia(struct Application *app, void *state) {
   char *images[] = {CO, RE, QU};
   int i;
   for (i = 0; i < 3; ++i) {
-    SDL_Surface *image = tp2image_load(app, images[i]);
+    SDL_Texture *image = tp2image_load(app, images[i]);
     if(image == NULL){
       printf("Unable to load image %s! SDL Error : %s\n", images[i], SDL_GetError());
       return false;
@@ -101,9 +101,13 @@ bool tp2Pause_handleEvents(struct Application *app, void *state, SDL_Event *even
  */
 void tp2Pause_draw(struct Application *app, void *state) {
   struct Pause *pause = (struct Pause*) state;
-  SDL_Surface *image = pause->tabImages[pause->state];
-  SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
-  SDL_UpdateWindowSurface(app->gWindow);
+  //SDL_Surface *image = pause->tabImages[pause->state];
+  //SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
+  //SDL_UpdateWindowSurface(app->gWindow);
+  int imageIndex = pause->state;
+  SDL_Texture *image = pause->tabImages[imageIndex];
+  SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+  SDL_RenderCopy(app->gRenderer, image, NULL, &texr);
 }
 
 /**
@@ -113,7 +117,7 @@ void tp2Pause_release(struct Application *app, void *state) {
   struct Pause *pause = (struct Pause*) state;
   int i;
   for (i = 0; i < 3; ++i) {
-    SDL_FreeSurface(pause->tabImages[i]);
+    SDL_DestroyTexture(pause->tabImages[i]);
     pause->tabImages[i] = NULL;
   }
   /*tp2Sound_freeShort(pause->choiceSound);

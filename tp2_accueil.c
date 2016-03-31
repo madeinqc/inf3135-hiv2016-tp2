@@ -124,9 +124,6 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
  */
 void tp2Accueil_draw(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
-  //int imageIndex = (menu->state * 3) + menu->diff;
-  //SDL_Surface *image = menu->tabImages[imageIndex];
-  //app->texture = SDL_CreateTextureFromSurface(app->renderer, image);
   int imageIndex = (menu->state * 3) + app->diff;
   SDL_Texture *image = menu->tabImages[imageIndex];
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};

@@ -7,9 +7,7 @@
 
 static SDL_Renderer *ren = NULL;
 
-tmx_map* tp2tmx_loadRandomMap(SDL_Renderer *renderer) {
-  tmx_map *map = NULL;
-
+void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte) {
   ren = renderer;
 
 	tmx_img_load_func = (void* (*)(const char*))sdl_img_loader;
@@ -28,16 +26,29 @@ tmx_map* tp2tmx_loadRandomMap(SDL_Renderer *renderer) {
 	strncpy(fullPath, ASSETS_PATH, assetsLen + 1);
 	strncat(fullPath, selName, nameLen);
 
-	map = tmx_load(fullPath);
-  if (!map) {
+	carte->map = tmx_load(fullPath);
+  if (!carte->map) {
     printf("Err: %s", tmx_strerr());
+    return;
   }
+
+  tmx_layer *layer = carte->map->ly_head;
+  int maxXDisplacement = 0, maxYDisplacement = 0;
+  while (layer) {
+    if (abs(layer->offsetx) > maxXDisplacement)
+      maxXDisplacement = abs(layer->offsetx);
+    if (abs(layer->offsety) > maxYDisplacement)
+      maxYDisplacement = abs(layer->offsety);
+    layer = layer->next;
+  }
+  maxYDisplacement += 1 * carte->map->tile_height; // Allow more space for higher layers
+
+  carte->maxXDisplacement = maxXDisplacement;
+  carte->maxYDisplacement = maxYDisplacement;
 
 	free(fullPath);
 
 	tp2tmx_freeAllMapsName(&mapsName);
-
-  return map;
 }
 
 long pseudoRandom(long max) {
@@ -103,8 +114,7 @@ void* sdl_img_loader(const char *path) {
   return texture;
 }
 
-void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sectionX, int sectionY,
-                      int displacementX, int displacementY) {
+void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) {
 	unsigned int i, j, tileX, tileY, modX, modY, halfMapWidth, halfMapHeight;
 	unsigned int gid;
 	tmx_tileset *tileset;
@@ -115,31 +125,31 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sec
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
 
-      tileX = i + sectionX * 15 - 1;
-      tileY = j + sectionY * 15 - 1;
+      tileX = i + carte->xSection * 15 - 1;
+      tileY = j + carte->ySection * 15 - 1;
 
       if (tileX == -1 || tileY == -1 ||
-          tileX >= map->height || tileY >= map->width)
+          tileX >= carte->map->height || tileY >= carte->map->width)
         continue; // Skip border lines as they should be blank
 
-			gid = layer->content.gids[(tileX * map->width) + tileY];
+			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
 
-			tile = map->tiles[gid];
+			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
-        if (map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
+        if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
 
-				tileset = map->tiles[gid]->tileset;
-				image = map->tiles[gid]->image;
-				srcrect.x = map->tiles[gid]->ul_x;
-				srcrect.y = map->tiles[gid]->ul_y;
+				tileset = carte->map->tiles[gid]->tileset;
+				image = carte->map->tiles[gid]->image;
+				srcrect.x = carte->map->tiles[gid]->ul_x;
+				srcrect.y = carte->map->tiles[gid]->ul_y;
 				srcrect.w = dstrect.w = image->width;
 				srcrect.h = dstrect.h = image->height;
         
-        halfMapWidth = map->tile_width/2;
-        halfMapHeight = map->tile_height/2;
+        halfMapWidth = carte->map->tile_width/2;
+        halfMapHeight = carte->map->tile_height/2;
 
-        dstrect.x = ((j - i) * halfMapWidth + layer->offsetx) + 75 * map->tile_width / 10 + displacementX;
-        dstrect.y = ((j + i) * halfMapHeight + layer->offsety) + displacementY - 64 
+        dstrect.x = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
+        dstrect.y = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
            + ((tileset->tile_height / image->height) - 1) * 64;
 
 				if (image) {
@@ -151,28 +161,17 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, tmx_map *map, tmx_layer *layer, int sec
 	}
 }
 
-SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, tmx_map *map, int xSection, int ySection) {
+SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	SDL_Texture *res;
-	tmx_layer *layer = map->ly_head;
-	int w, h, maxXDisplacement = 0, maxYDisplacement = 0;
+	tmx_layer *layer = carte->map->ly_head;
+	int w, h;
 
-	w = (map->width < 16 ? map->width : 16) * map->tile_width;
-	h = (map->height < 16 ? map->height : 16) * map->tile_height;
-  h += 1 * map->tile_height; // Allow more space for higher layers
+	w = (carte->map->width < 16 ? carte->map->width : 16) * carte->map->tile_width;
+	h = (carte->map->height < 16 ? carte->map->height : 16) * carte->map->tile_height;
+  h += 1 * carte->map->tile_height; // Allow more space for higher layers
 
-  // TODO Calculate max displacement once
-  while (layer) {
-    if (abs(layer->offsetx) > maxXDisplacement)
-      maxXDisplacement = abs(layer->offsetx);
-    if (abs(layer->offsety) > maxYDisplacement)
-      maxYDisplacement = abs(layer->offsety);
-    layer = layer->next;
-  }
-  layer = map->ly_head;
-  maxYDisplacement += 1 * map->tile_height; // Allow more space for higher layers
-
-  w += maxXDisplacement;
-  h += maxYDisplacement;
+  w += carte->maxXDisplacement;
+  h += carte->maxYDisplacement;
 
 	if (!(res = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h)))
 		printf("SDL create texture not working: %s", SDL_GetError());
@@ -180,7 +179,7 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, tmx_map *map, int xSection, int
 	SDL_RenderClear(ren);
 	while (layer) {
 		if (layer->visible)
-			tp2tmx_drawLayer(ren, map, layer, xSection, ySection, maxXDisplacement, maxYDisplacement);
+			tp2tmx_drawLayer(ren, carte, layer);
 		layer = layer->next;
 	}
 	SDL_SetRenderTarget(ren, NULL);

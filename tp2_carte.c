@@ -35,7 +35,7 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 	tp2Sound_openChannel();
 	carte->pickaxeSound = tp2Sound_loadShort(SOUND_PICKAXE);
 
-  carte->map = tp2tmx_loadRandomMap(app->gRenderer);
+  tp2tmx_loadRandomMap(app->gRenderer, carte);
 
   carte->xSection = 0;
   carte->ySection = 0;
@@ -99,7 +99,7 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
 void tp2Carte_draw(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-  SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte->map, carte->xSection, carte->ySection);
+  SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
   SDL_DestroyTexture(texture);
 }

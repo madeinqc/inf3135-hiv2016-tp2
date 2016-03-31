@@ -14,22 +14,13 @@
 #include "tp2_window.h"
 #include "tp2_sound.h"
 #include "tp2_image.h"
-#include "tp2_tmx.h"
 #include "tp2_accueil.h"
+#include "tp2_tmx.h"
 
 /**
  * Sons du jeu
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
-
-struct Carte {
-  tmx_map *map;
-  Mix_Chunk* pickaxeSound;
-  int xSection;
-  int ySection;
-  int maxXSection;
-  int maxYSection;
-};
 
 struct Scene* tp2Carte_getScene(struct Application *app);
 

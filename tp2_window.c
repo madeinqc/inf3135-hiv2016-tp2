@@ -68,9 +68,6 @@ void gameLoop(struct Application *application) {
       }
 
       application->scene->handleEvents(application, currentState, &e);
-
-      // Test pour le sprite
-      //handleEventsSprite(application->currSprite, &e, application);
     }
 
     application->scene->drawScene(application, currentState);
@@ -78,7 +75,6 @@ void gameLoop(struct Application *application) {
     // Render les elements dans le renderer
     SDL_RenderClear(application->renderer);
     SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
-    RenderSprite(application->currSprite, application);
     SDL_RenderPresent(application->renderer);
 
     // Délais de 16ms pour avoir environ 60 fps

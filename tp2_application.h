@@ -1,6 +1,7 @@
 #ifndef TP2_APPLICATION_H
 #define TP2_APPLICATION_H
 
+
 /**
  * La structure Application contient toutes les informations requises par la SDL.
  */
@@ -17,6 +18,18 @@ struct Application {
    * L'image chargée sur la surface.
    */
   SDL_Surface* gImage;
+  /**
+   * Texture principale de l'application
+   */
+  SDL_Texture* texture;
+  /**
+   * Renderer pour les sprites
+   */
+  SDL_Renderer* renderer;
+  /**
+   * Le sprite courrant
+   */
+  struct Sprite *currSprite;
   /**
    * Is the game running
    */

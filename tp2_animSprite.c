@@ -21,7 +21,7 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
 	if (surface == NULL) {
 	  printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
 	} else {
-      newSprite->texture = SDL_CreateTextureFromSurface(app->renderer, surface);
+      newSprite->texture = SDL_CreateTextureFromSurface(app->gRenderer, surface);
 		if (newSprite->texture == NULL) {
 		  printf("Unable to create texture from %s! SDL Error: %s\n", filename, SDL_GetError());
     }
@@ -43,7 +43,7 @@ void RenderSprite(struct Sprite *sprite, struct Application *app){
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
   SDL_Rect dstrect = {sprite->posX, sprite->posY, sprite->spriteWidth, sprite->spriteHeight};
-  SDL_RenderCopy(app->renderer, sprite->texture, &srcrect, &dstrect);
+  SDL_RenderCopy(app->gRenderer, sprite->texture, &srcrect, &dstrect);
 }
 
 void moveSprite(struct Sprite *sprite, int direction){

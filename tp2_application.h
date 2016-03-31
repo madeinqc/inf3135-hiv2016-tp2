@@ -28,10 +28,6 @@ struct Application {
    */
   SDL_Texture* texture;
   /**
-   * Renderer pour les sprites
-   */
-  SDL_Renderer* renderer;
-  /**
    * Le sprite courrant
    */
   struct Sprite *currSprite;

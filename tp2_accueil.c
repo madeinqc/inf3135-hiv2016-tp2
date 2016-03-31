@@ -46,6 +46,8 @@ bool tp2Accueil_loadMedia(struct Application *app, void *state) {
 	menu->choiceSound = tp2Sound_loadShort(SOUND_PICKAXE);
 	menu->backMusic = tp2Sound_loadLong(SOUND_ACCEUIL);
 
+  // Test SPRITE
+  CreateSprite("assets/walking.png",4,20,20,0,50,app);
   return true;
 }
 
@@ -102,8 +104,13 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
           if(menu->state == QUIT){
             app->isRunning = false;
           }
+          /* A ENLEVER: POUR TESTER tp2_pause SEULEMENT */
+          else if (menu->state == PLAY){
+            app->nextScene = tp2Pause_getScene(app);
+          }
           isConsumed = true;
           break;
+          /************************/
         default: break;
       }
       break;
@@ -120,8 +127,9 @@ void tp2Accueil_draw(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
   int imageIndex = (menu->state * 3) + menu->diff;
   SDL_Surface *image = menu->tabImages[imageIndex];
-  SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
-  SDL_UpdateWindowSurface(app->gWindow);
+  //SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
+  //SDL_UpdateWindowSurface(app->gWindow);
+  app->texture = SDL_CreateTextureFromSurface(app->renderer, image);
 }
 
 /**

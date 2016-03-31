@@ -3,13 +3,14 @@ NOTES:
 	On assume qu'on peut avoir des elements sur le sable, terre et gason seulement a l'exeption de la terre qui peut etre sur une case d'eau (pont).
 	On peut avoir qu'une maison et personnage par carte. 
 	Il faut avoir au moins une roche par carte. 
-TODOS:
-	Check pourquoi carte invalide. 
-	Test toutes les cartes d'un dossier
+
+	TOCHECK:
+		source water, stairs etc
+		sous-carte map 1 15x14
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1.tmx")
+data = pytmx.TiledMap("assets/map2.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
@@ -35,33 +36,26 @@ def get_set_GID():
 	tileSet = sorted(tileSet)
 	return tileSet
 
-def get_tile_dict():
-	''' Retourne un dictionnaire qui a pour cle le nom de la tuile et pour valeur le GID correspondant.'''
-	tileSet = get_set_GID()
-	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
-	return tileDict
-
 def get_dict_by_GID(gid):
-	''' Retourne le le nom correspondant au GID demande'''
+	''' Retourne le le nom correspondant au GID demande
+	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
 	tileSet = get_set_GID()
 	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
 	tileDict[0] = 'vide'
 	return tileDict[gid]
 
 def get_dict_by_type(name):
-	''' Retourne le le GID correspondant au nom demande.'''
-	tileDict = get_tile_dict()
+	''' Retourne le le GID correspondant au nom demande
+	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
+	tileSet = get_set_GID()
+	tileDict = dict((data.get_tile_properties_by_gid(i)['source'][:-4], i) for i in tileSet)
 	tileDict['vide'] = 0
 	return tileDict[name]
 
 def validate_level0():
 	''' Verifie que le level 0 ait seulement des tuiles valides (eau, terre, sable et gazon). Retourne False si invalide. '''
 	tileSet = set()
-	tileDict = get_tile_dict()
-	tileAllowed = set([value for key, value in tileDict.items() if 'water' in key])
-	tileAllowed.add(get_dict_by_type('earth'))
-	tileAllowed.add(get_dict_by_type('sand'))
-	tileAllowed.add(get_dict_by_type('grass'))
+	tileAllowed = [1, 2, 3, 4, 5, 6, 7]
 	for tile in data.get_tile_properties_by_layer(0):
 		tileSet.add(tile[0])
 	if tileSet.difference(tileAllowed) != set():
@@ -70,11 +64,10 @@ def validate_level0():
 		return True
 
 def is_tile_type(tile, tileType):
-	''' Retourne True si le type de la tuile est celui demande. 
-	Water, water-front, water-left et water-right sont tous de type water.''' 
+	''' Retourne True si le type de la tuile est celui demande. ''' 
 	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
 	tileName = get_dict_by_GID(tileGID)
-	if tileType in tileName:
+	if tileName == tileType:
 		return True
 	else:
 		return False
@@ -111,6 +104,7 @@ def validate_levels():
 			return False
 	return True
 
+
 def is_map_complete():
 	''' Verifie qu'il y a seulement une maison et un seul personnage sur la carte et au moins une roche.'''
 	elemList = []
@@ -137,31 +131,35 @@ def continuous_levels():
 			return False
 	return True
 
-def validate_size():
-	''' Verifie que la largeur et la longueur de la carte permet d'avoir des sous-cates de 14x14 avec des tules de transition entre chanque sous-carte.'''
+def transitive_tiles():
 	locationList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:
 		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
 	width = max(locationList, key=lambda item: item[0])[0] +1
 	height = max(locationList, key=lambda item: item[1])[1] +1
-	if width // 14 != width % 14 +1:
+	'''print width, height
+	print width // 14 != width % 14 +1
+	print width // 14
+	print width % 14
+	if (width // 14 != width % 14 +1):
 		return False
-	elif height // 14 != height % 14 +1:
+	elif (height // 14 != height % 14 +1):
 		return False
 	else:
 		print width, height 
-		return True
+		return True '''
+	#locationList = filter(lambda x: x[0] == 15 or x[1] == 14, locationList)
+	#print (locationList)
 	return True
 
 
 #---------------------------------#
 
 
+
 if not continuous_levels():
 	print 'Invalid Map! It is required to have 4 continuous levels.'
-elif not validate_size():
-	print 'Invalid Map! The map size is not valid.'
 elif not validate_level0():
 	print 'Invalid Map! Level 0 contains invalid tiles.'
 elif not validate_levels():

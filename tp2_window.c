@@ -18,6 +18,11 @@ bool initialize(struct Application *application) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
+  application->renderer = SDL_CreateRenderer(application->gWindow, -1, SDL_RENDERER_ACCELERATED);
+  if (application->renderer == NULL) {
+      printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+      return false;
+  }
   application->gScreenSurface = SDL_GetWindowSurface(application->gWindow);
   SDL_FillRect(application->gScreenSurface, NULL,
       SDL_MapRGB(application->gScreenSurface->format, 0xFF, 0xFF, 0xFF));
@@ -61,12 +66,20 @@ void gameLoop(struct Application *application) {
       if (e.type == SDL_QUIT) {
         application->isRunning = false;
       }
-      application->scene->handleEvents(application, currentState, &e);
+
+      //application->scene->handleEvents(application, currentState, &e);
+      handleEventsSprite(application->currSprite, &e, application);
     }
     // TODO Scene rendering
-    application->scene->drawScene(application, currentState);
-    SDL_UpdateWindowSurface(application->gWindow);
+    SDL_SetRenderDrawColor(application->renderer, 0x00, 0x00, 0x00, 0xFF);
 
+    application->scene->drawScene(application, currentState);
+    //SDL_UpdateWindowSurface(application->gWindow);
+
+    SDL_RenderClear(application->renderer);
+    SDL_RenderCopy(application->renderer, application->texture, NULL, NULL);
+    RenderSprite(application->currSprite);
+    SDL_RenderPresent(application->renderer);
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);
   }

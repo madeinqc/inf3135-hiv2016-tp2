@@ -2,6 +2,11 @@
 #define TP2_APPLICATION_H
 
 /**
+ * Enumération des difficultés possibles.
+ */
+enum Difficulty{EASY, MEDIUM, HARD};
+
+/**
  * La structure Application contient toutes les informations requises par la SDL.
  */
 struct Application {
@@ -10,9 +15,9 @@ struct Application {
    */
   SDL_Window* gWindow;
   /**
-   * La surface de rendu.
+   * Le renderer utilisé pour dessiner le jeu.
    */
-  SDL_Surface* gScreenSurface;
+  SDL_Renderer* gRenderer;
   /**
    * L'image chargée sur la surface.
    */
@@ -29,6 +34,10 @@ struct Application {
    * The scene to load
    */
   struct Scene *nextScene;
+  /**
+   * The difficulty of the game.
+   */
+  enum Difficulty diff;
 };
 
 #endif

@@ -20,6 +20,9 @@ Ce projet utilise le système de branchage [Git Flow](http://nvie.com/posts/a-su
 - SDL2 Mixer 2.0.1
 - SDL2 ttf 2.0.13
 - Doxygen 1.8.11
+- TMX C Loader [476ac9b](https://github.com/baylej/tmx/commit/476ac9b6f84278af89dadb2ccc4131caaa855ffd)
+- libxml2 2.9.3
+- zlib 1.2.8
 
 ## Fonctionnement
 

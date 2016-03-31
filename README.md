@@ -20,6 +20,9 @@ Ce projet utilise le système de branchage [Git Flow](http://nvie.com/posts/a-su
 - SDL2 Mixer 2.0.1
 - SDL2 ttf 2.0.13
 - Doxygen 1.8.11
+- TMX C Loader [476ac9b](https://github.com/baylej/tmx/commit/476ac9b6f84278af89dadb2ccc4131caaa855ffd)
+- libxml2 2.9.3
+- zlib 1.2.8
 
 ## Fonctionnement
 
@@ -67,8 +70,8 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - [X] (5) Gestion des événements du menu d'accueil (Samuel Pilon)
 - [ ] (5) Créer le menu de pause (Giulia Cantoni)
 - [ ] (8) Créer des cartes de test (Samuel Pilon)
-- [ ] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
-- [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)
+- [X] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
+- [X] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)
 - [ ] (3) Gestion des collisions et des cases marchable (Samuel Pilon)
 - [ ] (5) Gestion des transitions entre cartes (Samuel Pilon)
 - [ ] (8) Création de Drawables qui savent se dessiner/charger/libérer (Samuel Pilon)

@@ -16,6 +16,7 @@
 #include "tp2_sound.h"
 #include "tp2_image.h"
 #include "tp2_pause.h"
+#include "tp2_carte.h"
 
 /**
  * Image du menu principal
@@ -36,12 +37,10 @@
 #define SOUND_ACCEUIL "assets/sounds/acceuilSong2.wav"
 
 enum State{PLAY, DIFFICULTY, QUIT};
-enum Difficulty{EASY, MEDIUM, HARD};
 
 struct Menu{
 	enum State state;
-	enum Difficulty diff;
-	SDL_Surface *tabImages[9];
+	SDL_Texture *tabImages[9];
   Mix_Chunk* choiceSound;
   Mix_Music* backMusic;
 };

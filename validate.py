@@ -11,7 +11,7 @@ TODOS:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1.tmx")
+data = pytmx.TiledMap("assets/map1_test1.tmx")
 
 def print_GID_by_layer():
 	''' Imprime les tuiles diponibles dans chaque niveau avec le GID et proprietes '''

@@ -104,13 +104,6 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
           } else if (menu->state == PLAY) {
             app->nextScene = tp2Carte_getScene(app);
           }
-          /* A ENLEVER: POUR TESTER tp2_pause SEULEMENT */
-          else if (menu->state == PLAY){
-            app->nextScene = tp2Pause_getScene(app);
-          }
-          isConsumed = true;
-          break;
-          /************************/
         default: break;
       }
       break;

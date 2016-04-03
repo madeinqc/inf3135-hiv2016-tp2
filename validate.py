@@ -11,7 +11,7 @@ TODOS:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map2_modified.tmx")
+data = pytmx.TiledMap("assets/mapTest1.tmx")
 
 def print_GID():
 	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
@@ -160,11 +160,11 @@ def validate_size():
 
 
 #---------------------------------#
-print_GID()
+'''print_GID()
 print data.get_tile_gid(33, 29, 0)
 print data.get_tile_properties_by_gid(0)
 print get_dict_by_type('character')
-print get_dict_by_GID(0)
+print get_dict_by_GID(0)'''
 
 if not continuous_levels():
 	print 'Invalid Map! It is required to have 4 continuous levels.'

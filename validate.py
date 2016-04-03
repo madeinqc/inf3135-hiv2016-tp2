@@ -11,16 +11,30 @@ TODOS:
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/mapTest1.tmx")
+data = pytmx.TiledMap("assets/map1.tmx")
 
-def print_GID():
-	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
+def print_GID_by_layer():
+	''' Imprime les tuiles diponibles dans chaque niveau avec le GID et proprietes '''
 	tileSet = set()
 
 	for noLayer in data.visible_tile_layers:
 		print noLayer
 		for tile in data.get_tile_properties_by_layer(noLayer):
 			print tile 	
+			tileSet.add(tile[0])
+	tileSet = sorted(tileSet)
+
+	o = [(i,data.get_tile_properties_by_gid(i)) for i in tileSet]
+
+	#for item in o:
+		#print(item)
+
+def print_GID_by_map():
+	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
+	tileSet = set()
+
+	for noLayer in data.visible_tile_layers:
+		for tile in data.get_tile_properties_by_layer(noLayer):	
 			tileSet.add(tile[0])
 	tileSet = sorted(tileSet)
 
@@ -160,11 +174,8 @@ def validate_size():
 
 
 #---------------------------------#
-'''print_GID()
-print data.get_tile_gid(33, 29, 0)
-print data.get_tile_properties_by_gid(0)
-print get_dict_by_type('character')
-print get_dict_by_GID(0)'''
+#print_GID_by_map()
+#print_GID_by_layer()
 
 if not continuous_levels():
 	print 'Invalid Map! It is required to have 4 continuous levels.'

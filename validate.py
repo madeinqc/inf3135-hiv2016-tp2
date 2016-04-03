@@ -6,12 +6,11 @@ NOTES:
 	On permet des tuiles dur des tules vides (sinon map2 invalide)
 
 TODOS:
-	Check pourquoi carte invalide. 
 	Test toutes les cartes d'un dossier
 '''
 
 import pytmx
-data = pytmx.TiledMap("assets/map1_test1.tmx")
+data = pytmx.TiledMap("assets/map1.tmx")
 
 def print_GID_by_layer():
 	''' Imprime les tuiles diponibles dans chaque niveau avec le GID et proprietes '''

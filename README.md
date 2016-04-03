@@ -68,7 +68,7 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - [X] (5) Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
 - [X] (3) Design du menu d'accueil (En groupe)
 - [X] (5) Gestion des événements du menu d'accueil (Samuel Pilon)
-- [ ] (5) Créer le menu de pause (Giulia Cantoni)
+- [X] (5) Créer le menu de pause (Giulia Cantoni)
 - [ ] (8) Créer des cartes de test (Samuel Pilon)
 - [X] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
 - [X] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)

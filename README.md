@@ -80,8 +80,8 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - [ ] (5) Gestion de la condition de victoire et de défaite et message approprié (Giulia Cantoni)
 - [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) (Giulia Cantoni)
 - [ ] (5) Gestion des jauges (Giulia Cantoni)
-- [ ] (5) Chargement des cartes en python (Giulia Cantoni)
-- [ ] (8) Tests automatisés pour les cartes (Giulia Cantoni)
+- [X] (5) Chargement des cartes en python (Giulia Cantoni)
+- [X] (8) Tests automatisés pour les cartes (Giulia Cantoni)
 
 ## Références
 

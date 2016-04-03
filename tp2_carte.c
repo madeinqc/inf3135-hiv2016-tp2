@@ -79,7 +79,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           isConsumed = true;
           break;
         case SDLK_ESCAPE:
-          app->nextScene = tp2Accueil_getScene(app);
+          /*app->nextScene = tp2Accueil_getScene(app);*/
+          carte->isPause = true; 
           break;
         case SDLK_RETURN:
           tp2Sound_playShort(carte->pickaxeSound);

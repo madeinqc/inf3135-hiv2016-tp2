@@ -47,6 +47,8 @@ struct Application {
    * The difficulty of the game.
    */
   enum Difficulty diff;
+
+  bool isPause;
 };
 
 #endif

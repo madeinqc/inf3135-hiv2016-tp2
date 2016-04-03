@@ -32,8 +32,8 @@ void* tp2Carte_initScene(struct Application *app) {
 bool tp2Carte_loadMedia(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
 
-	tp2Sound_openChannel();
-	carte->pickaxeSound = tp2Sound_loadShort(SOUND_PICKAXE);
+  tp2Sound_openChannel();
+  carte->pickaxeSound = tp2Sound_loadShort(SOUND_PICKAXE);
 
   tp2tmx_loadRandomMap(app->gRenderer, carte);
 
@@ -42,6 +42,10 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
   carte->maxXSection = (carte->map->height + 1)/ 15;
   carte->maxYSection = (carte->map->width + 1)/ 15;
+
+  carte->pause = tp2Pause_getScene(app); 
+  carte->sPause = carte->pause->initScene(app);
+  carte->pause->loadMedia(app, carte->sPause);
 
   return true;
 }
@@ -58,7 +62,9 @@ void tp2Carte_viewWillAppear(struct Application *app, void *state) {
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Carte *carte = (struct Carte*) state;
   bool isConsumed = false;
-
+  if(app->isPause){
+  	return carte->pause->handleEvents(app, carte->sPause, event);
+  }
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
@@ -79,8 +85,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           isConsumed = true;
           break;
         case SDLK_ESCAPE:
-          /*app->nextScene = tp2Accueil_getScene(app);*/
-          carte->isPause = true; 
+          //app->nextScene = tp2Accueil_getScene(app);
+          app->isPause = true; 
           break;
         case SDLK_RETURN:
           tp2Sound_playShort(carte->pickaxeSound);
@@ -102,6 +108,9 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
+  if(app->isPause){
+  	carte->pause->drawScene(app, carte->sPause);
+  }
   SDL_DestroyTexture(texture);
 }
 
@@ -112,5 +121,6 @@ void tp2Carte_release(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
   tp2Sound_freeShort(carte->pickaxeSound);
   tp2tmx_mapFree(carte->map);
+  carte->pause->releaseMedia(app, carte->sPause);
   free(carte);
 }

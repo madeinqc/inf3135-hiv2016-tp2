@@ -53,6 +53,15 @@ def get_set_GID():
 	tileSet = sorted(tileSet)
 	return tileSet
 
+def get_map_size():
+	locationList = []
+	tileSet = get_set_GID()
+	for gid in tileSet:
+		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
+	width = max(locationList, key=lambda item: item[0])[0] +1
+	height = max(locationList, key=lambda item: item[1])[1] +1
+	return [width, height]
+
 def get_tile_dict():
 	''' Retourne un dictionnaire qui a pour cle le nom de la tuile et pour valeur le GID correspondant.'''
 	tileSet = get_set_GID()
@@ -105,8 +114,11 @@ def is_valide_tile(tile):
 	underTile = tuple(temp)
 	temp[2] += 1
 
-	if not is_tile_type(underTile, 'grass') and not is_tile_type(underTile, 'sand') and not is_tile_type(underTile, 'earth') and not is_tile_type(underTile, 'empty'):
-		if is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
+	if not is_tile_type(underTile, 'grass') and not is_tile_type(underTile, 'sand') and not is_tile_type(underTile, 'earth'):
+		if is_tile_type(underTile, 'empty'):
+			if underTile[0]+1 % 15 == 0 or underTile[1]+1 % 15 ==0:
+				return True
+		elif is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
 			return True
 		else:
 			print '%s of type %s' %(str(underTile), str(get_dict_by_GID(data.get_tile_gid(underTile[0], underTile[1], underTile[2]))))
@@ -154,12 +166,8 @@ def continuous_levels():
 def validate_size():
 	''' Verifie que la largeur et la longueur de la carte permet d'avoir des sous-cartes de dimention 14x14 avec des tules de transition entre chanque sous-carte.
 	Retourne False si la carte a des dimentions illegales.'''
-	locationList = []
-	tileSet = get_set_GID()
-	for gid in tileSet:
-		locationList.extend(list(data.get_tile_locations_by_gid(gid)))
-	width = max(locationList, key=lambda item: item[0])[0] +1
-	height = max(locationList, key=lambda item: item[1])[1] +1
+	width = get_map_size()[0]
+	height = get_map_size()[1]
 	if width // 14 != width % 14 +1:
 		return False
 	elif height // 14 != height % 14 +1:

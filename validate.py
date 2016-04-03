@@ -109,14 +109,14 @@ def is_valide_tile(tile):
 		if is_tile_type(tile, 'earth') and is_tile_type(underTile, 'water'):
 			return True
 		else:
-			print underTile, data.get_tile_properties(underTile[0], underTile[1], underTile[2])
-			print tile, data.get_tile_properties(tile[0], tile[1], tile[2])
+			print '%s of type %s' %(str(underTile), str(get_dict_by_GID(data.get_tile_gid(underTile[0], underTile[1], underTile[2]))))
+			print '%s of type %s' %(str(tile), str(get_dict_by_GID(data.get_tile_gid(tile[0], tile[1], tile[2]))))
 			return False
 	return True
 
 def validate_levels():
 	''' Recupere chaque tuple de tuile qui n'est pas au level 0. Pour chaque tuile recuperees, appelle la function is_valide_tile(). 
-	Retourne False si un truile est trouvee invalide.'''
+	Retourne False si un truile est invalide.'''
 	locationList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:
@@ -168,7 +168,6 @@ def validate_size():
 	elif height // 14 != height % 14 +1:
 		return False
 	else:
-		print width, height 
 		return True
 	return True
 

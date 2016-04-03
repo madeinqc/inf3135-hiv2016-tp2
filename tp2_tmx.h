@@ -26,6 +26,7 @@ struct Carte {
   int maxYSection;
   int maxXDisplacement;
   int maxYDisplacement;
+  bool isPause=false;
 };
 
 struct mapsName {

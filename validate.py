@@ -1,16 +1,14 @@
+import pytmx
+import os
+import glob
+
 ''' 
 CONDITIONS DE VALIDITE:
 	Toute tuile doit reposer sur une tuile de sable, terre ou gason seulement a l'exeption d'une tuile de terre qui peut etre sur une tuile d'eau (pont).
 	Au niveau 0, une tuile peut etre sur une tuile vide si celle-ci est dans l'axe transitoire (sinon map2 invalide).
 	Il est necessaire d'avoir une et une seule maison par carte.
 	Il est necessaire d'avoir au moins une roche par carte.  
-
-TODOS:
-	Test toutes les cartes d'un dossier
 '''
-
-import pytmx
-data = pytmx.TiledMap("assets/map2.tmx")
 
 ''' ---------------------------------------------------------------------------------
 --	Methodes pour test seulement 
@@ -54,6 +52,7 @@ def get_set_GID():
 	return tileSet
 
 def get_map_size():
+	''' Retourne une liste indiquant la largeur et la heuteur de la carte.'''
 	locationList = []
 	tileSet = get_set_GID()
 	for gid in tileSet:
@@ -176,20 +175,22 @@ def validate_size():
 		return True
 	return True
 
+def main(path):
+	''' Pour chaque fichier .tmx dans le repertoire, verifie la validite et affiche le message approprie. '''
+	if not continuous_levels():
+		print '%s is invalid! It is required to have 4 continuous levels.' % path
+	elif not validate_size():
+		print '%s is invalid! The map size is not valid.' % path
+	elif not validate_level0():
+		print '%s is invalid! Level 0 contains invalid tiles.' % path
+	elif not validate_levels():
+		print '%s is invalid! Position Error.' % path
+	elif not is_map_complete():
+		print '%s is invalid! Missing a required element.' % path
+	else:
+		print '%s is valid.' % path
 
-#---------------------------------#
-#print_GID_by_map()
-#print_GID_by_layer()
-
-if not continuous_levels():
-	print 'Invalid Map! It is required to have 4 continuous levels.'
-elif not validate_size():
-	print 'Invalid Map! The map size is not valid.'
-elif not validate_level0():
-	print 'Invalid Map! Level 0 contains invalid tiles.'
-elif not validate_levels():
-	print 'Invalid Map! Position Error.'
-elif not is_map_complete():
-	print 'Invalid Map! Missing a required element.'
-else:
-	print 'Valid Map'
+path = 'assets/'
+for tmx_map in glob.glob(os.path.join(path, '*.tmx')):
+	data = pytmx.TiledMap(tmx_map)
+	main(tmx_map)

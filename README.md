@@ -91,5 +91,5 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 ## Statut
 
 Projet en développement
-Menu d'acceuil fonctionnel pour quitter
+Menu d'acceuil et de pause fonctionnels, affichage des sous-cartes fonctionnel
 Compilable sans erreurs et sans warnings

@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include "sdl2.h"
 #include "tp2_carte.h"
+#include "tp2_animSprite.h"
 
 #define INITIAL_CAPACITY 8
 #define ASSETS_PATH "./assets/"
@@ -28,6 +29,8 @@ struct Carte {
   int maxYDisplacement;
   struct Scene *pause;
   struct Pause *sPause; 
+  bool isSpriteInitialized;
+  struct Sprite *sprite;
 };
 
 struct mapsName {

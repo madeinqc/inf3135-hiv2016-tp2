@@ -47,6 +47,13 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->sPause = carte->pause->initScene(app);
   carte->pause->loadMedia(app, carte->sPause);
 
+  if(!createSprite(IMG_PERSO, 4, 20, 20, 0, 0, 2, app)){
+  	printf("Probleme lors de l'initialisation du personnage!");
+  	return false;
+  }
+  carte->isSpriteInitialized = false;
+  carte->sprite = app->currSprite;
+
   return true;
 }
 
@@ -108,6 +115,7 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
+  renderSprite(app->currSprite, app);
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
@@ -123,4 +131,5 @@ void tp2Carte_release(struct Application *app, void *state) {
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
   free(carte);
+  deleteSprite(app->currSprite, app);
 }

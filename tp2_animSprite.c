@@ -5,7 +5,7 @@
 */
 #include "tp2_animSprite.h"
 
-bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
 	newSprite->nbRows = numRows;
@@ -33,12 +33,12 @@ bool CreateSprite(const char* filename, int numRows, int numColumns, int numFram
 	return true;
 }
 
-void DeleteSprite(struct Sprite *sprite, struct Application* app){
+void deleteSprite(struct Sprite *sprite, struct Application* app){
   free(sprite);
   app->currSprite = NULL;
 }
 
-void RenderSprite(struct Sprite *sprite, struct Application *app){
+void renderSprite(struct Sprite *sprite, struct Application *app){
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};

@@ -60,18 +60,18 @@ struct Sprite{
  * @params *app L'application
  * @return False si la creation echoue
  */
-bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app);
 /**
  * Libere les ressources du sprite
  * @params *app L'application
  */
-void DeleteSprite(struct Sprite *sprite, struct Application* app);
+void deleteSprite(struct Sprite *sprite, struct Application* app);
 /**
  * Prepare le sprite pour le renderer
  * @params *app L'application
  */
-void RenderSprite(struct Sprite *sprite, struct Application* app);
+void renderSprite(struct Sprite *sprite, struct Application* app);
 /**
  * Bouge le sprite dans une direction
  * @params direction La direction dans laquelle bouger le sprite

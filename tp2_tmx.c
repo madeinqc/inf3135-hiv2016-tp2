@@ -152,6 +152,13 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         dstrect.y = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
            + ((tileset->tile_height / image->height) - 1) * 64;
 
+        // Position de depart du personnage
+        if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
+        	carte->sprite->posX = srcrect.x;
+        	carte->sprite->posY = srcrect.y;
+        	carte->isSpriteInitialized = true;
+        }
+
 				if (image) {
 					texture = (SDL_Texture*)image->resource_image;
 				}

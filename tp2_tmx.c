@@ -133,11 +133,11 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
-
+			//printf("%d\n", sizeof(layer->content.gids));
+			//printf("%d\n", gid);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
         if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
-
 				tileset = carte->map->tiles[gid]->tileset;
 				image = carte->map->tiles[gid]->image;
 				srcrect.x = carte->map->tiles[gid]->ul_x;
@@ -152,11 +152,13 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         dstrect.y = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
            + ((tileset->tile_height / image->height) - 1) * 64;
 
-        // Position de depart du personnage
+        // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
-        	carte->sprite->posX = srcrect.x;
-        	carte->sprite->posY = srcrect.y;
+        	printf("x = %d, y = %d\n", dstrect.x, dstrect.y);
+        	carte->sprite->posX = dstrect.x*0.58;
+        	carte->sprite->posY = dstrect.y*0.83;
         	carte->isSpriteInitialized = true;
+        	
         }
 
 				if (image) {
@@ -191,4 +193,22 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	}
 	SDL_SetRenderTarget(ren, NULL);
 	return res;
+}
+
+bool findSectionHouse(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head->next;
+	int i;
+	int j;
+	unsigned int caseCourrante;
+	unsigned int gid;
+	for(i = 0; i < carte->map->height; ++i){
+		for(j = 0; j < carte->map->width; ++j){
+			caseCourrante = (i*carte->map->width)+j;
+			gid = layer->content.gids[caseCourrante];
+			if(carte->map->tiles[gid] != NULL && carte->map->tiles[gid]->id == 16){
+				carte->xSection = (i-1)/15;
+				carte->ySection = (j-1)/15;
+			}
+		}
+	}
 }

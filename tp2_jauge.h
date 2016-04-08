@@ -1,4 +1,4 @@
-/**
+	/**
  * @file
  * Fichier permettant de gerer les trois jauges 
  *
@@ -56,7 +56,7 @@
 */
 struct Jauge{
 	int etat; 
-	char *images[]; 
+	char *images[8]; 
 	// Rendering
 	SDL_Texture *texture;
 };

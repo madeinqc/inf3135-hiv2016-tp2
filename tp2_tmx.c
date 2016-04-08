@@ -154,11 +154,15 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
-        	printf("x = %d, y = %d\n", dstrect.x, dstrect.y);
-        	carte->sprite->posX = dstrect.x*0.58;
-        	carte->sprite->posY = dstrect.y*0.83;
+        	//printf("x : %d, y : %d, w : %d, h : %d\n", i, j, dstrect.w, dstrect.h);
+        	//printf("x = %d, y = %d\n", dstrect.x, dstrect.y);
+        	carte->sprite->lastDirection = WEST;
+        	carte->sprite->posX = dstrect.x;
+        	carte->sprite->posY = dstrect.y;
         	carte->isSpriteInitialized = true;
-        	
+        }
+        if(strcmp(layer->name, "Level0") ==0){
+        	renderSprite(carte->sprite, ren);
         }
 
 				if (image) {
@@ -186,8 +190,10 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 		printf("SDL create texture not working: %s", SDL_GetError());
 	SDL_SetRenderTarget(ren, res);
 	SDL_RenderClear(ren);
+	printf("%s\n", name);
 	while (layer) {
 		if (layer->visible)
+			//printf("%s\n", layer->name);
 			tp2tmx_drawLayer(ren, carte, layer);
 		layer = layer->next;
 	}
@@ -212,3 +218,7 @@ bool findSectionHouse(struct Carte *carte){
 		}
 	}
 }
+
+/*bool characterCanMove(struct Carte *carte){
+	return true;
+}*/

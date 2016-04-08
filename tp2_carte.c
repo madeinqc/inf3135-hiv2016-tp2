@@ -119,7 +119,6 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
-  renderSprite(app->currSprite, app);
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }

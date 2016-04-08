@@ -17,6 +17,7 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	newSprite->posX = 20;
 	newSprite->posY = 20;
 	newSprite->speed = speed;
+	newSprite->currentLayer = 1;
 	SDL_Surface *surface = IMG_Load(filename);
 	if (surface == NULL) {
 	  printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
@@ -38,30 +39,30 @@ void deleteSprite(struct Sprite *sprite, struct Application* app){
   app->currSprite = NULL;
 }
 
-void renderSprite(struct Sprite *sprite, struct Application *app){
+void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
   SDL_Rect dstrect = {sprite->posX, sprite->posY, sprite->spriteWidth, sprite->spriteHeight};
-  SDL_RenderCopy(app->gRenderer, sprite->texture, &srcrect, &dstrect);
+  SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
 void moveSprite(struct Sprite *sprite, int direction){
 	switch(direction){
 		case EAST:
-			sprite->posX-=sprite->speed;
+			sprite->posX-=2*sprite->speed;
 			sprite->posY+=sprite->speed;
 			break;
 		case WEST:
-			sprite->posX+=sprite->speed;
+			sprite->posX+=2*sprite->speed;
 			sprite->posY-=sprite->speed;
 			break;
 		case SOUTH:
-			sprite->posX+=sprite->speed;
+			sprite->posX+=2*sprite->speed;
 			sprite->posY+=sprite->speed;
 			break;
 		case NORTH:
-			sprite->posX-=sprite->speed;
+			sprite->posX-=2*sprite->speed;
 			sprite->posY-=sprite->speed;
 			break;
 	}
@@ -96,6 +97,25 @@ void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Applicat
 			break;
 		case SDL_KEYUP:
 			sprite->currentFrame = sprite->lastDirection*20;
+			break;
+	}
+}
+
+void layerToString(int layer, char* string){
+	switch(layer){
+		case 0: 
+			strcpy(string,"Level0");
+			break;
+		case 1: 
+			strcpy(string,"Level1");
+			break;
+		case 2: 
+			strcpy(string,"Level2");
+			break;
+		case 3: 
+			strcpy(string,"Level3");
+			break;
+		default:
 			break;
 	}
 }

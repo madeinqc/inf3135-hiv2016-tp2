@@ -32,9 +32,11 @@ void renderJauge(struct Jauge *jauge, struct Application* app){
 
 void updateJauge(struct Jauge *jauge){
 	int currentTime = SDL_GetTicks();
-	if(currentTime > jauge->lastUpdate + jauge->timespan && jauge->state != 0){
+	if(jauge->state ==0){
+		jauge->isEmpty = true; 
+	}
+	if(currentTime > jauge->lastUpdate + jauge->timespan && !jauge->isEmpty){
 		jauge->state -= 1; 
 		jauge->lastUpdate = currentTime; 
 	}
-
 }

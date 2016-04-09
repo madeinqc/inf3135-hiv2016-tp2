@@ -73,9 +73,10 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   bool isConsumed = false;
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
+  }else{
+  	isConsumed = handleEventsSprite(carte->sprite, event, app);
   }
-  handleEventsSprite(carte->sprite, event, app);
-  return true;
+  if(isConsumed) return true;
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
@@ -96,7 +97,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           isConsumed = true;
           break;
         case SDLK_ESCAPE:
-          //app->nextScene = tp2Accueil_getScene(app);
           app->isPause = true; 
           break;
         case SDLK_RETURN:
@@ -107,7 +107,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
       break;
     default: break;
   }
-
   return isConsumed;
 }
 

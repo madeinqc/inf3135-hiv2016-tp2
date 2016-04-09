@@ -14,8 +14,8 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	newSprite->currentFrame = initialFrame;
 	newSprite->delayBetweenFrame = delayBetweenFrame;
 	newSprite->texture = NULL;
-	newSprite->posX = 20;
-	newSprite->posY = 20;
+	newSprite->posX = newSprite->futureX = 484;
+	newSprite->posY = newSprite->futureY = 346;
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
 	SDL_Surface *surface = IMG_Load(filename);
@@ -68,7 +68,8 @@ void moveSprite(struct Sprite *sprite, int direction){
 	}
 }
 
-void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app){
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app){
+	bool isConsumed = false;
 	switch(event->type){
 		case SDL_KEYDOWN:
 			printf("x : %d, y : %d\n", sprite->posX, sprite->posY);
@@ -77,28 +78,34 @@ void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Applicat
 					moveSprite(sprite, NORTH);
 					sprite->lastDirection = NORTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
+					isConsumed = true;
 					break;
 				case SDLK_DOWN:
 					moveSprite(sprite, SOUTH);
 					sprite->lastDirection = SOUTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
+					isConsumed = true;
 					break;
 				case SDLK_RIGHT:
 					moveSprite(sprite, WEST);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
+					isConsumed = true;
 					break;
 				case SDLK_LEFT:
 					moveSprite(sprite, EAST);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);
+					isConsumed = true;
 					break;
 			}
 			break;
 		case SDL_KEYUP:
 			sprite->currentFrame = sprite->lastDirection*20;
+			isConsumed = true;
 			break;
 	}
+	return isConsumed;
 }
 
 void layerToString(int layer, char* string){

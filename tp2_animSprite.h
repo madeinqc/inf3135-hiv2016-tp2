@@ -43,6 +43,8 @@ struct Sprite{
 	// Position
 	int posX;
 	int posY;
+	int futureX;
+	int futureY;
 	int lastDirection;
 	int currentLayer;
 	// Speed
@@ -87,5 +89,5 @@ void moveSprite(struct Sprite *sprite, int direction);
  */
 void layerToString(int layer, char* string);
 
-void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
 #endif

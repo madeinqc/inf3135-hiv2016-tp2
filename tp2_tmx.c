@@ -190,10 +190,8 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 		printf("SDL create texture not working: %s", SDL_GetError());
 	SDL_SetRenderTarget(ren, res);
 	SDL_RenderClear(ren);
-	printf("%s\n", name);
 	while (layer) {
 		if (layer->visible)
-			//printf("%s\n", layer->name);
 			tp2tmx_drawLayer(ren, carte, layer);
 		layer = layer->next;
 	}
@@ -214,6 +212,7 @@ bool findSectionHouse(struct Carte *carte){
 			if(carte->map->tiles[gid] != NULL && carte->map->tiles[gid]->id == 16){
 				carte->xSection = (i-1)/15;
 				carte->ySection = (j-1)/15;
+				break;
 			}
 		}
 	}

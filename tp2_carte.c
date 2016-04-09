@@ -51,8 +51,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
   char *imagesSleep[] = {SLEEP_0, SLEEP_1, SLEEP_2, SLEEP_3, SLEEP_4, SLEEP_5, SLEEP_6, SLEEP_7};
   carte->foodJauge = createJauge(imagesFood, app); 
-  carte->foodJauge = createJauge(imagesWater, app); 
-  carte->foodJauge = createJauge(imagesSleep, app); 
+  carte->waterJauge = createJauge(imagesWater, app); 
+  carte->sleepJauge = createJauge(imagesSleep, app); 
 
   return true;
 }
@@ -115,6 +115,9 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
+  renderJauge(carte->foodJauge, app); 
+  renderJauge(carte->waterJauge, app); 
+  renderJauge(carte->sleepJauge, app); 
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
@@ -129,5 +132,8 @@ void tp2Carte_release(struct Application *app, void *state) {
   tp2Sound_freeShort(carte->pickaxeSound);
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
+  carte->foodJauge = NULL; 
+  carte->waterJauge = NULL; 
+  carte->sleepJauge = NULL; 
   free(carte);
 }

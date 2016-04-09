@@ -21,13 +21,13 @@ void deleteJauge(struct Jauge *jauge, struct Application* app){
 }
 
 void renderJauge(struct Jauge *jauge, struct Application* app){
-
+	//updateJauge(); 
+	int imageIndex = jauge->state; 
+	SDL_Texture *image = jauge->tabImages[imageIndex]; 
+	SDL_Rect text = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+	SDL_RenderCopy(app->gRenderer, image, NULL, &text);  
 }
 
-void moveJauge(struct Jauge *jauge, int direction){
+void updateJauge(struct Jauge *jauge, int direction){
 
-}
-
-void handleEventsJauge(struct Jauge *jauge, SDL_Event *event, struct Application *app){
-	
 }

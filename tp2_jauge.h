@@ -58,7 +58,7 @@ struct Jauge{
 	SDL_Texture *tabImages[8]; 
 	int lastUpdate; 
 	int timespan; 
-	bool isEmpty = false; 
+	//bool isEmpty; 
 };
 
 /**

@@ -50,20 +50,20 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
 void moveSprite(struct Sprite *sprite, int direction){
 	switch(direction){
 		case EAST:
-			sprite->posX-=2*sprite->speed;
-			sprite->posY+=sprite->speed;
+			sprite->futureX-=2*sprite->speed;
+			sprite->futureY+=sprite->speed;
 			break;
 		case WEST:
-			sprite->posX+=2*sprite->speed;
-			sprite->posY-=sprite->speed;
+			sprite->futureX+=2*sprite->speed;
+			sprite->futureY-=sprite->speed;
 			break;
 		case SOUTH:
-			sprite->posX+=2*sprite->speed;
-			sprite->posY+=sprite->speed;
+			sprite->futureX+=2*sprite->speed;
+			sprite->futureY+=sprite->speed;
 			break;
 		case NORTH:
-			sprite->posX-=2*sprite->speed;
-			sprite->posY-=sprite->speed;
+			sprite->futureX-=2*sprite->speed;
+			sprite->futureY-=sprite->speed;
 			break;
 	}
 }

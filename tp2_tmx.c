@@ -154,14 +154,21 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
-        	//printf("x : %d, y : %d, w : %d, h : %d\n", i, j, dstrect.w, dstrect.h);
-        	//printf("x = %d, y = %d\n", dstrect.x, dstrect.y);
         	carte->sprite->lastDirection = WEST;
-        	carte->sprite->posX = dstrect.x;
-        	carte->sprite->posY = dstrect.y;
+        	carte->sprite->posX = carte->sprite->futureX = dstrect.x;
+        	carte->sprite->posY = carte->sprite->futureY = dstrect.y;
         	carte->isSpriteInitialized = true;
         }
+
+        // Render le personnage sur le level dessous celui ou il est
         if(strcmp(layer->name, "Level0") ==0){
+        	if(isWallOK(carte->sprite)){
+        		carte->sprite->posX = carte->sprite->futureX;
+        		carte->sprite->posY = carte->sprite->futureY;
+        	}else{
+        		carte->sprite->futureX = carte->sprite->posX;
+        		carte->sprite->futureY = carte->sprite->posY;
+        	}
         	renderSprite(carte->sprite, ren);
         }
 
@@ -218,6 +225,22 @@ bool findSectionHouse(struct Carte *carte){
 	}
 }
 
-/*bool characterCanMove(struct Carte *carte){
+bool isWallOK(struct Sprite *sprite){
+	// Verification pour les 4 cotes de la map
+	int x = sprite->futureX;
+	float y = sprite->futureY;
+	float YtoComp;
+	// Haut gauche
+	YtoComp = abs(0.5*x - 370);
+	if(y < YtoComp) return false;
+	// Bas droit
+	YtoComp = abs(0.5*x - 806);
+	if(y > YtoComp) return false;
+	// Bas gauche
+	YtoComp = abs(-0.5*x - 322);
+	if(y > YtoComp) return false;
+	// Haut droit
+	YtoComp = abs(-0.5*x + 114);
+	if(y < YtoComp) return false;
 	return true;
-}*/
+}

@@ -15,85 +15,72 @@
 #include "tp2_scene.h"
 #include "tp2_sound.h"
 
-
-
 /**
  * Images des des etats de la jauge Nourriture
  */
-#define IMG_FOOD_0 "assets/jauges-food_empty.png"
-#define IMG_FOOD_1 "assets/jauges-food_red.png"
-#define IMG_FOOD_2 "assets/jauges-food_yellowHalf.png"
-#define IMG_FOOD_3 "assets/jauges-food_yellowFull.png"
-#define IMG_FOOD_4 "assets/jauges-food_orangeHalf.png"
-#define IMG_FOOD_5 "assets/jauges-food_orangeFull.png"
-#define IMG_FOOD_6 "assets/jauges-food_greenHalf.png"
-#define IMG_FOOD_7 "assets/jauges-food_greenFull.png"
+#define FOOD_0 "assets/jauge_food/jauge-food_empty.png"
+#define FOOD_1 "assets/jauge_food/jauge-food_red.png"
+#define FOOD_2 "assets/jauge_food/jauge-food_yellowHalf.png"
+#define FOOD_3 "assets/jauge_food/jauge-food_yellowFull.png"
+#define FOOD_4 "assets/jauge_food/jauge-food_orangeHalf.png"
+#define FOOD_5 "assets/jauge_food/jauge-food_orangeFull.png"
+#define FOOD_6 "assets/jauge_food/jauge-food_greenHalf.png"
+#define FOOD_7 "assets/jauge_food/jauge-food_greenFull.png"
 /**
  * Images des des etats de la jauge Eau
  */
-#define IMG_WATER_0 "assets/jauges-water_empty.png"
-#define IMG_WATER_1 "assets/jauges-water_red.png"
-#define IMG_WATER_2 "assets/jauges-water_yellowHalf.png"
-#define IMG_WATER_3 "assets/jauges-water_yellowFull.png"
-#define IMG_WATER_4 "assets/jauges-water_orangeHalf.png"
-#define IMG_WATER_5 "assets/jauges-water_orangeFull.png"
-#define IMG_WATER_6 "assets/jauges-water_greenHalf.png"
-#define IMG_WATER_7 "assets/jauges-water_greenFull.png"
+#define WATER_0 "assets/jauge_water/jauge-water_empty.png"
+#define WATER_1 "assets/jauge_water/jauge-water_red.png"
+#define WATER_1 "assets/jauge_water/jauge-water_red.png"
+#define WATER_2 "assets/jauge_water/jauge-water_yellowHalf.png"
+#define WATER_3 "assets/jauge_water/jauge-water_yellowFull.png"
+#define WATER_4 "assets/jauge_water/jauge-water_orangeHalf.png"
+#define WATER_5 "assets/jauge_water/jauge-water_orangeFull.png"
+#define WATER_6 "assets/jauge_water/jauge-water_greenHalf.png"
+#define WATER_7 "assets/jauge_water/jauge-water_greenFull.png"
 /**
  * Images des des etats de la jauge nourriture
  */
-#define IMG_SLEEP_0 "assets/jauges-sleep_empty.png"
-#define IMG_SLEEP_1 "assets/jauges-sleep_red.png"
-#define IMG_SLEEP_2 "assets/jauges-sleep_yellowHalf.png"
-#define IMG_SLEEP_3 "assets/jauges-sleep_yellowFull.png"
-#define IMG_SLEEP_4 "assets/jauges-sleep_orangeHalf.png"
-#define IMG_SLEEP_5 "assets/jauges-sleep_orangeFull.png"
-#define IMG_SLEEP_6 "assets/jauges-sleep_greenHalf.png"
-#define IMG_SLEEP_7 "assets/jauges-sleep_greenFull.png"
+#define SLEEP_0 "assets/jauge_sleep/jauge-sleep_empty.png"
+#define SLEEP_1 "assets/jauge_sleep/jauge-sleep_red.png"
+#define SLEEP_2 "assets/jauge_sleep/jauge-sleep_yellowHalf.png"
+#define SLEEP_3 "assets/jauge_sleep/jauge-sleep_yellowFull.png"
+#define SLEEP_4 "assets/jauge_sleep/jauge-sleep_orangeHalf.png"
+#define SLEEP_5 "assets/jauge_sleep/jauge-sleep_orangeFull.png"
+#define SLEEP_6 "assets/jauge_sleep/jauge-sleep_greenHalf.png"
+#define SLEEP_7 "assets/jauge_sleep/jauge-sleep_greenFull.png"
 
 /*
 * Structure d'une jauge
 */
 struct Jauge{
-	int etat; 
-	char *images[8]; 
-	// Rendering
-	SDL_Texture *texture;
+	int state; 
+	SDL_Texture *tabImages[8]; 
 };
 
 /**
- * Creer un spritesheet
- * @params *filename Chemin vers le fichier du sprite
- * @params numRows Le nombre de ligne du fichier sprite
- * @params numColumns Le nombre de colonne du fichier sprite
- * @params numFrames Le nombre de frames par direction du sprite
- * @params initialFrame La frame initiale
- * @params delayBetweenFrame Le delai entre les frames
- * @params speed La vitesse pour bouger le sprite
- * @params *app L'application
- * @return False si la creation echoue
+ * Creer une jauge
  */
-bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
-					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app);
+struct Jauge* createJauge(char *tabImages[8], struct Application* app);
 /**
- * Libere les ressources du sprite
+ * Libere les ressources de la jauge
  * @params *app L'application
  */
-void DeleteSprite(struct Sprite *sprite, struct Application* app);
+void deleteJauge(struct Jauge *jauge, struct Application* app);
 /**
- * Prepare le sprite pour le renderer
+ * Prepare le jauge pour le renderer
  * @params *app L'application
  */
-void RenderSprite(struct Sprite *sprite, struct Application* app);
+void renderJauge(struct Jauge *jauge, struct Application* app);
 /**
- * Bouge le sprite dans une direction
- * @params direction La direction dans laquelle bouger le sprite
+ * Bouge le jauge dans une direction
+ * @params direction La direction dans laquelle bouger le jauge
  */
-void moveSprite(struct Sprite *sprite, int direction);
+void moveJauge(struct Jauge *jauge, int direction);
 /**
- * Gestion des evenements lies au sprite
+ * Gestion des evenements lies au jauge
  * @params *event L'evenement a gerer
  * @params *app L'application
  */
-void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
+void handleEventsJauge(struct Jauge *jauge, SDL_Event *event, struct Application *app);
 #endif

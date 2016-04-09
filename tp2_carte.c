@@ -50,9 +50,13 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   char *imagesFood[] = {FOOD_0, FOOD_1, FOOD_2, FOOD_3, FOOD_4, FOOD_5, FOOD_6, FOOD_7};
   char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
   char *imagesSleep[] = {SLEEP_0, SLEEP_1, SLEEP_2, SLEEP_3, SLEEP_4, SLEEP_5, SLEEP_6, SLEEP_7};
-  carte->foodJauge = createJauge(imagesFood, app); 
-  carte->waterJauge = createJauge(imagesWater, app); 
-  carte->sleepJauge = createJauge(imagesSleep, app); 
+  
+  int timespanFood; 
+  int timespanWater; 
+  int timespanSleep; 
+  carte->foodJauge = createJauge(imagesFood, timespanFood, app); 
+  carte->waterJauge = createJauge(imagesWater, timespanWater, app); 
+  carte->sleepJauge = createJauge(imagesSleep, timespanSleep, app); 
 
   return true;
 }

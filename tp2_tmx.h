@@ -53,4 +53,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 
 bool isWallOK(struct Sprite *sprite);
+
+bool transitionSprite(struct Carte *carte, int x, int y);
 #endif

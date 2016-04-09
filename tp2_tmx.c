@@ -122,6 +122,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 	tmx_image *image;
 	SDL_Rect srcrect, dstrect;
 	SDL_Texture* texture;
+	bool transit = false;
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
 
@@ -161,7 +162,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         }
 
         // Render le personnage sur le level dessous celui ou il est
-        if(strcmp(layer->name, "Level0") ==0){
+        char layerSprite[7];
+        layerToString(carte->sprite->currentLayer -1, layerSprite);
+        if(strcmp(layer->name, layerSprite) == 0){
         	if(isWallOK(carte->sprite)){
         		carte->sprite->posX = carte->sprite->futureX;
         		carte->sprite->posY = carte->sprite->futureY;
@@ -170,12 +173,20 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         		carte->sprite->futureY = carte->sprite->posY;
         	}
         	renderSprite(carte->sprite, ren);
+        	// Liste les cases transitives
+        	if(i%15 == 0 || j%15 == 0){
+						int u = carte->map->tiles[gid]->id;
+						if(u != 3 && u != 1){
+							transit = transitionSprite(carte, dstrect.x, dstrect.y);
+						}
+					}
         }
 
 				if (image) {
 					texture = (SDL_Texture*)image->resource_image;
 				}
 				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
+				if(transit) continue;
 			}
 		}
 	}
@@ -243,4 +254,38 @@ bool isWallOK(struct Sprite *sprite){
 	YtoComp = abs(-0.5*x + 114);
 	if(y < YtoComp) return false;
 	return true;
+}
+
+bool transitionSprite(struct Carte *carte, int x, int y){
+	//printf("x : %d, y : %d\n", x, y);
+	int spriteX = carte->sprite->posX;
+	int spriteY = carte->sprite->posY;
+	int buff = 30;
+	int diff;
+	if(y < 354){
+		if(x < 472){
+			// Transition haut gauche
+
+		}else{
+			// Transition haut droit
+
+		}
+	}else{
+		if(x < 472){
+			// Transition bas gauche
+			if(spriteX > x && spriteX < (x+40)){
+				diff = abs(-0.5*spriteX - 322) - spriteY;
+				//printf("%d\n", diff);
+				if(diff < 2 && carte->sprite->lastDirection == EAST){
+					carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
+					carte->sprite->futureX = 0;
+					carte->sprite->futureY = 0;
+					return true;
+				}
+			}
+		}else{
+			// Transition bas droit
+
+		}
+	}
 }

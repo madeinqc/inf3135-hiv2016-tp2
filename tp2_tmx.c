@@ -125,7 +125,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 	bool transit = false;
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
-
+			transit = false;
       tileX = i + carte->xSection * 15 - 1;
       tileY = j + carte->ySection * 15 - 1;
 
@@ -134,8 +134,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
-			//printf("%d\n", sizeof(layer->content.gids));
-			//printf("%d\n", gid);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
         if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
@@ -257,7 +255,6 @@ bool isWallOK(struct Sprite *sprite){
 }
 
 bool transitionSprite(struct Carte *carte, int x, int y){
-	//printf("x : %d, y : %d\n", x, y);
 	int spriteX = carte->sprite->posX;
 	int spriteY = carte->sprite->posY;
 	int buff = 30;
@@ -265,27 +262,50 @@ bool transitionSprite(struct Carte *carte, int x, int y){
 	if(y < 354){
 		if(x < 472){
 			// Transition haut gauche
-
+			if(spriteX > x && spriteX < (x+40)){
+				diff = abs(abs(0.5*spriteX - 370) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == NORTH){
+					carte->ySection -= carte->ySection == 0 ? 0 : 1;
+					carte->sprite->futureX = spriteX + 436;
+					carte->sprite->futureY = spriteY + 218;
+					return true;
+				}
+			}
 		}else{
 			// Transition haut droit
-
+			if(spriteX < x && spriteX > (x-40)){
+				diff = abs(abs(-0.5*spriteX + 114) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == WEST){
+					carte->xSection -= carte->xSection == 0 ? 0 : 1;
+					carte->sprite->futureX = spriteX - 436;
+					carte->sprite->futureY = spriteY + 218;
+					return true;
+				}
+			}
 		}
 	}else{
 		if(x < 472){
 			// Transition bas gauche
 			if(spriteX > x && spriteX < (x+40)){
 				diff = abs(-0.5*spriteX - 322) - spriteY;
-				//printf("%d\n", diff);
-				if(diff < 2 && carte->sprite->lastDirection == EAST){
+				if(diff < 4 && carte->sprite->lastDirection == EAST){
 					carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-					carte->sprite->futureX = 0;
-					carte->sprite->futureY = 0;
+					carte->sprite->futureX = spriteX + 436;
+					carte->sprite->futureY = spriteY - 218;
 					return true;
 				}
 			}
 		}else{
 			// Transition bas droit
-
+			if(spriteX < x && spriteX > (x-40)){
+				diff = abs(abs(0.5*spriteX - 806) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == SOUTH){
+					carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
+					carte->sprite->futureX = spriteX - 436;
+					carte->sprite->futureY = spriteY - 218;
+					return true;
+				}
+			}
 		}
 	}
 }

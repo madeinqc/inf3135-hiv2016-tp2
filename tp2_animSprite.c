@@ -72,7 +72,6 @@ bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Applicat
 	bool isConsumed = false;
 	switch(event->type){
 		case SDL_KEYDOWN:
-			printf("x : %d, y : %d\n", sprite->posX, sprite->posY);
 			switch(event->key.keysym.sym){
 				case SDLK_UP:
 					moveSprite(sprite, NORTH);

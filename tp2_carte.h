@@ -16,6 +16,7 @@
 #include "tp2_image.h"
 #include "tp2_accueil.h"
 #include "tp2_tmx.h"
+#include "tp2_jauge.h"
 
 /**
  * Sons du jeu

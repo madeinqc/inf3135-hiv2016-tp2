@@ -28,6 +28,9 @@ struct Carte {
   int maxYDisplacement;
   struct Scene *pause;
   struct Pause *sPause; 
+  struct Jauge *foodJauge; 
+  struct Jauge *waterJauge; 
+  struct Jauge *sleepJauge; 
 };
 
 struct mapsName {

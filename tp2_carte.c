@@ -47,6 +47,33 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->sPause = carte->pause->initScene(app);
   carte->pause->loadMedia(app, carte->sPause);
 
+  char *imagesFood[] = {FOOD_0, FOOD_1, FOOD_2, FOOD_3, FOOD_4, FOOD_5, FOOD_6, FOOD_7};
+  char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
+  char *imagesSleep[] = {SLEEP_0, SLEEP_1, SLEEP_2, SLEEP_3, SLEEP_4, SLEEP_5, SLEEP_6, SLEEP_7};
+  int timespanFood;
+  int timespanWater;
+  int timespanSleep;
+  switch(app->diff){ // sets timespan accoring to the difficutly of the game chosen
+    case 0: 
+      timespanFood = 15000; // 15sec
+      timespanWater = 10000; // 10sec
+      timespanSleep = 20000; // 20sec
+      break;
+    case 1: 
+      timespanFood = 10000;
+      timespanWater = 10000; 
+      timespanSleep = 10000; 
+      break;
+    case 2: 
+      timespanFood = 10000; // 10sec 
+      timespanWater = 5000; // 5sec
+      timespanSleep = 10000; // 10sec
+      break;
+  } 
+  carte->foodJauge = createJauge(imagesFood, timespanFood, app); 
+  carte->waterJauge = createJauge(imagesWater, timespanWater, app); 
+  carte->sleepJauge = createJauge(imagesSleep, timespanSleep, app); 
+
   return true;
 }
 
@@ -84,8 +111,12 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           carte->xSection -= carte->xSection == 0 ? 0 : 1;
           isConsumed = true;
           break;
+        // FOR TEST ONLY TO BE REMOVED
+        case SDLK_f:
+          refillJauge(carte->waterJauge, app); 
+          break; 
+        // **********************************
         case SDLK_ESCAPE:
-          //app->nextScene = tp2Accueil_getScene(app);
           app->isPause = true; 
           break;
         case SDLK_RETURN:
@@ -108,6 +139,9 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
+  renderJauge(carte->foodJauge, app); 
+  renderJauge(carte->waterJauge, app); 
+  renderJauge(carte->sleepJauge, app); 
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
@@ -122,5 +156,8 @@ void tp2Carte_release(struct Application *app, void *state) {
   tp2Sound_freeShort(carte->pickaxeSound);
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
+  carte->foodJauge = NULL; 
+  carte->waterJauge = NULL; 
+  carte->sleepJauge = NULL; 
   free(carte);
 }

@@ -12,7 +12,7 @@ struct Jauge* createJauge(char *tabImages[8], int timespan, struct Application* 
       return false;
     }
 		newJauge->tabImages[i] = image;
-		newJauge->lastUpdate = 0;  
+		newJauge->lastUpdate = SDL_GetTicks();  
 		newJauge->timespan = timespan; 
 	}
 	return newJauge; 

@@ -201,11 +201,11 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 
   w += carte->maxXDisplacement;
   h += carte->maxYDisplacement;
-
 	if (!(res = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h)))
 		printf("SDL create texture not working: %s", SDL_GetError());
 	SDL_SetRenderTarget(ren, res);
 	SDL_RenderClear(ren);
+	SDL_RenderCopy(ren, carte->background, NULL, NULL);
 	while (layer) {
 		if (layer->visible)
 			tp2tmx_drawLayer(ren, carte, layer);

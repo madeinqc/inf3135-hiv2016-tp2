@@ -81,6 +81,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->isSpriteInitialized = false;
   carte->sprite = app->currSprite;
 
+  carte->background = tp2image_load(app, IMG_BACK);
+
   findSectionHouse(carte);
 
   return true;

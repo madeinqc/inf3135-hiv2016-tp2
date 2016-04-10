@@ -23,6 +23,7 @@
  * Sons du jeu
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
+#define IMG_BACK "assets/background_game.png"
 
 struct Scene* tp2Carte_getScene(struct Application *app);
 

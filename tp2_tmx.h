@@ -34,6 +34,7 @@ struct Carte {
   struct Jauge *sleepJauge; 
   bool isSpriteInitialized;
   struct Sprite *sprite;
+  SDL_Texture *background;
 };
 
 struct mapsName {

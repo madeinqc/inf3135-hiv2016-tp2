@@ -111,8 +111,12 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           carte->xSection -= carte->xSection == 0 ? 0 : 1;
           isConsumed = true;
           break;
+        // FOR TEST ONLY TO BE REMOVED
+        case SDLK_f:
+          refillJauge(carte->waterJauge, app); 
+          break; 
+        // **********************************
         case SDLK_ESCAPE:
-          //app->nextScene = tp2Accueil_getScene(app);
           app->isPause = true; 
           break;
         case SDLK_RETURN:

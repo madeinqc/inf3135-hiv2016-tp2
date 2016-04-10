@@ -58,7 +58,6 @@ struct Jauge{
 	SDL_Texture *tabImages[8]; 
 	int lastUpdate; 
 	int timespan; 
-	//bool isEmpty; 
 };
 
 /**
@@ -79,6 +78,8 @@ void renderJauge(struct Jauge *jauge, struct Application* app);
  * Bouge le jauge dans une direction
  * @params direction La direction dans laquelle bouger le jauge
  */
-void updateJauge(struct Jauge *jauge);
+void updateJauge(struct Jauge *jauge, struct Application* app);
+
+void refillJauge(struct Jauge *jauge, struct Application* app); 
 
 #endif

@@ -49,6 +49,10 @@ struct Application {
   enum Difficulty diff;
 
   bool isPause;
+
+  bool isWon; 
+
+  bool isLost; 
 };
 
 #endif

@@ -35,13 +35,18 @@ struct Sprite{
 	int nbFrames;
 	int spriteWidth;
 	int spriteHeight;
+	int xOffset;
+	int yOffset;
 	// Frames
 	int currentFrame;
 	int delayBetweenFrame;
 	// Position
 	int posX;
 	int posY;
+	int futureX;
+	int futureY;
 	int lastDirection;
+	int currentLayer;
 	// Speed
 	int speed;
 	// Rendering
@@ -60,18 +65,18 @@ struct Sprite{
  * @params *app L'application
  * @return False si la creation echoue
  */
-bool CreateSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
 					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app);
 /**
  * Libere les ressources du sprite
  * @params *app L'application
  */
-void DeleteSprite(struct Sprite *sprite, struct Application* app);
+void deleteSprite(struct Sprite *sprite, struct Application* app);
 /**
  * Prepare le sprite pour le renderer
  * @params *app L'application
  */
-void RenderSprite(struct Sprite *sprite, struct Application* app);
+void renderSprite(struct Sprite *sprite, SDL_Renderer *ren);
 /**
  * Bouge le sprite dans une direction
  * @params direction La direction dans laquelle bouger le sprite
@@ -82,5 +87,7 @@ void moveSprite(struct Sprite *sprite, int direction);
  * @params *event L'evenement a gerer
  * @params *app L'application
  */
-void handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
+void layerToString(int layer, char* string);
+
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
 #endif

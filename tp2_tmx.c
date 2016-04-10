@@ -122,9 +122,10 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 	tmx_image *image;
 	SDL_Rect srcrect, dstrect;
 	SDL_Texture* texture;
+	bool transit = false;
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
-
+			transit = false;
       tileX = i + carte->xSection * 15 - 1;
       tileY = j + carte->ySection * 15 - 1;
 
@@ -133,11 +134,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
-
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
         if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
-
 				tileset = carte->map->tiles[gid]->tileset;
 				image = carte->map->tiles[gid]->image;
 				srcrect.x = carte->map->tiles[gid]->ul_x;
@@ -152,10 +151,40 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         dstrect.y = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
            + ((tileset->tile_height / image->height) - 1) * 64;
 
+        // Initialise la position initial du personnage
+        if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
+        	carte->sprite->lastDirection = WEST;
+        	carte->sprite->posX = carte->sprite->futureX = dstrect.x;
+        	carte->sprite->posY = carte->sprite->futureY = dstrect.y;
+        	carte->isSpriteInitialized = true;
+        }
+
+        // Render le personnage sur le level dessous celui ou il est
+        char layerSprite[7];
+        layerToString(carte->sprite->currentLayer -1, layerSprite);
+        if(strcmp(layer->name, layerSprite) == 0){
+        	if(isWallOK(carte->sprite)){
+        		carte->sprite->posX = carte->sprite->futureX;
+        		carte->sprite->posY = carte->sprite->futureY;
+        	}else{
+        		carte->sprite->futureX = carte->sprite->posX;
+        		carte->sprite->futureY = carte->sprite->posY;
+        	}
+        	renderSprite(carte->sprite, ren);
+        	// Liste les cases transitives
+        	if(i%15 == 0 || j%15 == 0){
+						int u = carte->map->tiles[gid]->id;
+						if(u != 3 && u != 1){
+							transit = transitionSprite(carte, dstrect.x, dstrect.y);
+						}
+					}
+        }
+
 				if (image) {
 					texture = (SDL_Texture*)image->resource_image;
 				}
 				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
+				if(transit) continue;
 			}
 		}
 	}
@@ -184,4 +213,99 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	}
 	SDL_SetRenderTarget(ren, NULL);
 	return res;
+}
+
+bool findSectionHouse(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head->next;
+	int i;
+	int j;
+	unsigned int caseCourrante;
+	unsigned int gid;
+	for(i = 0; i < carte->map->height; ++i){
+		for(j = 0; j < carte->map->width; ++j){
+			caseCourrante = (i*carte->map->width)+j;
+			gid = layer->content.gids[caseCourrante];
+			if(carte->map->tiles[gid] != NULL && carte->map->tiles[gid]->id == 16){
+				carte->xSection = (i-1)/15;
+				carte->ySection = (j-1)/15;
+				break;
+			}
+		}
+	}
+}
+
+bool isWallOK(struct Sprite *sprite){
+	// Verification pour les 4 cotes de la map
+	int x = sprite->futureX;
+	float y = sprite->futureY;
+	float YtoComp;
+	// Haut gauche
+	YtoComp = abs(0.5*x - 370);
+	if(y < YtoComp) return false;
+	// Bas droit
+	YtoComp = abs(0.5*x - 806);
+	if(y > YtoComp) return false;
+	// Bas gauche
+	YtoComp = abs(-0.5*x - 322);
+	if(y > YtoComp) return false;
+	// Haut droit
+	YtoComp = abs(-0.5*x + 114);
+	if(y < YtoComp) return false;
+	return true;
+}
+
+bool transitionSprite(struct Carte *carte, int x, int y){
+	int spriteX = carte->sprite->posX;
+	int spriteY = carte->sprite->posY;
+	int buff = 30;
+	int diff;
+	if(y < 354){
+		if(x < 472){
+			// Transition haut gauche
+			if(spriteX > x && spriteX < (x+40)){
+				diff = abs(abs(0.5*spriteX - 370) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == NORTH){
+					carte->ySection -= carte->ySection == 0 ? 0 : 1;
+					carte->sprite->futureX = spriteX + 436;
+					carte->sprite->futureY = spriteY + 218;
+					return true;
+				}
+			}
+		}else{
+			// Transition haut droit
+			if(spriteX < x && spriteX > (x-40)){
+				diff = abs(abs(-0.5*spriteX + 114) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == WEST){
+					carte->xSection -= carte->xSection == 0 ? 0 : 1;
+					carte->sprite->futureX = spriteX - 436;
+					carte->sprite->futureY = spriteY + 218;
+					return true;
+				}
+			}
+		}
+	}else{
+		if(x < 472){
+			// Transition bas gauche
+			if(spriteX > x && spriteX < (x+40)){
+				diff = abs(-0.5*spriteX - 322) - spriteY;
+				if(diff < 4 && carte->sprite->lastDirection == EAST){
+					carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
+					carte->sprite->futureX = spriteX + 436;
+					carte->sprite->futureY = spriteY - 218;
+					return true;
+				}
+			}
+		}else{
+			// Transition bas droit
+			if(spriteX < x && spriteX > (x-40)){
+				diff = abs(abs(0.5*spriteX - 806) - spriteY);
+				if(diff < 4 && carte->sprite->lastDirection == SOUTH){
+					carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
+					carte->sprite->futureX = spriteX - 436;
+					carte->sprite->futureY = spriteY - 218;
+					return true;
+				}
+			}
+		}
+	}
 }

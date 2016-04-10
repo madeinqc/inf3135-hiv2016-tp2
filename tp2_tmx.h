@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include "sdl2.h"
 #include "tp2_carte.h"
+#include "tp2_animSprite.h"
 
 #define INITIAL_CAPACITY 8
 #define ASSETS_PATH "./assets/"
@@ -31,6 +32,8 @@ struct Carte {
   struct Jauge *foodJauge; 
   struct Jauge *waterJauge; 
   struct Jauge *sleepJauge; 
+  bool isSpriteInitialized;
+  struct Sprite *sprite;
 };
 
 struct mapsName {
@@ -52,4 +55,7 @@ void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 
+bool isWallOK(struct Sprite *sprite);
+
+bool transitionSprite(struct Carte *carte, int x, int y);
 #endif

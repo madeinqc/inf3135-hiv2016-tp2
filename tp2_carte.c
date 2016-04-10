@@ -74,6 +74,15 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->waterJauge = createJauge(imagesWater, timespanWater, app); 
   carte->sleepJauge = createJauge(imagesSleep, timespanSleep, app); 
 
+  if(!createSprite(IMG_PERSO, 4, 20, 20, 20, 0, 2, app)){
+  	printf("Probleme lors de l'initialisation du personnage!");
+  	return false;
+  }
+  carte->isSpriteInitialized = false;
+  carte->sprite = app->currSprite;
+
+  findSectionHouse(carte);
+
   return true;
 }
 
@@ -91,7 +100,10 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   bool isConsumed = false;
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
+  }else{
+  	isConsumed = handleEventsSprite(carte->sprite, event, app);
   }
+  if(isConsumed) return true;
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
@@ -127,7 +139,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
       break;
     default: break;
   }
-
   return isConsumed;
 }
 
@@ -160,4 +171,5 @@ void tp2Carte_release(struct Application *app, void *state) {
   carte->waterJauge = NULL; 
   carte->sleepJauge = NULL; 
   free(carte);
+  deleteSprite(app->currSprite, app);
 }

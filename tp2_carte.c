@@ -104,9 +104,13 @@ void tp2Carte_viewWillAppear(struct Application *app, void *state) {
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Carte *carte = (struct Carte*) state;
   bool isConsumed = false;
-  verifyJauge(carte->foodJauge, app); 
-  verifyJauge(carte->waterJauge, app);
-  verifyJauge(carte->sleepJauge, app);
+  //verifyJauge(carte->foodJauge, app); 
+  //verifyJauge(carte->waterJauge, app);
+  //verifyJauge(carte->sleepJauge, app);
+  if(carte->waterJauge == 0){
+    app->isLost = true;
+    printf("%d", app->isLost); 
+  }
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
   }
@@ -145,6 +149,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_ESCAPE:
           app->isPause = true; 
           break;
+        //case SDLK_g:
+        //  app->isLost = true; 
+        //  break;
         case SDLK_RETURN:
           tp2Sound_playShort(carte->pickaxeSound);
           break;

@@ -29,6 +29,8 @@ struct Carte {
   int maxYDisplacement;
   struct Scene *pause;
   struct Pause *sPause; 
+  struct Scene *defaite;
+  struct Defaite *sDefaite; 
   struct Jauge *foodJauge; 
   struct Jauge *waterJauge; 
   struct Jauge *sleepJauge; 

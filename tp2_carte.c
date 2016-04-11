@@ -100,8 +100,14 @@ void tp2Carte_viewWillAppear(struct Application *app, void *state) {
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Carte *carte = (struct Carte*) state;
   bool isConsumed = false;
+  verifyJauge(carte->foodJauge, app); 
+  verifyJauge(carte->waterJauge, app);
+  verifyJauge(carte->sleepJauge, app);
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
+  }
+  else if(app->isLost){
+    return carte->defaite->handleEvents(app, carte->sDefaite, event);
   }else{
   	isConsumed = handleEventsSprite(carte->sprite, event, app);
   }
@@ -127,7 +133,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           break;
         // FOR TEST ONLY TO BE REMOVED
         case SDLK_f:
-          refillJauge(carte->waterJauge, app); 
+          refillJauge(carte->foodJauge, app); 
+          refillJauge(carte->waterJauge, app);
+          refillJauge(carte->sleepJauge, app);
           break; 
         // **********************************
         case SDLK_ESCAPE:
@@ -157,6 +165,9 @@ void tp2Carte_draw(struct Application *app, void *state) {
   renderJauge(carte->sleepJauge, app); 
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
+  }
+  if(app->isLost){
+    carte->defaite->drawScene(app, carte->sDefaite);
   }
   SDL_DestroyTexture(texture);
 }

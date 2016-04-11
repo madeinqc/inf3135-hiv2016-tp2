@@ -104,9 +104,6 @@ void tp2Carte_viewWillAppear(struct Application *app, void *state) {
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Carte *carte = (struct Carte*) state;
   bool isConsumed = false;
-  //verifyJauge(carte->foodJauge, app); 
-  //verifyJauge(carte->waterJauge, app);
-  //verifyJauge(carte->sleepJauge, app);
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
   }

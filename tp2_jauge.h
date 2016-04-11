@@ -82,6 +82,4 @@ void updateJauge(struct Jauge *jauge, struct Application* app);
 
 void refillJauge(struct Jauge *jauge, struct Application* app);
 
-void verifyJauge(struct Jauge *jauge, struct Application* app);
-
 #endif

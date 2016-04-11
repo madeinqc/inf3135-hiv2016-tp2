@@ -44,9 +44,3 @@ void updateJauge(struct Jauge *jauge, struct Application* app){
 void refillJauge(struct Jauge *jauge, struct Application* app){
 	jauge->state = 7; 
 }
-
-void verifyJauge(struct Jauge *jauge, struct Application* app){
-	if(jauge->state == 0){
-		app->isLost = true; 
-	}
-}

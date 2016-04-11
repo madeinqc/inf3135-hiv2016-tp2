@@ -23,7 +23,9 @@ void deleteJauge(struct Jauge *jauge, struct Application* app){
 }
 
 void renderJauge(struct Jauge *jauge, struct Application* app){
-	updateJauge(jauge, app); 
+	if(!app->isPause && !app->isLost && !app->isWon){
+		updateJauge(jauge, app); 
+	}
 	int imageIndex = jauge->state; 
 	SDL_Texture *image = jauge->tabImages[imageIndex]; 
 	SDL_Rect text = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -32,7 +34,7 @@ void renderJauge(struct Jauge *jauge, struct Application* app){
 
 void updateJauge(struct Jauge *jauge, struct Application* app){
 	int currentTime = SDL_GetTicks();
-	if(jauge->state ==0){
+	if(jauge->state == 0){
 		app->isLost = true;  
 	}
 	if(currentTime > jauge->lastUpdate + jauge->timespan && jauge->state !=0){

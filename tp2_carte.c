@@ -47,6 +47,10 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->sPause = carte->pause->initScene(app);
   carte->pause->loadMedia(app, carte->sPause);
 
+  carte->defaite = tp2Defaite_getScene(app); 
+  carte->sDefaite = carte->defaite->initScene(app);
+  carte->defaite->loadMedia(app, carte->sDefaite);
+
   char *imagesFood[] = {FOOD_0, FOOD_1, FOOD_2, FOOD_3, FOOD_4, FOOD_5, FOOD_6, FOOD_7};
   char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
   char *imagesSleep[] = {SLEEP_0, SLEEP_1, SLEEP_2, SLEEP_3, SLEEP_4, SLEEP_5, SLEEP_6, SLEEP_7};
@@ -166,7 +170,7 @@ void tp2Carte_draw(struct Application *app, void *state) {
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
-  if(app->isLost){
+  else if(app->isLost){
     carte->defaite->drawScene(app, carte->sDefaite);
   }
   SDL_DestroyTexture(texture);
@@ -180,6 +184,7 @@ void tp2Carte_release(struct Application *app, void *state) {
   tp2Sound_freeShort(carte->pickaxeSound);
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
+  carte->defaite->releaseMedia(app, carte->sDefaite);
   carte->foodJauge = NULL; 
   carte->waterJauge = NULL; 
   carte->sleepJauge = NULL; 

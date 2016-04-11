@@ -6,18 +6,24 @@
 #include "tp2_animSprite.h"
 
 bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
-					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
+		int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
+	
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
+
+	// Image informations et frames
 	newSprite->nbRows = numRows;
 	newSprite->nbColumns = numColumns;
 	newSprite->nbFrames = numFrames;
 	newSprite->currentFrame = initialFrame;
 	newSprite->delayBetweenFrame = delayBetweenFrame;
-	newSprite->texture = NULL;
-	newSprite->posX = newSprite->futureX = 484;
-	newSprite->posY = newSprite->futureY = 346;
+
+	// Position
+	newSprite->posX = newSprite->futureX = newSprite->currTile = 0;
+	newSprite->posY = newSprite->futureY = newSprite->futureTile = 0;
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
+
+	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);
 	if (surface == NULL) {
 	  printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
@@ -31,6 +37,7 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	}
   app->currSprite = newSprite;
   SDL_FreeSurface(surface);
+  
 	return true;
 }
 

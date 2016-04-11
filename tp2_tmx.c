@@ -134,6 +134,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
+			printf("%d\n", (tileX * carte->map->width) + tileY);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
         if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
@@ -154,8 +155,8 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
         	carte->sprite->lastDirection = WEST;
-        	carte->sprite->posX = carte->sprite->futureX = dstrect.x;
-        	carte->sprite->posY = carte->sprite->futureY = dstrect.y;
+        	carte->sprite->posX = carte->sprite->futureX = dstrect.x-40;
+        	carte->sprite->posY = carte->sprite->futureY = dstrect.y+65;
         	carte->isSpriteInitialized = true;
         }
 
@@ -163,18 +164,20 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         char layerSprite[7];
         layerToString(carte->sprite->currentLayer -1, layerSprite);
         if(strcmp(layer->name, layerSprite) == 0){
-        	if(isWallOK(carte->sprite)){
+        	int tileID = carte->map->tiles[gid]->id;
+        	if(isTileOK(carte->sprite, layer, carte)){
         		carte->sprite->posX = carte->sprite->futureX;
         		carte->sprite->posY = carte->sprite->futureY;
         	}else{
         		carte->sprite->futureX = carte->sprite->posX;
         		carte->sprite->futureY = carte->sprite->posY;
         	}
-        	renderSprite(carte->sprite, ren);
+        	if(carte->isSpriteInitialized){
+        		renderSprite(carte->sprite, ren);
+        	}
         	// Liste les cases transitives
         	if(i%15 == 0 || j%15 == 0){
-						int u = carte->map->tiles[gid]->id;
-						if(u != 3 && u != 1){
+						if(tileID != 3 && tileID != 1){
 							transit = transitionSprite(carte, dstrect.x, dstrect.y);
 						}
 					}
@@ -234,10 +237,13 @@ bool findSectionHouse(struct Carte *carte){
 	}
 }
 
-bool isWallOK(struct Sprite *sprite){
+bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
 	// Verification pour les 4 cotes de la map
 	int x = sprite->futureX;
 	float y = sprite->futureY;
+
+	// Ne permet pas d'aller sur l'eau
+
 	float YtoComp;
 	// Haut gauche
 	YtoComp = abs(0.5*x - 370);

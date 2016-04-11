@@ -45,6 +45,8 @@ struct Sprite{
 	int posY;
 	int futureX;
 	int futureY;
+	int currTile;
+	int futureTile;
 	int lastDirection;
 	int currentLayer;
 	// Speed

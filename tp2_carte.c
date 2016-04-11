@@ -107,10 +107,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   //verifyJauge(carte->foodJauge, app); 
   //verifyJauge(carte->waterJauge, app);
   //verifyJauge(carte->sleepJauge, app);
-  if(carte->waterJauge == 0){
-    app->isLost = true;
-    printf("%d", app->isLost); 
-  }
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
   }

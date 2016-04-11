@@ -11,9 +11,9 @@ struct Jauge* createJauge(char *tabImages[8], int timespan, struct Application* 
       printf("Unable to load image %s! SDL Error : %s\n", tabImages[i], SDL_GetError());
       return false;
     }
-		newJauge->tabImages[i] = image;
-		newJauge->lastUpdate = SDL_GetTicks();  
-		newJauge->timespan = timespan; 
+	newJauge->tabImages[i] = image;
+	newJauge->lastUpdate = SDL_GetTicks();  
+	newJauge->timespan = timespan;
 	}
 	return newJauge; 
 }
@@ -33,7 +33,7 @@ void renderJauge(struct Jauge *jauge, struct Application* app){
 void updateJauge(struct Jauge *jauge, struct Application* app){
 	int currentTime = SDL_GetTicks();
 	if(jauge->state ==0){
-		app->isLost = false;  
+		app->isLost = true;  
 	}
 	if(currentTime > jauge->lastUpdate + jauge->timespan && jauge->state !=0){
 		jauge->state -= 1; 

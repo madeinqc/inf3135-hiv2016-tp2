@@ -88,9 +88,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   // Detruire le personnage dans la map
   destroyElement(carte->map->ly_head->next, 127);
 
-  printf("--------------\n");
+  // Load le nombre de roche de la carte
   findNbRocks(carte);
-  printf("Nombre de roches : %d\n", carte->nbRock);
 
   return true;
 }
@@ -132,13 +131,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           carte->xSection -= carte->xSection == 0 ? 0 : 1;
           isConsumed = true;
           break;
-        // FOR TEST ONLY TO BE REMOVED
-        case SDLK_f:
-          //refillJauge(carte->waterJauge, app); 
-        	//destroyElement(carte->map->ly_head->next, 127);
+        case SDLK_SPACE:
         	actions(carte);
-          break; 
-        // **********************************
+          break;
         case SDLK_ESCAPE:
           app->isPause = true; 
           break;

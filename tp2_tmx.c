@@ -194,7 +194,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 		char layerSprite[7];
     layerToString(carte->sprite->currentLayer -1, layerSprite);
     if(strcmp(layer->name, layerSprite) == 0){
-  		isTileOK(carte);
   		renderSprite(carte->sprite, ren);
   	}
   }
@@ -216,16 +215,12 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	SDL_SetRenderTarget(ren, res);
 	SDL_RenderClear(ren);
 	SDL_RenderCopy(ren, carte->background, NULL, NULL);
-	//printf("Sous-section x : %d, Sous-section y : %d\n", carte->xSection, carte->ySection);
 	while (layer) {
 		if (layer->visible)
-			//printf("Layer : %s\n", layer->name);
 			tp2tmx_drawLayer(ren, carte, layer);
-			//printf("-----------------------------\n");
 		layer = layer->next;
 	}
 	SDL_SetRenderTarget(ren, NULL);
-	//printf("===================================\n");
 	return res;
 }
 
@@ -255,57 +250,85 @@ bool findSectionHouse(struct Carte *carte){
 
 bool isTileOK(struct Carte *carte){
 	tmx_layer *layer = carte->map->ly_head;
+
+	// Position stays in the range of map
+	if(carte->sprite->futureTile.tileX < 0 || carte->sprite->futureTile.tileY < 0 ||
+		 carte->sprite->futureTile.tileX > 15 || carte->sprite->futureTile.tileY > 15){
+		return false;
+	}
+	// Find current layer
 	int i;
 	for(i = 0; i < carte->sprite->currentLayer-1; i++){
 		layer = layer->next;
 	}
-	setTileInformations(carte, layer);
-	int idTile = carte->sprite->futureTile.idTile;
-	if(idTile != 0){
-		fromPositionToCoordinates(carte, layer);
-		return true;
+	// Sets new tile informations
+	if(!setTileInformations(carte, layer)){
+		return false;
 	}
-	return false;
+	int idTile = carte->sprite->futureTile.idTile;
+	// Liste des mauvais ids
+	if(idTile == 1 || idTile == 5 || idTile == 3){
+		return false;
+	}
+	return fromPositionToCoordinates(carte, layer);
 }
 
-void fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
+bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
 	int halfMapWidth = carte->map->tile_width/2;
   int halfMapHeight = carte->map->tile_height/2;
   int i = carte->sprite->futureTile.tileX;
   int j = carte->sprite->futureTile.tileY;
   int gid = carte->sprite->futureTile.tileGID;
+  int offset = 25; // Decalage visuel su sprite
   tmx_tile *tile;
   tile = carte->map->tiles[gid];
-  if(tile != NULL){
-  	tmx_tileset *tileset = carte->map->tiles[gid]->tileset;
-  	tmx_image *image = carte->map->tiles[carte->sprite->futureTile.tileGID]->image;
-  	carte->sprite->posX = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
-  	carte->sprite->posY = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
-    		+ ((tileset->tile_height / image->height) - 1) * 64 +25;
-  	carte->sprite->currTile = carte->sprite->futureTile;
-  }else{
-  	carte->sprite->futureTile = carte->sprite->currTile;
+  if(tile == NULL){
+  	return false;
   }
+	tmx_tileset *tileset = carte->map->tiles[gid]->tileset;
+	tmx_image *image = carte->map->tiles[carte->sprite->futureTile.tileGID]->image;
+	carte->sprite->posX = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
+	carte->sprite->posY = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
+  		+ ((tileset->tile_height / image->height) - 1) * 64 + offset;
+  return true;
 }
 
-void setTileInformations(struct Carte *carte, tmx_layer *layer){
+bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
 	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
 	
 	printf("X : %d, Y : %d, Original X : %d, Y : %d\n", newX, newY, carte->sprite->futureTile.tileX, carte->sprite->futureTile.tileY);
-	if(newX >= 0 && newY >= 0){
-		carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
-		printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
-		carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
-		tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
-		if(tile != NULL){
-			carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
-			printf("Tile ID : %d\n", carte->sprite->futureTile.idTile);
-			//printf("Source : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGID]->image->source);
-		}
+	carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
+	if(carte->sprite->futureTile.tileNumber < 0){
+		return false;
 	}
+	printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
+	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
+	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
+	if(tile == NULL){
+		return false;
+	}
+	carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
+	printf("Tile ID : %d\n", carte->sprite->futureTile.idTile);
+	printf("Source : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGID]->image->source);
+	return true;
 }
 
+void restartFutureTile(struct Sprite *sprite){
+	sprite->futureTile.tileX = sprite->currTile.tileX;
+	sprite->futureTile.tileY = sprite->currTile.tileY;
+	sprite->futureTile.tileNumber = sprite->currTile.tileNumber;
+	sprite->futureTile.tileGID = sprite->currTile.tileGID;
+	sprite->futureTile.idTile = sprite->currTile.idTile;
+}
+
+void updateCurrentTile(struct Sprite *sprite){
+	sprite->currTile.tileX = sprite->futureTile.tileX;
+	sprite->currTile.tileY = sprite->futureTile.tileY;
+	sprite->currTile.tileNumber = sprite->futureTile.tileNumber;
+	sprite->currTile.tileGID = sprite->futureTile.tileGID;
+	sprite->currTile.idTile = sprite->futureTile.idTile;
+}
 /*bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
 	// Verification pour les 4 cotes de la map
 	int x = sprite->futureX;

@@ -103,7 +103,7 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
   }else{
-  	isConsumed = handleEventsSprite(carte->sprite, event, app);
+  	isConsumed = handleEventsSprite(carte->sprite, event, app, carte);
   }
   if(isConsumed) return true;
   switch(event->type){

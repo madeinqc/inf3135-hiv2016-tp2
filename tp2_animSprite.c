@@ -54,7 +54,7 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
   SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
-void moveSprite(struct Sprite *sprite, int direction){
+void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
 	switch(direction){
 		case EAST:
 			sprite->futureTile.tileX+=1;
@@ -69,33 +69,38 @@ void moveSprite(struct Sprite *sprite, int direction){
 			sprite->futureTile.tileY-=1;
 			break;
 	}
+	if(isTileOK(carte)){
+		updateCurrentTile(sprite);
+	}else{
+		restartFutureTile(sprite);
+	}
 }
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app){
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){
 				case SDLK_UP:
-					moveSprite(sprite, NORTH);
+					moveSprite(sprite, NORTH, carte);
 					sprite->lastDirection = NORTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
 					isConsumed = true;
 					break;
 				case SDLK_DOWN:
-					moveSprite(sprite, SOUTH);
+					moveSprite(sprite, SOUTH, carte);
 					sprite->lastDirection = SOUTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
 					isConsumed = true;
 					break;
 				case SDLK_RIGHT:
-					moveSprite(sprite, WEST);
+					moveSprite(sprite, WEST, carte);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
 					isConsumed = true;
 					break;
 				case SDLK_LEFT:
-					moveSprite(sprite, EAST);
+					moveSprite(sprite, EAST, carte);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);
 					isConsumed = true;

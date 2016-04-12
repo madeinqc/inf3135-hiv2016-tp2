@@ -9,12 +9,13 @@
 
 #include <stdbool.h>
 #include "sdl2.h"
+//#include "tp2_carte.h"
+#include "tp2_tmx.h"
 #include "tp2_image.h"
 #include "tp2_window.h"
 #include "tp2_application.h"
 #include "tp2_scene.h"
 #include "tp2_sound.h"
-
 
 
 /**
@@ -92,7 +93,7 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren);
  * Bouge le sprite dans une direction
  * @params direction La direction dans laquelle bouger le sprite
  */
-void moveSprite(struct Sprite *sprite, int direction);
+void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte);
 /**
  * Gestion des evenements lies au sprite
  * @params *event L'evenement a gerer
@@ -100,5 +101,5 @@ void moveSprite(struct Sprite *sprite, int direction);
  */
 void layerToString(int layer, char* string);
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
 #endif

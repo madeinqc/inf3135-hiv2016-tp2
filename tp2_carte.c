@@ -85,6 +85,9 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
   findSectionHouse(carte);
 
+  // Detruire le personnage dans la map
+  destroyElement(carte->map->ly_head->next, 127);
+
   return true;
 }
 
@@ -127,7 +130,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           break;
         // FOR TEST ONLY TO BE REMOVED
         case SDLK_f:
-          refillJauge(carte->waterJauge, app); 
+          //refillJauge(carte->waterJauge, app); 
+        	destroyElement(carte->map->ly_head->next, 127);
           break; 
         // **********************************
         case SDLK_ESCAPE:

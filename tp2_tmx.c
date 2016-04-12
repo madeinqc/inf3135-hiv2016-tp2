@@ -137,7 +137,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 			//printf("%d\n", (tileX * carte->map->width) + tileY);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
-        if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
 				tileset = carte->map->tiles[gid]->tileset;
 				image = carte->map->tiles[gid]->image;
 				srcrect.x = carte->map->tiles[gid]->ul_x;
@@ -172,9 +171,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 		char layerSprite[7];
     layerToString(carte->sprite->currentLayer, layerSprite);
     if(strcmp(layer->name, layerSprite) == 0){
-      //printf("In Render...\n");
-      //isTileOK(carte);
-      //changeSousMap(carte);
   		renderSprite(carte->sprite, ren);
   	}
   }
@@ -211,7 +207,6 @@ bool findSectionHouse(struct Carte *carte){
 	int j;
 	unsigned int caseCourrante;
 	unsigned int gid;
-	int nbRoches = 0;
 	for(i = 0; i < carte->map->height; ++i){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
@@ -221,8 +216,6 @@ bool findSectionHouse(struct Carte *carte){
 					carte->xSection = (i-1)/15;
 					carte->ySection = (j-1)/15;
 					break;
-				}else if(carte->map->tiles[gid]->id == 8){
-					nbRoches+=1;
 				}
 			}
 		}
@@ -284,9 +277,17 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 		return false;
 	}
 	printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
+	printf("Tile Number : %d\n", 45);
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
+	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
+	tmx_tile *tileUp = carte->map->tiles[carte->sprite->futureTile.tileGIDly];
 	if(tile == NULL){
+		return false;
+	}else if(tileUp != NULL){
+		carte->sprite->futureTile.idTilely = carte->map->tiles[carte->sprite->futureTile.tileGIDly]->id;
+		printf("Tile ID UP : %d\n", carte->sprite->futureTile.idTilely);
+		printf("Source UP : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGIDly]->image->source);
 		return false;
 	}
 	carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
@@ -335,58 +336,6 @@ bool changeSousMap(struct Carte *carte){
   return false;
 }
 
-/*bool transitionSprite(struct Carte *carte, int x, int y){
-	int spriteX = carte->sprite->posX;
-	int spriteY = carte->sprite->posY;
-	int buff = 30;
-	int diff;
-	if(y < 354){
-		if(x < 472){
-			// Transition haut gauche
-			if(spriteX > x && spriteX < (x+40)){
-				diff = abs(abs(0.5*spriteX - 370) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == NORTH){
-					carte->ySection -= carte->ySection == 0 ? 0 : 1;
-					carte->sprite->futureX = spriteX + 436;
-					carte->sprite->futureY = spriteY + 218;
-					return true;
-				}
-			}
-		}else{
-			// Transition haut droit
-			if(spriteX < x && spriteX > (x-40)){
-				diff = abs(abs(-0.5*spriteX + 114) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == WEST){
-					carte->xSection -= carte->xSection == 0 ? 0 : 1;
-					carte->sprite->futureX = spriteX - 436;
-					carte->sprite->futureY = spriteY + 218;
-					return true;
-				}
-			}
-		}
-	}else{
-		if(x < 472){
-			// Transition bas gauche
-			if(spriteX > x && spriteX < (x+40)){
-				diff = abs(-0.5*spriteX - 322) - spriteY;
-				if(diff < 4 && carte->sprite->lastDirection == EAST){
-					carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-					carte->sprite->futureX = spriteX + 436;
-					carte->sprite->futureY = spriteY - 218;
-					return true;
-				}
-			}
-		}else{
-			// Transition bas droit
-			if(spriteX < x && spriteX > (x-40)){
-				diff = abs(abs(0.5*spriteX - 806) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == SOUTH){
-					carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-					carte->sprite->futureX = spriteX - 436;
-					carte->sprite->futureY = spriteY - 218;
-					return true;
-				}
-			}
-		}
-	}
-}*/
+void destroyElement(tmx_layer *layer, int tileNumber){
+	layer->content.gids[tileNumber] = 0;
+}

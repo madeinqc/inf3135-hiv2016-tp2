@@ -69,4 +69,6 @@ void restartFutureTile(struct Sprite *sprite);
 void updateCurrentTile(struct Sprite *sprite);
 
 bool changeSousMap(struct Carte *carte);
+
+void destroyElement(tmx_layer *layer, int tileNumber);
 #endif

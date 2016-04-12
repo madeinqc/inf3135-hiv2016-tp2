@@ -31,10 +31,15 @@ struct Position{
 	int tileX;
 	int tileY;
 
-	// Varie selon la grosseur de la carte
 	int tileNumber;
+
+	// GID pour layer -1 et layer courant
 	int tileGID;
+	int tileGIDly;
+
+	// ID pour layer -1 et layer courant
 	int idTile;
+	int idTilely;
 };
 /**
 * Structure de la sprite

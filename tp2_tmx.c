@@ -134,9 +134,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
+			//printf("%d\n", (tileX * carte->map->width) + tileY);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
-        if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
 				tileset = carte->map->tiles[gid]->tileset;
 				image = carte->map->tiles[gid]->image;
 				srcrect.x = carte->map->tiles[gid]->ul_x;
@@ -154,40 +154,26 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
         	carte->sprite->lastDirection = WEST;
-        	carte->sprite->posX = carte->sprite->futureX = dstrect.x;
-        	carte->sprite->posY = carte->sprite->futureY = dstrect.y;
+          carte->sprite->futureTile.tileX = i + 1;
+          carte->sprite->futureTile.tileY = j;
         	carte->isSpriteInitialized = true;
+          isTileOK(carte);
+          printf("x : %d, y : %d\n", dstrect.x, dstrect.y);
         }
-
-        // Render le personnage sur le level dessous celui ou il est
-        char layerSprite[7];
-        layerToString(carte->sprite->currentLayer -1, layerSprite);
-        if(strcmp(layer->name, layerSprite) == 0){
-        	if(isWallOK(carte->sprite)){
-        		carte->sprite->posX = carte->sprite->futureX;
-        		carte->sprite->posY = carte->sprite->futureY;
-        	}else{
-        		carte->sprite->futureX = carte->sprite->posX;
-        		carte->sprite->futureY = carte->sprite->posY;
-        	}
-        	renderSprite(carte->sprite, ren);
-        	// Liste les cases transitives
-        	if(i%15 == 0 || j%15 == 0){
-						int u = carte->map->tiles[gid]->id;
-						if(u != 3 && u != 1){
-							transit = transitionSprite(carte, dstrect.x, dstrect.y);
-						}
-					}
-        }
-
-				if (image) {
-					texture = (SDL_Texture*)image->resource_image;
-				}
-				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
-				if(transit) continue;
+    		if (image) {
+    			texture = (SDL_Texture*)image->resource_image;
+    		}
+		    SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
 			}
 		}
 	}
+	if(carte->isSpriteInitialized){
+		char layerSprite[7];
+    layerToString(carte->sprite->currentLayer, layerSprite);
+    if(strcmp(layer->name, layerSprite) == 0){
+  		renderSprite(carte->sprite, ren);
+  	}
+  }
 }
 
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
@@ -225,87 +211,226 @@ bool findSectionHouse(struct Carte *carte){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
 			gid = layer->content.gids[caseCourrante];
-			if(carte->map->tiles[gid] != NULL && carte->map->tiles[gid]->id == 16){
-				carte->xSection = (i-1)/15;
-				carte->ySection = (j-1)/15;
-				break;
+			if(carte->map->tiles[gid] != NULL){
+				if(carte->map->tiles[gid]->id == 16){
+					carte->xSection = (i-1)/15;
+					carte->ySection = (j-1)/15;
+					break;
+				}
 			}
 		}
 	}
 }
 
-bool isWallOK(struct Sprite *sprite){
-	// Verification pour les 4 cotes de la map
-	int x = sprite->futureX;
-	float y = sprite->futureY;
-	float YtoComp;
-	// Haut gauche
-	YtoComp = abs(0.5*x - 370);
-	if(y < YtoComp) return false;
-	// Bas droit
-	YtoComp = abs(0.5*x - 806);
-	if(y > YtoComp) return false;
-	// Bas gauche
-	YtoComp = abs(-0.5*x - 322);
-	if(y > YtoComp) return false;
-	// Haut droit
-	YtoComp = abs(-0.5*x + 114);
-	if(y < YtoComp) return false;
+void findNbRocks(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head->next;
+	int i;
+	int j;
+	unsigned int caseCourrante;
+	unsigned int gid;
+	int nbRocks = 0;
+	while(layer){
+		for(i = 0; i < carte->map->height; ++i){
+			for(j = 0; j < carte->map->width; ++j){
+				caseCourrante = (i*carte->map->width)+j;
+				gid = layer->content.gids[caseCourrante];
+				if(carte->map->tiles[gid] != NULL){
+					if(carte->map->tiles[gid]->id == 13){
+						nbRocks+=1;
+					}
+				}
+			}
+		}
+		layer = layer->next;
+	}
+	carte->nbRock = nbRocks;
+}
+
+bool isTileOK(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head;
+
+	// Position stays in the range of map
+	if(carte->sprite->futureTile.tileX < 0 || carte->sprite->futureTile.tileY < 0 ||
+		 carte->sprite->futureTile.tileX > 15 || carte->sprite->futureTile.tileY > 15){
+		return false;
+	}
+	// Find current layer
+	int i;
+	for(i = 0; i < carte->sprite->currentLayer-1; i++){
+		layer = layer->next;
+	}
+	// Sets new tile informations
+	if(!setTileInformations(carte, layer)){
+		return false;
+	}
+	int idTile = carte->sprite->futureTile.idTile;
+	// Liste des mauvais ids
+	if(idTile == 1 || idTile == 5 || idTile == 3){
+		return false;
+	}
+	return fromPositionToCoordinates(carte, layer);
+}
+
+bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
+	int halfMapWidth = carte->map->tile_width/2;
+  int halfMapHeight = carte->map->tile_height/2;
+  int i = carte->sprite->futureTile.tileX;
+  int j = carte->sprite->futureTile.tileY;
+  int gid = carte->sprite->futureTile.tileGID;
+  int offset = 25; // Decalage visuel su sprite
+  tmx_tile *tile;
+  tile = carte->map->tiles[gid];
+  if(tile == NULL){
+  	return false;
+  }
+	tmx_tileset *tileset = carte->map->tiles[gid]->tileset;
+	tmx_image *image = carte->map->tiles[carte->sprite->futureTile.tileGID]->image;
+	carte->sprite->posX = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
+	carte->sprite->posY = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
+  		+ ((tileset->tile_height / image->height) - 1) * 64 + offset;
+  return true;
+}
+
+bool setTileInformations(struct Carte *carte, tmx_layer *layer){
+	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
+	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
+	
+	printf("X : %d, Y : %d, Original X : %d, Y : %d\n", newX, newY, carte->sprite->futureTile.tileX, carte->sprite->futureTile.tileY);
+	carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
+	if(carte->sprite->futureTile.tileNumber < 0){
+		return false;
+	}
+	printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
+	printf("Tile Number : %d\n", 45);
+	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
+	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
+	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
+	tmx_tile *tileUp = carte->map->tiles[carte->sprite->futureTile.tileGIDly];
+	if(tile == NULL){
+		return false;
+	}else if(tileUp != NULL){
+		carte->sprite->futureTile.idTilely = carte->map->tiles[carte->sprite->futureTile.tileGIDly]->id;
+		printf("Tile ID UP : %d\n", carte->sprite->futureTile.idTilely);
+		printf("Source UP : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGIDly]->image->source);
+		return false;
+	}
+	carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
+	printf("Tile ID : %d\n", carte->sprite->futureTile.idTile);
+	printf("Source : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGID]->image->source);
 	return true;
 }
 
-bool transitionSprite(struct Carte *carte, int x, int y){
-	int spriteX = carte->sprite->posX;
-	int spriteY = carte->sprite->posY;
-	int buff = 30;
-	int diff;
-	if(y < 354){
-		if(x < 472){
-			// Transition haut gauche
-			if(spriteX > x && spriteX < (x+40)){
-				diff = abs(abs(0.5*spriteX - 370) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == NORTH){
-					carte->ySection -= carte->ySection == 0 ? 0 : 1;
-					carte->sprite->futureX = spriteX + 436;
-					carte->sprite->futureY = spriteY + 218;
-					return true;
-				}
-			}
-		}else{
-			// Transition haut droit
-			if(spriteX < x && spriteX > (x-40)){
-				diff = abs(abs(-0.5*spriteX + 114) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == WEST){
-					carte->xSection -= carte->xSection == 0 ? 0 : 1;
-					carte->sprite->futureX = spriteX - 436;
-					carte->sprite->futureY = spriteY + 218;
-					return true;
-				}
-			}
-		}
-	}else{
-		if(x < 472){
-			// Transition bas gauche
-			if(spriteX > x && spriteX < (x+40)){
-				diff = abs(-0.5*spriteX - 322) - spriteY;
-				if(diff < 4 && carte->sprite->lastDirection == EAST){
-					carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-					carte->sprite->futureX = spriteX + 436;
-					carte->sprite->futureY = spriteY - 218;
-					return true;
-				}
-			}
-		}else{
-			// Transition bas droit
-			if(spriteX < x && spriteX > (x-40)){
-				diff = abs(abs(0.5*spriteX - 806) - spriteY);
-				if(diff < 4 && carte->sprite->lastDirection == SOUTH){
-					carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-					carte->sprite->futureX = spriteX - 436;
-					carte->sprite->futureY = spriteY - 218;
-					return true;
-				}
-			}
-		}
+void restartFutureTile(struct Sprite *sprite){
+	sprite->futureTile.tileX = sprite->currTile.tileX;
+	sprite->futureTile.tileY = sprite->currTile.tileY;
+	sprite->futureTile.tileNumber = sprite->currTile.tileNumber;
+	sprite->futureTile.tileGID = sprite->currTile.tileGID;
+	sprite->futureTile.idTile = sprite->currTile.idTile;
+}
+
+void updateCurrentTile(struct Sprite *sprite){
+	sprite->currTile.tileX = sprite->futureTile.tileX;
+	sprite->currTile.tileY = sprite->futureTile.tileY;
+	sprite->currTile.tileNumber = sprite->futureTile.tileNumber;
+	sprite->currTile.tileGID = sprite->futureTile.tileGID;
+	sprite->currTile.idTile = sprite->futureTile.idTile;
+}
+
+bool changeSousMap(struct Carte *carte){
+  int caseX = carte->sprite->futureTile.tileX;
+  int caseY = carte->sprite->futureTile.tileY;
+  printf("Case x : %d, y : %d\n", caseX, caseY);
+  if(caseX == 16 && carte->sprite->lastDirection == EAST){
+    carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -15;
+    return true;
+  }else if(caseX == -1 && carte->sprite->lastDirection == WEST){
+    carte->xSection -= carte->xSection == 0 ? 0 : 1;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +15;
+    return true;
+  }else if(caseY == 16 && carte->sprite->lastDirection == SOUTH){
+    carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -15;
+    return true;
+  }else if(caseY == -1 && carte->sprite->lastDirection == NORTH){
+    carte->ySection -= carte->ySection == 0 ? 0 : 1;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +15;
+    return true;
+  }
+  return false;
+}
+
+bool minerRoche(struct Carte *carte){
+	printf("Miner roche? : %d\n", carte->sprite->futureTile.tileGIDly);
+	if(carte->sprite->futureTile.tileGIDly == 14){
+		carte->sprite->nbRoches += 1;
+		return true;
 	}
+	return false;
+}
+
+bool boireEau(struct Carte *carte){
+	int id = carte->sprite->futureTile.tileGID;
+	printf("Boire eau? : %d\n", id);
+	if(id == 2 || id == 4){
+		refillJauge(carte->waterJauge);
+		return true;
+	}
+	return false;
+}
+
+bool reposManger(struct Carte *carte){
+	int id = carte->sprite->futureTile.tileGIDly;
+	printf("Dormir? : %d\n", id);
+	if(id == 17){
+		refillJauge(carte->sleepJauge);
+		refillJauge(carte->foodJauge);
+		return true;
+	}
+	return false;
+}
+
+void setIdEnFace(struct Carte *carte, tmx_layer *layer){
+	switch(carte->sprite->lastDirection){
+		case EAST:
+			carte->sprite->futureTile.tileX+=1;
+			setTileInformations(carte, layer);
+			break;
+		case WEST:
+			carte->sprite->futureTile.tileX-=1;
+			setTileInformations(carte, layer);
+			break;
+		case SOUTH:
+			carte->sprite->futureTile.tileY+=1;
+			setTileInformations(carte, layer);
+			break;
+		case NORTH:
+			carte->sprite->futureTile.tileY-=1;
+			setTileInformations(carte, layer);
+			break;
+	}
+}
+
+bool actions(struct Carte *carte){
+	bool toRet = false;
+	tmx_layer *layer = carte->map->ly_head;
+	int i;
+	for(i = 0; i < carte->sprite->currentLayer-1; i++){
+		layer = layer->next;
+	}
+	setIdEnFace(carte, layer);
+	if(minerRoche(carte)){
+		destroyElement(layer->next, carte->sprite->futureTile.tileNumber);
+		toRet = true;
+	}else if(boireEau(carte)){
+		toRet = true;
+	}else if(reposManger(carte)){
+		toRet = true;
+	}
+	restartFutureTile(carte->sprite);
+	return toRet;
+}
+
+void destroyElement(tmx_layer *layer, int tileNumber){
+	layer->content.gids[tileNumber] = 0;
 }

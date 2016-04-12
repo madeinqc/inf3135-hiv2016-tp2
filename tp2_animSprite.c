@@ -6,18 +6,24 @@
 #include "tp2_animSprite.h"
 
 bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
-					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
+		int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
+	
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
+
+	// Image informations et frames
 	newSprite->nbRows = numRows;
 	newSprite->nbColumns = numColumns;
 	newSprite->nbFrames = numFrames;
 	newSprite->currentFrame = initialFrame;
 	newSprite->delayBetweenFrame = delayBetweenFrame;
-	newSprite->texture = NULL;
-	newSprite->posX = newSprite->futureX = 484;
-	newSprite->posY = newSprite->futureY = 346;
+
+	// Position
+	newSprite->futureTile.tileX = 10;
+	newSprite->futureTile.tileY = 10;
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
+
+	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);
 	if (surface == NULL) {
 	  printf("Unable to load image %s! SDL_image Error: %s\n",filename, IMG_GetError());
@@ -31,6 +37,7 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	}
   app->currSprite = newSprite;
   SDL_FreeSurface(surface);
+
 	return true;
 }
 
@@ -47,52 +54,56 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
   SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
-void moveSprite(struct Sprite *sprite, int direction){
+void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
 	switch(direction){
 		case EAST:
-			sprite->futureX-=2*sprite->speed;
-			sprite->futureY+=sprite->speed;
+			sprite->futureTile.tileX+=1;
 			break;
 		case WEST:
-			sprite->futureX+=2*sprite->speed;
-			sprite->futureY-=sprite->speed;
+			sprite->futureTile.tileX-=1;
 			break;
 		case SOUTH:
-			sprite->futureX+=2*sprite->speed;
-			sprite->futureY+=sprite->speed;
+			sprite->futureTile.tileY+=1;
 			break;
 		case NORTH:
-			sprite->futureX-=2*sprite->speed;
-			sprite->futureY-=sprite->speed;
+			sprite->futureTile.tileY-=1;
 			break;
+	}
+	if(changeSousMap(carte)){
+		printf("Changement de sous map!\n");
+	}
+	if(isTileOK(carte)){
+		updateCurrentTile(sprite);
+	}else{
+		restartFutureTile(sprite);
 	}
 }
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app){
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){
 				case SDLK_UP:
-					moveSprite(sprite, NORTH);
+					moveSprite(sprite, NORTH, carte);
 					sprite->lastDirection = NORTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
 					isConsumed = true;
 					break;
 				case SDLK_DOWN:
-					moveSprite(sprite, SOUTH);
+					moveSprite(sprite, SOUTH, carte);
 					sprite->lastDirection = SOUTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
 					isConsumed = true;
 					break;
 				case SDLK_RIGHT:
-					moveSprite(sprite, WEST);
+					moveSprite(sprite, WEST, carte);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
 					isConsumed = true;
 					break;
 				case SDLK_LEFT:
-					moveSprite(sprite, EAST);
+					moveSprite(sprite, EAST, carte);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);
 					isConsumed = true;

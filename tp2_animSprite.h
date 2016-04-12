@@ -8,14 +8,14 @@
 #define TP2_ANIMSPRITE_H
 
 #include <stdbool.h>
+#include "tp2_carte.h"
 #include "sdl2.h"
 #include "tp2_image.h"
 #include "tp2_window.h"
 #include "tp2_application.h"
 #include "tp2_scene.h"
 #include "tp2_sound.h"
-
-
+#include "tp2_tmx.h"
 
 /**
  * Image du personnage principal
@@ -25,6 +25,22 @@
  * Enumeration des directions
  */
 enum Direction{EAST,SOUTH,WEST,NORTH};
+
+struct Position{
+	// Varie entre 0 et 15
+	int tileX;
+	int tileY;
+
+	int tileNumber;
+
+	// GID pour layer -1 et layer courant
+	int tileGID;
+	int tileGIDly;
+
+	// ID pour layer -1 et layer courant
+	int idTile;
+	int idTilely;
+};
 /**
 * Structure de la sprite
 */
@@ -43,12 +59,14 @@ struct Sprite{
 	// Position
 	int posX;
 	int posY;
-	int futureX;
-	int futureY;
+	struct Position currTile;
+	struct Position futureTile;
 	int lastDirection;
 	int currentLayer;
 	// Speed
 	int speed;
+	// Nombre de roche minees
+	int nbRoches;
 	// Rendering
 	SDL_Texture *texture;
 };
@@ -81,7 +99,7 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren);
  * Bouge le sprite dans une direction
  * @params direction La direction dans laquelle bouger le sprite
  */
-void moveSprite(struct Sprite *sprite, int direction);
+void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte);
 /**
  * Gestion des evenements lies au sprite
  * @params *event L'evenement a gerer
@@ -89,5 +107,5 @@ void moveSprite(struct Sprite *sprite, int direction);
  */
 void layerToString(int layer, char* string);
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app);
+bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
 #endif

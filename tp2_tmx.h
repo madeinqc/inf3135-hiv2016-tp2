@@ -35,6 +35,7 @@ struct Carte {
   bool isSpriteInitialized;
   struct Sprite *sprite;
   SDL_Texture *background;
+  int nbRock;
 };
 
 struct mapsName {
@@ -56,7 +57,31 @@ void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 
-bool isWallOK(struct Sprite *sprite);
+bool findSectionHouse(struct Carte *carte);
+
+void findNbRocks(struct Carte *carte);
+
+bool isTileOK(struct Carte *carte);
+
+bool setTileInformations(struct Carte *carte, tmx_layer *layer);
+
+bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer);
 
 bool transitionSprite(struct Carte *carte, int x, int y);
+
+void restartFutureTile(struct Sprite *sprite);
+
+void updateCurrentTile(struct Sprite *sprite);
+
+bool changeSousMap(struct Carte *carte);
+
+bool minerRoche(struct Carte *carte);
+
+bool boireEau(struct Carte *carte);
+
+bool reposManger(struct Carte *carte);
+
+void setIdEnFace(struct Carte *carte, tmx_layer *layer);
+
+void destroyElement(tmx_layer *layer, int tileNumber);
 #endif

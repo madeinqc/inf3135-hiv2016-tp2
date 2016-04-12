@@ -222,6 +222,30 @@ bool findSectionHouse(struct Carte *carte){
 	}
 }
 
+void findNbRocks(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head->next;
+	int i;
+	int j;
+	unsigned int caseCourrante;
+	unsigned int gid;
+	int nbRocks = 0;
+	while(layer){
+		for(i = 0; i < carte->map->height; ++i){
+			for(j = 0; j < carte->map->width; ++j){
+				caseCourrante = (i*carte->map->width)+j;
+				gid = layer->content.gids[caseCourrante];
+				if(carte->map->tiles[gid] != NULL){
+					if(carte->map->tiles[gid]->id == 13){
+						nbRocks+=1;
+					}
+				}
+			}
+		}
+		layer = layer->next;
+	}
+	carte->nbRock = nbRocks;
+}
+
 bool isTileOK(struct Carte *carte){
 	tmx_layer *layer = carte->map->ly_head;
 

@@ -35,6 +35,7 @@ struct Carte {
   bool isSpriteInitialized;
   struct Sprite *sprite;
   SDL_Texture *background;
+  int nbRock;
 };
 
 struct mapsName {
@@ -55,6 +56,10 @@ void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
+
+bool findSectionHouse(struct Carte *carte);
+
+void findNbRocks(struct Carte *carte);
 
 bool isTileOK(struct Carte *carte);
 

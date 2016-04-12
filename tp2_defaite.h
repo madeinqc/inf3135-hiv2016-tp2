@@ -19,8 +19,8 @@
 /**
  * Image du menu de defaite
  */
-#define defaite_RE "assets/imagesPause/PauseRestart.png"
-#define defaite_QU "assets/imagesPause/PauseQuit.png"
+#define defaite_RE "assets/fin_jeu/go_restart.png"
+#define defaite_QU "assets/fin_jeu/go_quit.png"
 
  /**
  * Sons du menu de pause

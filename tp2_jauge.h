@@ -57,8 +57,7 @@ struct Jauge{
 	int state; 
 	SDL_Texture *tabImages[8]; 
 	int lastUpdate; 
-	int timespan;
-	int currentTime;   
+	int timespan;  
 };
 
 /**

@@ -31,12 +31,13 @@ void renderJauge(struct Jauge *jauge, struct Application* app){
 }
 
 void updateJauge(struct Jauge *jauge, struct Application* app){
-	if(!app->isPause && !app->isLost && !app->isWon){
-		jauge->currentTime = SDL_GetTicks();
-		if(jauge->currentTime > jauge->lastUpdate + jauge->timespan && jauge->state !=0){
-			jauge->state -= 1; 
-			jauge->lastUpdate = jauge->currentTime; 
-		}
+	int currentTime = SDL_GetTicks();
+	if(app->isPause || app->isLost || app->isWon){
+		jauge->lastUpdate = currentTime; 
+	}
+	if(currentTime > jauge->lastUpdate + jauge->timespan && jauge->state !=0){
+		jauge->state -= 1; 
+		jauge->lastUpdate = currentTime; 
 	}
 	if(jauge->state == 0){
 		app->isLost = true;  

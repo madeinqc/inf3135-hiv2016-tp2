@@ -25,6 +25,17 @@
  * Enumeration des directions
  */
 enum Direction{EAST,SOUTH,WEST,NORTH};
+
+struct Position{
+	// Varie entre 0 et 15
+	int tileX;
+	int tileY;
+
+	// Varie selon la grosseur de la carte
+	int tileNumber;
+	int tileGID;
+	int idTile;
+};
 /**
 * Structure de la sprite
 */
@@ -43,10 +54,8 @@ struct Sprite{
 	// Position
 	int posX;
 	int posY;
-	int futureX;
-	int futureY;
-	int currTile;
-	int futureTile;
+	struct Position currTile;
+	struct Position futureTile;
 	int lastDirection;
 	int currentLayer;
 	// Speed

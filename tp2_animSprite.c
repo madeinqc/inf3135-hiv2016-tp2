@@ -18,8 +18,8 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	newSprite->delayBetweenFrame = delayBetweenFrame;
 
 	// Position
-	newSprite->posX = newSprite->futureX = newSprite->currTile = 0;
-	newSprite->posY = newSprite->futureY = newSprite->futureTile = 0;
+	newSprite->futureTile.tileX = 10;
+	newSprite->futureTile.tileY = 10;
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
 
@@ -37,7 +37,7 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	}
   app->currSprite = newSprite;
   SDL_FreeSurface(surface);
-  
+
 	return true;
 }
 
@@ -57,20 +57,16 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
 void moveSprite(struct Sprite *sprite, int direction){
 	switch(direction){
 		case EAST:
-			sprite->futureX-=2*sprite->speed;
-			sprite->futureY+=sprite->speed;
+			sprite->futureTile.tileX+=1;
 			break;
 		case WEST:
-			sprite->futureX+=2*sprite->speed;
-			sprite->futureY-=sprite->speed;
+			sprite->futureTile.tileX-=1;
 			break;
 		case SOUTH:
-			sprite->futureX+=2*sprite->speed;
-			sprite->futureY+=sprite->speed;
+			sprite->futureTile.tileY+=1;
 			break;
 		case NORTH:
-			sprite->futureX-=2*sprite->speed;
-			sprite->futureY-=sprite->speed;
+			sprite->futureTile.tileY-=1;
 			break;
 	}
 }

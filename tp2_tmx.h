@@ -56,7 +56,11 @@ void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 
-bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte);
+bool isTileOK(struct Carte *carte);
+
+void setTileInformations(struct Carte *carte, tmx_layer *layer);
+
+void fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer);
 
 bool transitionSprite(struct Carte *carte, int x, int y);
 #endif

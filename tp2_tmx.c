@@ -134,7 +134,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
 
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
-			printf("%d\n", (tileX * carte->map->width) + tileY);
+			//printf("%d\n", (tileX * carte->map->width) + tileY);
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
         if (carte->map->tiles[gid]->id == 18) continue; // Skip rendering the character as it will be rendered differently
@@ -155,11 +155,11 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
         	carte->sprite->lastDirection = WEST;
-        	carte->sprite->posX = carte->sprite->futureX = dstrect.x-40;
-        	carte->sprite->posY = carte->sprite->futureY = dstrect.y+65;
+        	carte->sprite->futureTile.tileX = 10;
+        	carte->sprite->futureTile.tileX = 10;
         	carte->isSpriteInitialized = true;
         }
-
+        /*
         // Render le personnage sur le level dessous celui ou il est
         char layerSprite[7];
         layerToString(carte->sprite->currentLayer -1, layerSprite);
@@ -181,16 +181,23 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 							transit = transitionSprite(carte, dstrect.x, dstrect.y);
 						}
 					}
-        }
+        }*/
 
 				if (image) {
 					texture = (SDL_Texture*)image->resource_image;
 				}
 				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
-				if(transit) continue;
 			}
 		}
 	}
+	if(carte->isSpriteInitialized){
+		char layerSprite[7];
+    layerToString(carte->sprite->currentLayer -1, layerSprite);
+    if(strcmp(layer->name, layerSprite) == 0){
+  		isTileOK(carte);
+  		renderSprite(carte->sprite, ren);
+  	}
+  }
 }
 
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
@@ -209,12 +216,16 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	SDL_SetRenderTarget(ren, res);
 	SDL_RenderClear(ren);
 	SDL_RenderCopy(ren, carte->background, NULL, NULL);
+	//printf("Sous-section x : %d, Sous-section y : %d\n", carte->xSection, carte->ySection);
 	while (layer) {
 		if (layer->visible)
+			//printf("Layer : %s\n", layer->name);
 			tp2tmx_drawLayer(ren, carte, layer);
+			//printf("-----------------------------\n");
 		layer = layer->next;
 	}
 	SDL_SetRenderTarget(ren, NULL);
+	//printf("===================================\n");
 	return res;
 }
 
@@ -224,20 +235,78 @@ bool findSectionHouse(struct Carte *carte){
 	int j;
 	unsigned int caseCourrante;
 	unsigned int gid;
+	int nbRoches = 0;
 	for(i = 0; i < carte->map->height; ++i){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
 			gid = layer->content.gids[caseCourrante];
-			if(carte->map->tiles[gid] != NULL && carte->map->tiles[gid]->id == 16){
-				carte->xSection = (i-1)/15;
-				carte->ySection = (j-1)/15;
-				break;
+			if(carte->map->tiles[gid] != NULL){
+				if(carte->map->tiles[gid]->id == 16){
+					carte->xSection = (i-1)/15;
+					carte->ySection = (j-1)/15;
+					break;
+				}else if(carte->map->tiles[gid]->id == 8){
+					nbRoches+=1;
+				}
 			}
 		}
 	}
 }
 
-bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
+bool isTileOK(struct Carte *carte){
+	tmx_layer *layer = carte->map->ly_head;
+	int i;
+	for(i = 0; i < carte->sprite->currentLayer-1; i++){
+		layer = layer->next;
+	}
+	setTileInformations(carte, layer);
+	int idTile = carte->sprite->futureTile.idTile;
+	if(idTile != 0){
+		fromPositionToCoordinates(carte, layer);
+		return true;
+	}
+	return false;
+}
+
+void fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
+	int halfMapWidth = carte->map->tile_width/2;
+  int halfMapHeight = carte->map->tile_height/2;
+  int i = carte->sprite->futureTile.tileX;
+  int j = carte->sprite->futureTile.tileY;
+  int gid = carte->sprite->futureTile.tileGID;
+  tmx_tile *tile;
+  tile = carte->map->tiles[gid];
+  if(tile != NULL){
+  	tmx_tileset *tileset = carte->map->tiles[gid]->tileset;
+  	tmx_image *image = carte->map->tiles[carte->sprite->futureTile.tileGID]->image;
+  	carte->sprite->posX = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
+  	carte->sprite->posY = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
+    		+ ((tileset->tile_height / image->height) - 1) * 64 +25;
+  	carte->sprite->currTile = carte->sprite->futureTile;
+  }else{
+  	carte->sprite->futureTile = carte->sprite->currTile;
+  }
+}
+
+void setTileInformations(struct Carte *carte, tmx_layer *layer){
+	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
+	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
+	
+	printf("X : %d, Y : %d, Original X : %d, Y : %d\n", newX, newY, carte->sprite->futureTile.tileX, carte->sprite->futureTile.tileY);
+	if(newX >= 0 && newY >= 0){
+		carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
+		printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
+		carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
+		tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
+		if(tile != NULL){
+			carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
+			printf("Tile ID : %d\n", carte->sprite->futureTile.idTile);
+			//printf("Source : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGID]->image->source);
+		}
+	}
+}
+
+/*bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
 	// Verification pour les 4 cotes de la map
 	int x = sprite->futureX;
 	float y = sprite->futureY;
@@ -258,9 +327,9 @@ bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
 	YtoComp = abs(-0.5*x + 114);
 	if(y < YtoComp) return false;
 	return true;
-}
+}*/
 
-bool transitionSprite(struct Carte *carte, int x, int y){
+/*bool transitionSprite(struct Carte *carte, int x, int y){
 	int spriteX = carte->sprite->posX;
 	int spriteY = carte->sprite->posY;
 	int buff = 30;
@@ -314,4 +383,4 @@ bool transitionSprite(struct Carte *carte, int x, int y){
 			}
 		}
 	}
-}
+}*/

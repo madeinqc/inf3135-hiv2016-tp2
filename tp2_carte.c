@@ -146,6 +146,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           refillJauge(carte->waterJauge, app);
           refillJauge(carte->sleepJauge, app);
           break; 
+        case SDLK_y:
+          app->isWon = true; 
+          break; 
         // **********************************
         case SDLK_ESCAPE:
           app->isPause = true; 

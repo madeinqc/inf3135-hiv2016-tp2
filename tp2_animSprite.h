@@ -8,15 +8,14 @@
 #define TP2_ANIMSPRITE_H
 
 #include <stdbool.h>
+#include "tp2_carte.h"
 #include "sdl2.h"
-//#include "tp2_carte.h"
-#include "tp2_tmx.h"
 #include "tp2_image.h"
 #include "tp2_window.h"
 #include "tp2_application.h"
 #include "tp2_scene.h"
 #include "tp2_sound.h"
-
+#include "tp2_tmx.h"
 
 /**
  * Image du personnage principal

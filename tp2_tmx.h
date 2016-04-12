@@ -67,4 +67,6 @@ bool transitionSprite(struct Carte *carte, int x, int y);
 void restartFutureTile(struct Sprite *sprite);
 
 void updateCurrentTile(struct Sprite *sprite);
+
+bool changeSousMap(struct Carte *carte);
 #endif

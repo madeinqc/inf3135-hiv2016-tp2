@@ -69,6 +69,9 @@ void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
 			sprite->futureTile.tileY-=1;
 			break;
 	}
+	if(changeSousMap(carte)){
+		printf("Changement de sous map!\n");
+	}
 	if(isTileOK(carte)){
 		updateCurrentTile(sprite);
 	}else{

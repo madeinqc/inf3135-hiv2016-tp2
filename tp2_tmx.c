@@ -155,45 +155,26 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         // Initialise la position initial du personnage
         if(!carte->isSpriteInitialized && carte->map->tiles[gid]->id == 16){
         	carte->sprite->lastDirection = WEST;
-        	carte->sprite->futureTile.tileX = 10;
-        	carte->sprite->futureTile.tileX = 10;
+          carte->sprite->futureTile.tileX = i + 1;
+          carte->sprite->futureTile.tileY = j;
         	carte->isSpriteInitialized = true;
+          isTileOK(carte);
+          printf("x : %d, y : %d\n", dstrect.x, dstrect.y);
         }
-        /*
-        // Render le personnage sur le level dessous celui ou il est
-        char layerSprite[7];
-        layerToString(carte->sprite->currentLayer -1, layerSprite);
-        if(strcmp(layer->name, layerSprite) == 0){
-        	int tileID = carte->map->tiles[gid]->id;
-        	if(isTileOK(carte->sprite, layer, carte)){
-        		carte->sprite->posX = carte->sprite->futureX;
-        		carte->sprite->posY = carte->sprite->futureY;
-        	}else{
-        		carte->sprite->futureX = carte->sprite->posX;
-        		carte->sprite->futureY = carte->sprite->posY;
-        	}
-        	if(carte->isSpriteInitialized){
-        		renderSprite(carte->sprite, ren);
-        	}
-        	// Liste les cases transitives
-        	if(i%15 == 0 || j%15 == 0){
-						if(tileID != 3 && tileID != 1){
-							transit = transitionSprite(carte, dstrect.x, dstrect.y);
-						}
-					}
-        }*/
-
-				if (image) {
-					texture = (SDL_Texture*)image->resource_image;
-				}
-				SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
+    		if (image) {
+    			texture = (SDL_Texture*)image->resource_image;
+    		}
+		    SDL_RenderCopy(ren, texture, &srcrect, &dstrect);
 			}
 		}
 	}
 	if(carte->isSpriteInitialized){
 		char layerSprite[7];
-    layerToString(carte->sprite->currentLayer -1, layerSprite);
+    layerToString(carte->sprite->currentLayer, layerSprite);
     if(strcmp(layer->name, layerSprite) == 0){
+      //printf("In Render...\n");
+      //isTileOK(carte);
+      //changeSousMap(carte);
   		renderSprite(carte->sprite, ren);
   	}
   }
@@ -329,28 +310,30 @@ void updateCurrentTile(struct Sprite *sprite){
 	sprite->currTile.tileGID = sprite->futureTile.tileGID;
 	sprite->currTile.idTile = sprite->futureTile.idTile;
 }
-/*bool isTileOK(struct Sprite *sprite, tmx_layer *layer, struct Carte *carte){
-	// Verification pour les 4 cotes de la map
-	int x = sprite->futureX;
-	float y = sprite->futureY;
 
-	// Ne permet pas d'aller sur l'eau
-
-	float YtoComp;
-	// Haut gauche
-	YtoComp = abs(0.5*x - 370);
-	if(y < YtoComp) return false;
-	// Bas droit
-	YtoComp = abs(0.5*x - 806);
-	if(y > YtoComp) return false;
-	// Bas gauche
-	YtoComp = abs(-0.5*x - 322);
-	if(y > YtoComp) return false;
-	// Haut droit
-	YtoComp = abs(-0.5*x + 114);
-	if(y < YtoComp) return false;
-	return true;
-}*/
+bool changeSousMap(struct Carte *carte){
+  int caseX = carte->sprite->futureTile.tileX;
+  int caseY = carte->sprite->futureTile.tileY;
+  printf("Case x : %d, y : %d\n", caseX, caseY);
+  if(caseX == 16 && carte->sprite->lastDirection == EAST){
+    carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -15;
+    return true;
+  }else if(caseX == -1 && carte->sprite->lastDirection == WEST){
+    carte->xSection -= carte->xSection == 0 ? 0 : 1;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +15;
+    return true;
+  }else if(caseY == 16 && carte->sprite->lastDirection == SOUTH){
+    carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -15;
+    return true;
+  }else if(caseY == -1 && carte->sprite->lastDirection == NORTH){
+    carte->ySection -= carte->ySection == 0 ? 0 : 1;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +15;
+    return true;
+  }
+  return false;
+}
 
 /*bool transitionSprite(struct Carte *carte, int x, int y){
 	int spriteX = carte->sprite->posX;

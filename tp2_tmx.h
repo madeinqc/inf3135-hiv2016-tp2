@@ -75,5 +75,13 @@ void updateCurrentTile(struct Sprite *sprite);
 
 bool changeSousMap(struct Carte *carte);
 
+bool minerRoche(struct Carte *carte);
+
+bool boireEau(struct Carte *carte);
+
+bool reposManger(struct Carte *carte);
+
+void setIdEnFace(struct Carte *carte, tmx_layer *layer);
+
 void destroyElement(tmx_layer *layer, int tileNumber);
 #endif

@@ -360,6 +360,77 @@ bool changeSousMap(struct Carte *carte){
   return false;
 }
 
+bool minerRoche(struct Carte *carte){
+	printf("Miner roche? : %d\n", carte->sprite->futureTile.tileGIDly);
+	if(carte->sprite->futureTile.tileGIDly == 14){
+		carte->sprite->nbRoches += 1;
+		return true;
+	}
+	return false;
+}
+
+bool boireEau(struct Carte *carte){
+	int id = carte->sprite->futureTile.tileGID;
+	printf("Boire eau? : %d\n", id);
+	if(id == 2 || id == 4){
+		refillJauge(carte->waterJauge);
+		return true;
+	}
+	return false;
+}
+
+bool reposManger(struct Carte *carte){
+	int id = carte->sprite->futureTile.tileGIDly;
+	printf("Dormir? : %d\n", id);
+	if(id == 17){
+		refillJauge(carte->sleepJauge);
+		refillJauge(carte->foodJauge);
+		return true;
+	}
+	return false;
+}
+
+void setIdEnFace(struct Carte *carte, tmx_layer *layer){
+	switch(carte->sprite->lastDirection){
+		case EAST:
+			carte->sprite->futureTile.tileX+=1;
+			setTileInformations(carte, layer);
+			break;
+		case WEST:
+			carte->sprite->futureTile.tileX-=1;
+			setTileInformations(carte, layer);
+			break;
+		case SOUTH:
+			carte->sprite->futureTile.tileY+=1;
+			setTileInformations(carte, layer);
+			break;
+		case NORTH:
+			carte->sprite->futureTile.tileY-=1;
+			setTileInformations(carte, layer);
+			break;
+	}
+}
+
+bool actions(struct Carte *carte){
+	bool toRet = false;
+	tmx_layer *layer = carte->map->ly_head;
+	int i;
+	for(i = 0; i < carte->sprite->currentLayer-1; i++){
+		layer = layer->next;
+	}
+	setIdEnFace(carte, layer);
+	if(minerRoche(carte)){
+		destroyElement(layer->next, carte->sprite->futureTile.tileNumber);
+		toRet = true;
+	}else if(boireEau(carte)){
+		toRet = true;
+	}else if(reposManger(carte)){
+		toRet = true;
+	}
+	restartFutureTile(carte->sprite);
+	return toRet;
+}
+
 void destroyElement(tmx_layer *layer, int tileNumber){
 	layer->content.gids[tileNumber] = 0;
 }

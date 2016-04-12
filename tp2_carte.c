@@ -135,7 +135,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         // FOR TEST ONLY TO BE REMOVED
         case SDLK_f:
           //refillJauge(carte->waterJauge, app); 
-        	destroyElement(carte->map->ly_head->next, 127);
+        	//destroyElement(carte->map->ly_head->next, 127);
+        	actions(carte);
           break; 
         // **********************************
         case SDLK_ESCAPE:

@@ -65,6 +65,8 @@ struct Sprite{
 	int currentLayer;
 	// Speed
 	int speed;
+	// Nombre de roche minees
+	int nbRoches;
 	// Rendering
 	SDL_Texture *texture;
 };

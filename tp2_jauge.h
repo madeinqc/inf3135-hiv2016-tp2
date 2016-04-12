@@ -80,6 +80,6 @@ void renderJauge(struct Jauge *jauge, struct Application* app);
  */
 void updateJauge(struct Jauge *jauge, struct Application* app);
 
-void refillJauge(struct Jauge *jauge, struct Application* app); 
+void refillJauge(struct Jauge *jauge); 
 
 #endif

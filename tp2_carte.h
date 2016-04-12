@@ -19,6 +19,7 @@
 #include "tp2_jauge.h"
 #include "tp2_animSprite.h"
 #include "tp2_defaite.h"
+#include "tp2_victoire.h"
 #include "tp2_pause.h"
 
 /**

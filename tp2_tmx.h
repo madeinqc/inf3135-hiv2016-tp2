@@ -31,6 +31,8 @@ struct Carte {
   struct Pause *sPause; 
   struct Scene *defaite;
   struct Defaite *sDefaite; 
+  struct Scene *victoire;
+  struct Defaite *sVictoire; 
   struct Jauge *foodJauge; 
   struct Jauge *waterJauge; 
   struct Jauge *sleepJauge; 

@@ -266,11 +266,13 @@ bool isTileOK(struct Carte *carte){
 	int idTile = carte->sprite->futureTile.idTile;
 	int idTileUp = carte->sprite->futureTile.idTilely;
 	if(gestionEscaliersUp(idTileUp, carte, layer)){
+		printf("Jai utilise l'escalier!!\n");
 		return true;
 	}
 	if(idTile == 1 || idTile == 5 || idTile == 3){
 		return false;
 	}
+	printf("Bouge...\n");
 	return fromPositionToCoordinates(carte, layer);
 }
 
@@ -315,7 +317,7 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 		printf("Tile ID UP : %d\n", carte->sprite->futureTile.idTilely);
 		printf("Source UP : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGIDly]->image->source);
 		// Verification si ce sont des marches
-		if(carte->sprite->futureTile.idTilely >= 7 && carte->sprite->futureTile.idTilely <= 10){
+		if(carte->sprite->futureTile.idTilely >= 8 && carte->sprite->futureTile.idTilely <= 11){
 			return true;
 		}
 		return false;
@@ -441,28 +443,36 @@ bool actions(struct Carte *carte){
 
 bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 	switch(id){
-		case 7:
+		case 11:
+			printf("11!!\n");
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileX+=1;
 			break;
-		case 8:
+		case 8: // Fonctionne
+			printf("8!!\n");
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileX-=1;
 			break;
-		case 9:
-			printf("Changement de layer...\n");
+		case 9: // Fonctionne
+			printf("9!!\n");
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileY-=1;
-			setTileInformations(carte, layer);
-			updateCurrentTile(carte->sprite);
-			setTileInformations(carte,layer->next);
-			updateCurrentTile(carte->sprite);
-			fromPositionToCoordinates(carte, layer->next);
-			return true;
 			break;
-		case 10:
+		case 10: // Fonctionne
+			printf("10!!\n");
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileY+=1;
 			break;
 		default:
 			return false;
 			break;
 	}
-	return false;
+	setTileInformations(carte, layer);
+	updateCurrentTile(carte->sprite);
+	setTileInformations(carte,layer->next);
+	updateCurrentTile(carte->sprite);
+	fromPositionToCoordinates(carte, layer->next);
+	return true;
 }
 
 void destroyElement(tmx_layer *layer, int tileNumber){

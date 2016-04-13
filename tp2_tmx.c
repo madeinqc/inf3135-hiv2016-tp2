@@ -262,7 +262,12 @@ bool isTileOK(struct Carte *carte){
 		return false;
 	}
 	int idTile = carte->sprite->futureTile.idTile;
-	// Liste des mauvais ids
+	int idTileUp = carte->sprite->futureTile.idTilely;
+	if(gestionEscaliersUp(idTileUp, carte, layer)){
+		return true;
+	}else if(gestionEscaliersDown(idTile, carte, layer)){
+		return true;
+	}
 	if(idTile == 1 || idTile == 5 || idTile == 3){
 		return false;
 	}
@@ -305,6 +310,10 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 		return false;
 	}else if(tileUp != NULL){
 		carte->sprite->futureTile.idTilely = carte->map->tiles[carte->sprite->futureTile.tileGIDly]->id;
+		// Verification si ce sont des marches
+		if(carte->sprite->futureTile.idTilely >= 8 && carte->sprite->futureTile.idTilely <= 11){
+			return true;
+		}
 		return false;
 	}
 	carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
@@ -324,7 +333,9 @@ void updateCurrentTile(struct Sprite *sprite){
 	sprite->currTile.tileY = sprite->futureTile.tileY;
 	sprite->currTile.tileNumber = sprite->futureTile.tileNumber;
 	sprite->currTile.tileGID = sprite->futureTile.tileGID;
+	sprite->currTile.tileGIDly = sprite->futureTile.tileGIDly;
 	sprite->currTile.idTile = sprite->futureTile.idTile;
+	sprite->currTile.idTilely = sprite->futureTile.idTilely;
 }
 
 bool changeSousMap(struct Carte *carte){
@@ -416,6 +427,72 @@ bool actions(struct Carte *carte){
 	}
 	restartFutureTile(carte->sprite);
 	return toRet;
+}
+
+bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
+	switch(id){
+		case 11:
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileX+=1;
+			break;
+		case 8: // Fonctionne
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileX-=1;
+			break;
+		case 9: // Fonctionne
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileY-=1;
+			break;
+		case 10: // Fonctionne
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileY+=1;
+			break;
+		default:
+			return false;
+			break;
+	}
+	setTileInformations(carte, layer);
+	updateCurrentTile(carte->sprite);
+	setTileInformations(carte,layer->next);
+	updateCurrentTile(carte->sprite);
+	fromPositionToCoordinates(carte, layer->next);
+	return true;
+}
+
+bool gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
+	switch(id){
+		case 11:
+			carte->sprite->currentLayer-=1;
+			carte->sprite->futureTile.tileX-=1;
+			break;
+		case 8:
+			carte->sprite->currentLayer-=1;
+			carte->sprite->futureTile.tileX+=1;
+			break;
+		case 9:
+			carte->sprite->currentLayer-=1;
+			carte->sprite->futureTile.tileY+=1;
+			break;
+		case 10:
+			carte->sprite->currentLayer-=1;
+			carte->sprite->futureTile.tileY-=1;
+			break;
+		default:
+			return false;
+			break;
+	}
+	layer = carte->map->ly_head;
+	int i;
+	for (i = 0; i < carte->sprite->currentLayer-1; ++i)
+	{
+		layer = layer->next;
+	}
+	setTileInformations(carte, layer);
+	updateCurrentTile(carte->sprite);
+	setTileInformations(carte,layer);
+	updateCurrentTile(carte->sprite);
+	fromPositionToCoordinates(carte, layer);
+	return true;
 }
 
 void destroyElement(tmx_layer *layer, int tileNumber){

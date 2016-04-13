@@ -96,7 +96,6 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   // Detruire le personnage dans la map
   destroyElement(carte->map->ly_head->next, 127);
 
-  // Load le nombre de roche de la carte
   findNbRocks(carte);
 
   return true;

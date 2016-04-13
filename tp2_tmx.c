@@ -383,6 +383,10 @@ bool reposManger(struct Carte *carte){
 	if(id == 17){
 		refillJauge(carte->sleepJauge);
 		refillJauge(carte->foodJauge);
+		// In the house, victory condition is verfied 
+		if(carte->nbRock == carte->sprite->nbRoches){
+    	carte->allMined = true; 
+  	}
 		return true;
 	}
 	return false;

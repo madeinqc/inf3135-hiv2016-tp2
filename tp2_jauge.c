@@ -46,4 +46,5 @@ void updateJauge(struct Jauge *jauge, struct Application* app){
 
 void refillJauge(struct Jauge *jauge){
 	jauge->state =7; 
+	jauge->lastUpdate = SDL_GetTicks(); 
 }

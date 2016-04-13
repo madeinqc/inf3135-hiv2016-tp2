@@ -14,7 +14,7 @@ struct Scene* tp2Accueil_getScene(struct Application *app) {
   scene->viewWillAppear = &tp2Accueil_viewWillAppear;
   scene->handleEvents = &tp2Accueil_handleEvents;
   scene->drawScene = &tp2Accueil_draw;
-  scene->releaseMedia = &tp2Accueil_release;
+  scene->releaseMedia = &tp2Accueil_release; 
 
   return scene;
 }

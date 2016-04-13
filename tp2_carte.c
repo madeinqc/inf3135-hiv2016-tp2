@@ -50,6 +50,7 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->defaite = tp2Defaite_getScene(app); 
   carte->sDefaite = carte->defaite->initScene(app);
   carte->defaite->loadMedia(app, carte->sDefaite);
+  app->isLost = false;
 
   carte->victoire = tp2Victoire_getScene(app); 
   carte->sVictoire = carte->victoire->initScene(app);

@@ -152,9 +152,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_SPACE:
         	actions(carte);
           break;
-        case SDLK_y:
-          app->isWon = true; 
-          break; 
         case SDLK_ESCAPE:
           app->isPause = true; 
           break;

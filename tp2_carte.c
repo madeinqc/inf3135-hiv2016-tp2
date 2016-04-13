@@ -47,6 +47,14 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->sPause = carte->pause->initScene(app);
   carte->pause->loadMedia(app, carte->sPause);
 
+  carte->defaite = tp2Defaite_getScene(app); 
+  carte->sDefaite = carte->defaite->initScene(app);
+  carte->defaite->loadMedia(app, carte->sDefaite);
+
+  carte->victoire = tp2Victoire_getScene(app); 
+  carte->sVictoire = carte->victoire->initScene(app);
+  carte->victoire->loadMedia(app, carte->sVictoire);
+
   char *imagesFood[] = {FOOD_0, FOOD_1, FOOD_2, FOOD_3, FOOD_4, FOOD_5, FOOD_6, FOOD_7};
   char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
   char *imagesSleep[] = {SLEEP_0, SLEEP_1, SLEEP_2, SLEEP_3, SLEEP_4, SLEEP_5, SLEEP_6, SLEEP_7};
@@ -108,7 +116,14 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   bool isConsumed = false;
   if(app->isPause){
   	return carte->pause->handleEvents(app, carte->sPause, event);
-  }else{
+  }
+  else if(app->isLost){
+    return carte->defaite->handleEvents(app, carte->sDefaite, event);
+  }
+  else if(app->isWon){
+    return carte->victoire->handleEvents(app, carte->sVictoire, event);
+  }
+  else{
   	isConsumed = handleEventsSprite(carte->sprite, event, app, carte);
   }
   if(isConsumed) return true;
@@ -134,6 +149,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_SPACE:
         	actions(carte);
           break;
+        case SDLK_y:
+          app->isWon = true; 
+          break; 
         case SDLK_ESCAPE:
           app->isPause = true; 
           break;
@@ -162,6 +180,12 @@ void tp2Carte_draw(struct Application *app, void *state) {
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
+  else if(app->isLost){
+    carte->defaite->drawScene(app, carte->sDefaite);
+  }
+  else if(app->isWon){
+    carte->victoire->drawScene(app, carte->sVictoire);
+  }
   SDL_DestroyTexture(texture);
 }
 
@@ -173,6 +197,8 @@ void tp2Carte_release(struct Application *app, void *state) {
   tp2Sound_freeShort(carte->pickaxeSound);
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
+  carte->defaite->releaseMedia(app, carte->sDefaite);
+  carte->victoire->releaseMedia(app, carte->sVictoire);
   carte->foodJauge = NULL; 
   carte->waterJauge = NULL; 
   carte->sleepJauge = NULL; 

@@ -57,7 +57,7 @@ struct Jauge{
 	int state; 
 	SDL_Texture *tabImages[8]; 
 	int lastUpdate; 
-	int timespan; 
+	int timespan;  
 };
 
 /**
@@ -80,6 +80,6 @@ void renderJauge(struct Jauge *jauge, struct Application* app);
  */
 void updateJauge(struct Jauge *jauge, struct Application* app);
 
-void refillJauge(struct Jauge *jauge); 
+void refillJauge(struct Jauge *jauge);
 
 #endif

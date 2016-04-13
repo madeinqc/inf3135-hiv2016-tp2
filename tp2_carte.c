@@ -54,6 +54,7 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->victoire = tp2Victoire_getScene(app); 
   carte->sVictoire = carte->victoire->initScene(app);
   carte->victoire->loadMedia(app, carte->sVictoire);
+  carte->allMined = false; 
 
   char *imagesFood[] = {FOOD_0, FOOD_1, FOOD_2, FOOD_3, FOOD_4, FOOD_5, FOOD_6, FOOD_7};
   char *imagesWater[] = {WATER_0, WATER_1, WATER_2, WATER_3, WATER_4, WATER_5, WATER_6, WATER_7};
@@ -120,7 +121,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   else if(app->isLost){
     return carte->defaite->handleEvents(app, carte->sDefaite, event);
   }
-  else if(app->isWon){
+  else if(carte->allMined || app->isWon){
+    app->isWon = true; 
     return carte->victoire->handleEvents(app, carte->sVictoire, event);
   }
   else{
@@ -165,6 +167,12 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   }
   return isConsumed;
 }
+
+/*void verifyVictory(struct Carte *carte, struct Sprite *sprite){
+  if(carte->nbRock == sprite->nbRoches){
+    
+  }
+}*/
 
 /**
  *

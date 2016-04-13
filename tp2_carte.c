@@ -136,7 +136,8 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_f:
           //refillJauge(carte->waterJauge, app); 
         	//destroyElement(carte->map->ly_head->next, 127);
-        	actions(carte);
+        	//actions(carte);
+        	carte->sprite->currentLayer+=1;
           break; 
         // **********************************
         case SDLK_ESCAPE:

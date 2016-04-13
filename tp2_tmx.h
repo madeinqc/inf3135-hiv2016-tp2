@@ -83,5 +83,7 @@ bool reposManger(struct Carte *carte);
 
 void setIdEnFace(struct Carte *carte, tmx_layer *layer);
 
+bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer);
+
 void destroyElement(tmx_layer *layer, int tileNumber);
 #endif

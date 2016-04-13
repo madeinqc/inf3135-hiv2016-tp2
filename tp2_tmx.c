@@ -264,7 +264,10 @@ bool isTileOK(struct Carte *carte){
 		return false;
 	}
 	int idTile = carte->sprite->futureTile.idTile;
-	// Liste des mauvais ids
+	int idTileUp = carte->sprite->futureTile.idTilely;
+	if(gestionEscaliersUp(idTileUp, carte, layer)){
+		return true;
+	}
 	if(idTile == 1 || idTile == 5 || idTile == 3){
 		return false;
 	}
@@ -301,7 +304,6 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 		return false;
 	}
 	printf("Tile Number : %d\n", carte->sprite->futureTile.tileNumber);
-	printf("Tile Number : %d\n", 45);
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
 	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
@@ -312,6 +314,10 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 		carte->sprite->futureTile.idTilely = carte->map->tiles[carte->sprite->futureTile.tileGIDly]->id;
 		printf("Tile ID UP : %d\n", carte->sprite->futureTile.idTilely);
 		printf("Source UP : %s\n", carte->map->tiles[carte->sprite->futureTile.tileGIDly]->image->source);
+		// Verification si ce sont des marches
+		if(carte->sprite->futureTile.idTilely >= 7 && carte->sprite->futureTile.idTilely <= 10){
+			return true;
+		}
 		return false;
 	}
 	carte->sprite->futureTile.idTile = carte->map->tiles[carte->sprite->futureTile.tileGID]->id;
@@ -333,7 +339,9 @@ void updateCurrentTile(struct Sprite *sprite){
 	sprite->currTile.tileY = sprite->futureTile.tileY;
 	sprite->currTile.tileNumber = sprite->futureTile.tileNumber;
 	sprite->currTile.tileGID = sprite->futureTile.tileGID;
+	sprite->currTile.tileGIDly = sprite->futureTile.tileGIDly;
 	sprite->currTile.idTile = sprite->futureTile.idTile;
+	sprite->currTile.idTilely = sprite->futureTile.idTilely;
 }
 
 bool changeSousMap(struct Carte *carte){
@@ -429,6 +437,32 @@ bool actions(struct Carte *carte){
 	}
 	restartFutureTile(carte->sprite);
 	return toRet;
+}
+
+bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
+	switch(id){
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			printf("Changement de layer...\n");
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileY-=1;
+			setTileInformations(carte, layer);
+			updateCurrentTile(carte->sprite);
+			setTileInformations(carte,layer->next);
+			updateCurrentTile(carte->sprite);
+			fromPositionToCoordinates(carte, layer->next);
+			return true;
+			break;
+		case 10:
+			break;
+		default:
+			return false;
+			break;
+	}
+	return false;
 }
 
 void destroyElement(tmx_layer *layer, int tileNumber){

@@ -21,6 +21,8 @@
 struct Carte {
   tmx_map *map;
   Mix_Chunk* pickaxeSound;
+  Mix_Chunk* snoringSound;
+  Mix_Music* gameMusic;
   int xSection;
   int ySection;
   int maxXSection;

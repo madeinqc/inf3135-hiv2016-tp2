@@ -34,6 +34,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
   tp2Sound_openChannel();
   carte->pickaxeSound = tp2Sound_loadShort(SOUND_PICKAXE);
+  carte->snoringSound = tp2Sound_loadShort(SOUND_SNORING);
+  carte->gameMusic = tp2Sound_loadLong(MUSIC_GAME);
 
   tp2tmx_loadRandomMap(app->gRenderer, carte);
 
@@ -106,6 +108,8 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
 void tp2Carte_viewWillAppear(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
+  Mix_VolumeMusic(5);
+  tp2Sound_playLong(carte->gameMusic);
 }
 
 /**
@@ -195,6 +199,8 @@ void tp2Carte_draw(struct Application *app, void *state) {
 void tp2Carte_release(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
   tp2Sound_freeShort(carte->pickaxeSound);
+  tp2Sound_freeShort(carte->snoringSound);
+  tp2Sound_freeLong(carte->gameMusic);
   tp2tmx_mapFree(carte->map);
   carte->pause->releaseMedia(app, carte->sPause);
   carte->defaite->releaseMedia(app, carte->sDefaite);

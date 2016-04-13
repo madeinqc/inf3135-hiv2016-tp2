@@ -27,6 +27,8 @@
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
 #define IMG_BACK "assets/background_game.png"
+#define SOUND_SNORING "assets/sounds/snoring.wav"
+#define MUSIC_GAME "assets/sounds/gameSong.wav"
 
 struct Scene* tp2Carte_getScene(struct Application *app);
 

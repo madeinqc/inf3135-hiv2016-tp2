@@ -83,7 +83,6 @@ bool tp2Defaite_handleEvents(struct Application *app, void *state, SDL_Event *ev
             app->isRunning = false;
           }
           else {
-            app->isLost = false; 
             app->nextScene = tp2Accueil_getScene(app);
           }
           isConsumed = true;

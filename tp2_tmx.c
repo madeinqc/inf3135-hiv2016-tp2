@@ -309,6 +309,9 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 	}
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
 	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
+	if(carte->sprite->futureTile.tileGID > 100 || carte->sprite->futureTile.tileGIDly > 100){
+		return false;
+	}
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
 	tmx_tile *tileUp = carte->map->tiles[carte->sprite->futureTile.tileGIDly];
 	if(tile == NULL){

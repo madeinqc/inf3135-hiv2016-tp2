@@ -83,11 +83,11 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
       timespanSleep = 10000; // 10sec
       break;
   } 
-  carte->foodJauge = createJauge(imagesFood, timespanFood, app); 
-  carte->waterJauge = createJauge(imagesWater, timespanWater, app); 
-  carte->sleepJauge = createJauge(imagesSleep, timespanSleep, app); 
+  carte->foodJauge = tp2jauge_create(imagesFood, timespanFood, app);
+  carte->waterJauge = tp2jauge_create(imagesWater, timespanWater, app);
+  carte->sleepJauge = tp2jauge_create(imagesSleep, timespanSleep, app);
 
-  if(!createSprite(IMG_PERSO, 4, 20, 20, 20, 0, 2, app)){
+  if(!tp2animSprite_create(IMG_PERSO, 4, 20, 20, 20, 0, 2, app)){
   	printf("Probleme lors de l'initialisation du personnage!");
   	return false;
   }
@@ -96,12 +96,12 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
   carte->background = tp2image_load(app, IMG_BACK);
 
-  findSectionHouse(carte);
+  tp2tmx_findSectionHouse(carte);
 
   // Detruire le personnage dans la map
-  destroyElement(carte->map->ly_head->next, 127);
+  tp2tmx_destroyElement(carte->map->ly_head->next, 127);
 
-  findNbRocks(carte);
+  tp2tmx_findNbRocks(carte);
 
   return true;
 }
@@ -131,7 +131,7 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
     return carte->victoire->handleEvents(app, carte->sVictoire, event);
   }
   else{
-  	isConsumed = handleEventsSprite(carte->sprite, event, app, carte);
+  	isConsumed = tp2animSprite_handleEvents(carte->sprite, event, app, carte);
   }
   if(isConsumed) return true;
   switch(event->type){
@@ -154,7 +154,7 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
           isConsumed = true;
           break;
         case SDLK_SPACE:
-        	actions(carte);
+        	tp2tmx_actions(carte);
           break;
         case SDLK_ESCAPE:
           app->isPause = true; 
@@ -178,9 +178,9 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
   SDL_Texture *texture = tp2tmx_renderMap(app->gRenderer, carte);
   SDL_RenderCopy(app->gRenderer, texture, NULL, &texr);
-  renderJauge(carte->foodJauge, app); 
-  renderJauge(carte->waterJauge, app); 
-  renderJauge(carte->sleepJauge, app); 
+  tp2jauge_render(carte->foodJauge, app);
+  tp2jauge_render(carte->waterJauge, app);
+  tp2jauge_render(carte->sleepJauge, app);
   if(app->isPause){
   	carte->pause->drawScene(app, carte->sPause);
   }
@@ -209,5 +209,5 @@ void tp2Carte_release(struct Application *app, void *state) {
   carte->waterJauge = NULL; 
   carte->sleepJauge = NULL; 
   free(carte);
-  deleteSprite(app->currSprite, app);
+  tp2animSprite_delete(app->currSprite, app);
 }

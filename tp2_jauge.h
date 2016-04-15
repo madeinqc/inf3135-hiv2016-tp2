@@ -63,23 +63,23 @@ struct Jauge{
 /**
  * Creer une jauge
  */
-struct Jauge* createJauge(char *tabImages[8], int timespan, struct Application* app);
+struct Jauge* tp2jauge_create(char *tabImages[8], int timespan, struct Application* app);
 /**
  * Libere les ressources de la jauge
  * @params *app L'application
  */
-void deleteJauge(struct Jauge *jauge, struct Application* app);
+void tp2jauge_delete(struct Jauge *jauge, struct Application* app);
 /**
  * Prepare le jauge pour le renderer
  * @params *app L'application
  */
-void renderJauge(struct Jauge *jauge, struct Application* app);
+void tp2jauge_render(struct Jauge *jauge, struct Application* app);
 /**
  * Bouge le jauge dans une direction
  * @params direction La direction dans laquelle bouger le jauge
  */
-void updateJauge(struct Jauge *jauge, struct Application* app);
+void tp2jauge_update(struct Jauge *jauge, struct Application* app);
 
-void refillJauge(struct Jauge *jauge);
+void tp2jauge_refill(struct Jauge *jauge);
 
 #endif

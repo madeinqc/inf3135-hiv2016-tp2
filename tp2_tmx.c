@@ -18,7 +18,7 @@ void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte) {
 
 	srandom(clock());
 
-	char* selName = mapsName.names[pseudoRandom(mapsName.count)];
+	char* selName = mapsName.names[tp2tmx_pseudoRandom(mapsName.count)];
 
 	int assetsLen = strlen(ASSETS_PATH);
 	int nameLen = strlen(selName);
@@ -32,26 +32,30 @@ void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte) {
     return;
   }
 
-  tmx_layer *layer = carte->map->ly_head;
-  int maxXDisplacement = 0, maxYDisplacement = 0;
-  while (layer) {
-    if (abs(layer->offsetx) > maxXDisplacement)
-      maxXDisplacement = abs(layer->offsetx);
-    if (abs(layer->offsety) > maxYDisplacement)
-      maxYDisplacement = abs(layer->offsety);
-    layer = layer->next;
-  }
-  maxYDisplacement += 1 * carte->map->tile_height; // Allow more space for higher layers
-
-  carte->maxXDisplacement = maxXDisplacement;
-  carte->maxYDisplacement = maxYDisplacement;
+  tp2tmx_initMapValues(carte);
 
 	free(fullPath);
 
 	tp2tmx_freeAllMapsName(&mapsName);
 }
 
-long pseudoRandom(long max) {
+void tp2tmx_initMapValues(struct Carte *carte) {
+	tmx_layer *layer = carte->map->ly_head;
+	int maxXDisplacement = 0, maxYDisplacement = 0;
+	while (layer) {
+		if (abs(layer->offsetx) > maxXDisplacement)
+			maxXDisplacement = abs(layer->offsetx);
+		if (abs(layer->offsety) > maxYDisplacement)
+			maxYDisplacement = abs(layer->offsety);
+		layer = layer->next;
+	}
+	maxYDisplacement += 1 * carte->map->tile_height; // Allow more space for higher layers
+
+	carte->maxXDisplacement = maxXDisplacement;
+	carte->maxYDisplacement = maxYDisplacement;
+}
+
+long tp2tmx_pseudoRandom(long max) {
 	return random() % max;
 }
 
@@ -134,9 +138,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
         continue; // Skip border lines as they should be blank
       if(carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
 				char layerSprite[7];
-		    layerToString(carte->sprite->currentLayer, layerSprite);
+				tp2animSprite_layerToString(carte->sprite->currentLayer, layerSprite);
 		    if(strcmp(layer->name, layerSprite) == 0){
-		  		renderSprite(carte->sprite, ren);
+					tp2animSprite_render(carte->sprite, ren);
 		  	}
 		  }
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
@@ -162,8 +166,8 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
           carte->sprite->futureTile.tileX = i + 1;
           carte->sprite->futureTile.tileY = j;
         	carte->isSpriteInitialized = true;
-          if(isTileOK(carte)){
-          	updateCurrentTile(carte->sprite);
+          if(tp2tmx_isTileOK(carte)){
+          	tp2tmx_updateCurrentTile(carte->sprite);
           }
         }
     		if (image) {
@@ -200,7 +204,7 @@ SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
 	return res;
 }
 
-bool findSectionHouse(struct Carte *carte){
+bool tp2tmx_findSectionHouse(struct Carte *carte){
 	tmx_layer *layer = carte->map->ly_head->next;
 	int i;
 	int j;
@@ -225,7 +229,7 @@ bool findSectionHouse(struct Carte *carte){
 	}
 }
 
-void findNbRocks(struct Carte *carte){
+void tp2tmx_findNbRocks(struct Carte *carte){
 	tmx_layer *layer = carte->map->ly_head->next;
 	int i;
 	int j;
@@ -249,7 +253,7 @@ void findNbRocks(struct Carte *carte){
 	carte->nbRock = nbRocks;
 }
 
-bool isTileOK(struct Carte *carte){
+bool tp2tmx_isTileOK(struct Carte *carte){
 	tmx_layer *layer = carte->map->ly_head;
 
 	// Position stays in the range of map
@@ -263,23 +267,23 @@ bool isTileOK(struct Carte *carte){
 		layer = layer->next;
 	}
 	// Sets new tile informations
-	if(!setTileInformations(carte, layer)){
+	if(!tp2tmx_setTileInformations(carte, layer)){
 		return false;
 	}
 	int idTile = carte->sprite->futureTile.idTile;
 	int idTileUp = carte->sprite->futureTile.idTilely;
-	if(gestionEscaliersUp(idTileUp, carte, layer)){
+	if(tp2tmx_gestionEscaliersUp(idTileUp, carte, layer)){
 		return true;
-	}else if(gestionEscaliersDown(idTile, carte, layer)){
+	}else if(tp2tmx_gestionEscaliersDown(idTile, carte, layer)){
 		return true;
 	}
 	if(idTile == 1 || idTile == 5 || idTile == 3){
 		return false;
 	}
-	return fromPositionToCoordinates(carte, layer);
+	return tp2tmx_fromPositionToCoordinates(carte, layer);
 }
 
-bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
+bool tp2tmx_fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
 	int halfMapWidth = carte->map->tile_width/2;
   int halfMapHeight = carte->map->tile_height/2;
   int i = carte->sprite->futureTile.tileX;
@@ -299,7 +303,7 @@ bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
   return true;
 }
 
-bool setTileInformations(struct Carte *carte, tmx_layer *layer){
+bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer){
 	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
 	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
 	
@@ -328,7 +332,7 @@ bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 	return true;
 }
 
-void restartFutureTile(struct Sprite *sprite){
+void tp2tmx_restartFutureTile(struct Sprite *sprite){
 	sprite->futureTile.tileX = sprite->currTile.tileX;
 	sprite->futureTile.tileY = sprite->currTile.tileY;
 	sprite->futureTile.tileNumber = sprite->currTile.tileNumber;
@@ -336,7 +340,7 @@ void restartFutureTile(struct Sprite *sprite){
 	sprite->futureTile.idTile = sprite->currTile.idTile;
 }
 
-void updateCurrentTile(struct Sprite *sprite){
+void tp2tmx_updateCurrentTile(struct Sprite *sprite){
 	sprite->currTile.tileX = sprite->futureTile.tileX;
 	sprite->currTile.tileY = sprite->futureTile.tileY;
 	sprite->currTile.tileNumber = sprite->futureTile.tileNumber;
@@ -346,7 +350,7 @@ void updateCurrentTile(struct Sprite *sprite){
 	sprite->currTile.idTilely = sprite->futureTile.idTilely;
 }
 
-bool changeSousMap(struct Carte *carte){
+bool tp2tmx_changeSousMap(struct Carte *carte){
   int caseX = carte->sprite->futureTile.tileX;
   int caseY = carte->sprite->futureTile.tileY;
   if(caseX == 16 && carte->sprite->lastDirection == EAST){
@@ -369,7 +373,7 @@ bool changeSousMap(struct Carte *carte){
   return false;
 }
 
-bool minerRoche(struct Carte *carte){
+bool tp2tmx_minerRoche(struct Carte *carte){
 	if(carte->sprite->futureTile.tileGIDly == 14){
 		carte->sprite->nbRoches += 1;
 		return true;
@@ -377,20 +381,20 @@ bool minerRoche(struct Carte *carte){
 	return false;
 }
 
-bool boireEau(struct Carte *carte){
+bool tp2tmx_boireEau(struct Carte *carte){
 	int id = carte->sprite->futureTile.tileGID;
 	if(id == 2 || id == 4){
-		refillJauge(carte->waterJauge);
+		tp2jauge_refill(carte->waterJauge);
 		return true;
 	}
 	return false;
 }
 
-bool reposManger(struct Carte *carte){
+bool tp2tmx_reposManger(struct Carte *carte){
 	int id = carte->sprite->futureTile.tileGIDly;
 	if(id == 17){
-		refillJauge(carte->sleepJauge);
-		refillJauge(carte->foodJauge);
+		tp2jauge_refill(carte->sleepJauge);
+		tp2jauge_refill(carte->foodJauge);
 		// In the house, victory condition is verfied 
 		if(carte->nbRock == carte->sprite->nbRoches){
     	carte->allMined = true; 
@@ -400,48 +404,48 @@ bool reposManger(struct Carte *carte){
 	return false;
 }
 
-void setIdEnFace(struct Carte *carte, tmx_layer *layer){
+void tp2tmx_setIdEnFace(struct Carte *carte, tmx_layer *layer){
 	switch(carte->sprite->lastDirection){
 		case EAST:
 			carte->sprite->futureTile.tileX+=1;
-			setTileInformations(carte, layer);
+			tp2tmx_setTileInformations(carte, layer);
 			break;
 		case WEST:
 			carte->sprite->futureTile.tileX-=1;
-			setTileInformations(carte, layer);
+			tp2tmx_setTileInformations(carte, layer);
 			break;
 		case SOUTH:
 			carte->sprite->futureTile.tileY+=1;
-			setTileInformations(carte, layer);
+			tp2tmx_setTileInformations(carte, layer);
 			break;
 		case NORTH:
 			carte->sprite->futureTile.tileY-=1;
-			setTileInformations(carte, layer);
+			tp2tmx_setTileInformations(carte, layer);
 			break;
 	}
 }
 
-bool actions(struct Carte *carte){
+bool tp2tmx_actions(struct Carte *carte) {
 	bool toRet = false;
 	tmx_layer *layer = carte->map->ly_head;
 	int i;
 	for(i = 0; i < carte->sprite->currentLayer-1; i++){
 		layer = layer->next;
 	}
-	setIdEnFace(carte, layer);
-	if(minerRoche(carte)){
-		destroyElement(layer->next, carte->sprite->futureTile.tileNumber);
+	tp2tmx_setIdEnFace(carte, layer);
+	if(tp2tmx_minerRoche(carte)){
+		tp2tmx_destroyElement(layer->next, carte->sprite->futureTile.tileNumber);
 		toRet = true;
-	}else if(boireEau(carte)){
+	}else if(tp2tmx_boireEau(carte)){
 		toRet = true;
-	}else if(reposManger(carte)){
+	}else if(tp2tmx_reposManger(carte)){
 		toRet = true;
 	}
-	restartFutureTile(carte->sprite);
+	tp2tmx_restartFutureTile(carte->sprite);
 	return toRet;
 }
 
-bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
+bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 	switch(id){
 		case 11:
 			carte->sprite->currentLayer+=1;
@@ -463,15 +467,15 @@ bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			return false;
 			break;
 	}
-	setTileInformations(carte, layer);
-	updateCurrentTile(carte->sprite);
-	setTileInformations(carte,layer->next);
-	updateCurrentTile(carte->sprite);
-	fromPositionToCoordinates(carte, layer->next);
+	tp2tmx_setTileInformations(carte, layer);
+	tp2tmx_updateCurrentTile(carte->sprite);
+	tp2tmx_setTileInformations(carte,layer->next);
+	tp2tmx_updateCurrentTile(carte->sprite);
+	tp2tmx_fromPositionToCoordinates(carte, layer->next);
 	return true;
 }
 
-bool gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
+bool tp2tmx_gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
 	switch(id){
 		case 11:
 			carte->sprite->currentLayer-=1;
@@ -499,14 +503,14 @@ bool gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
 	{
 		layer = layer->next;
 	}
-	setTileInformations(carte, layer);
-	updateCurrentTile(carte->sprite);
-	setTileInformations(carte,layer);
-	updateCurrentTile(carte->sprite);
-	fromPositionToCoordinates(carte, layer);
+	tp2tmx_setTileInformations(carte, layer);
+	tp2tmx_updateCurrentTile(carte->sprite);
+	tp2tmx_setTileInformations(carte,layer);
+	tp2tmx_updateCurrentTile(carte->sprite);
+	tp2tmx_fromPositionToCoordinates(carte, layer);
 	return true;
 }
 
-void destroyElement(tmx_layer *layer, int tileNumber){
+void tp2tmx_destroyElement(tmx_layer *layer, int tileNumber){
 	layer->content.gids[tileNumber] = 0;
 }

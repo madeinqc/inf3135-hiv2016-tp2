@@ -5,7 +5,7 @@
 */
 #include "tp2_animSprite.h"
 
-bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
+bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int numFrames,
 		int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
 	
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
@@ -42,12 +42,12 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	return true;
 }
 
-void deleteSprite(struct Sprite *sprite, struct Application* app){
+void tp2animSprite_delete(struct Sprite *sprite, struct Application* app){
   free(sprite);
   app->currSprite = NULL;
 }
 
-void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
+void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren){
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
@@ -55,7 +55,7 @@ void renderSprite(struct Sprite *sprite, SDL_Renderer *ren){
   SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
-void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
+void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte){
 	switch(direction){
 		case EAST:
 			sprite->futureTile.tileX+=1;
@@ -70,39 +70,39 @@ void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
 			sprite->futureTile.tileY-=1;
 			break;
 	}
-	changeSousMap(carte);
-	if(isTileOK(carte)){
-		updateCurrentTile(sprite);
+	tp2tmx_changeSousMap(carte);
+	if(tp2tmx_isTileOK(carte)){
+		tp2tmx_updateCurrentTile(sprite);
 	}else{
-		restartFutureTile(sprite);
+		tp2tmx_restartFutureTile(sprite);
 	}
 }
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
+bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){
 				case SDLK_UP:
-					moveSprite(sprite, NORTH, carte);
+					tp2animSprite_move(sprite, NORTH, carte);
 					sprite->lastDirection = NORTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
 					isConsumed = true;
 					break;
 				case SDLK_DOWN:
-					moveSprite(sprite, SOUTH, carte);
+					tp2animSprite_move(sprite, SOUTH, carte);
 					sprite->lastDirection = SOUTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
 					isConsumed = true;
 					break;
 				case SDLK_RIGHT:
-					moveSprite(sprite, WEST, carte);
+					tp2animSprite_move(sprite, WEST, carte);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
 					isConsumed = true;
 					break;
 				case SDLK_LEFT:
-					moveSprite(sprite, EAST, carte);
+					tp2animSprite_move(sprite, EAST, carte);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);
 					isConsumed = true;
@@ -117,7 +117,7 @@ bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Applicat
 	return isConsumed;
 }
 
-void layerToString(int layer, char* string){
+void tp2animSprite_layerToString(int layer, char* string){
 	switch(layer){
 		case 0: 
 			strcpy(string,"Level0");

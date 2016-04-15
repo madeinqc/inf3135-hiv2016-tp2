@@ -8,7 +8,7 @@
 #define TP2_ANIMSPRITE_H
 
 #include <stdbool.h>
-#include "tp2_carte.h"
+#include "tp2_structCarte.h"
 #include "sdl2.h"
 #include "tp2_image.h"
 #include "tp2_window.h"
@@ -83,29 +83,29 @@ struct Sprite{
  * @params *app L'application
  * @return False si la creation echoue
  */
-bool createSprite(const char* filename, int numRows, int numColumns, int numFrames, 
-					 int initialFrame, int delayBetweenFrame, int speed, struct Application* app);
+bool tp2animSprite_create(const char *filename, int numRows, int numColumns, int numFrames,
+													int initialFrame, int delayBetweenFrame, int speed, struct Application *app);
 /**
  * Libere les ressources du sprite
  * @params *app L'application
  */
-void deleteSprite(struct Sprite *sprite, struct Application* app);
+void tp2animSprite_delete(struct Sprite *sprite, struct Application *app);
 /**
  * Prepare le sprite pour le renderer
  * @params *app L'application
  */
-void renderSprite(struct Sprite *sprite, SDL_Renderer *ren);
+void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren);
 /**
  * Bouge le sprite dans une direction
  * @params direction La direction dans laquelle bouger le sprite
  */
-void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte);
+void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte);
 /**
  * Gestion des evenements lies au sprite
  * @params *event L'evenement a gerer
  * @params *app L'application
  */
-void layerToString(int layer, char* string);
+void tp2animSprite_layerToString(int layer, char *string);
 
-bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
+bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
 #endif

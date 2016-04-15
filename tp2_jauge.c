@@ -1,6 +1,6 @@
 #include "tp2_jauge.h"
 
-struct Jauge* createJauge(char *tabImages[8], int timespan, struct Application* app){
+struct Jauge* tp2jauge_create(char *tabImages[8], int timespan, struct Application* app){
 	struct Jauge *newJauge = (struct Jauge*)malloc(sizeof(struct Jauge)); 
 
 	newJauge->state = 7; 
@@ -18,19 +18,19 @@ struct Jauge* createJauge(char *tabImages[8], int timespan, struct Application* 
 	return newJauge; 
 }
 
-void deleteJauge(struct Jauge *jauge, struct Application* app){
+void tp2jauge_delete(struct Jauge *jauge, struct Application* app){
 	free(jauge); 
 }
 
-void renderJauge(struct Jauge *jauge, struct Application* app){
-	updateJauge(jauge, app); 
-	int imageIndex = jauge->state; 
+void tp2jauge_render(struct Jauge *jauge, struct Application* app){
+	tp2jauge_update(jauge, app);
+	int imageIndex = jauge->state;
 	SDL_Texture *image = jauge->tabImages[imageIndex]; 
 	SDL_Rect text = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 	SDL_RenderCopy(app->gRenderer, image, NULL, &text);  
 }
 
-void updateJauge(struct Jauge *jauge, struct Application* app){
+void tp2jauge_update(struct Jauge *jauge, struct Application* app){
 	int currentTime = SDL_GetTicks();
 	if(app->isPause || app->isLost || app->isWon){
 		jauge->lastUpdate = currentTime; 
@@ -44,7 +44,7 @@ void updateJauge(struct Jauge *jauge, struct Application* app){
 	}
 }
 
-void refillJauge(struct Jauge *jauge){
+void tp2jauge_refill(struct Jauge *jauge){
 	jauge->state =7; 
 	jauge->lastUpdate = SDL_GetTicks(); 
 }

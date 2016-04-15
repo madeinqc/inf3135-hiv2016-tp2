@@ -132,7 +132,8 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
       if (tileX == -1 || tileY == -1 ||
           tileX >= carte->map->height || tileY >= carte->map->width)
         continue; // Skip border lines as they should be blank
-      if(carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
+
+      if(carte->sprite->show && carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
 				char layerSprite[7];
 		    layerToString(carte->sprite->currentLayer, layerSprite);
 		    if(strcmp(layer->name, layerSprite) == 0){
@@ -273,7 +274,7 @@ bool isTileOK(struct Carte *carte){
 	}else if(gestionEscaliersDown(idTile, carte, layer)){
 		return true;
 	}
-	if(idTile == 1 || idTile == 5 || idTile == 3){
+	if(idTile == 1 || idTile == 5 || idTile == 3 || idTile == 12 || idTile == 13){
 		return false;
 	}
 	return fromPositionToCoordinates(carte, layer);

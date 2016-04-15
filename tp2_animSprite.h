@@ -69,6 +69,7 @@ struct Sprite{
 	int nbRoches;
 	// Rendering
 	SDL_Texture *texture;
+	bool show;
 };
 
 /**

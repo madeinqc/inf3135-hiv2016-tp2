@@ -23,6 +23,7 @@ bool createSprite(const char* filename, int numRows, int numColumns, int numFram
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
 	newSprite->nbRoches = 0;
+	newSprite->show = true;
 
 	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);

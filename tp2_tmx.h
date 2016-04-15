@@ -22,6 +22,7 @@ struct Carte {
   tmx_map *map;
   Mix_Chunk* pickaxeSound;
   Mix_Chunk* snoringSound;
+  Mix_Chunk* drinkSound;
   Mix_Music* gameMusic;
   int xSection;
   int ySection;

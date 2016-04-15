@@ -395,6 +395,19 @@ bool boireEau(struct Carte *carte){
 	int id = carte->sprite->futureTile.tileGID;
 	if(id == 2 || id == 4){
 		refillJauge(carte->waterJauge);
+		int currTime = SDL_GetTicks();
+		int endTime = currTime + 2000;
+		int nextSound = currTime + 50;
+		while(currTime < endTime){
+			currTime = SDL_GetTicks();
+			if(nextSound < currTime){
+				tp2Sound_playShort(carte->drinkSound);
+				nextSound += 1000;
+			}
+			// Drop all events
+			SDL_Event e;
+			SDL_PollEvent(&e);
+		}
 		return true;
 	}
 	return false;

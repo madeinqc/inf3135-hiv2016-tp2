@@ -132,7 +132,13 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
       if (tileX == -1 || tileY == -1 ||
           tileX >= carte->map->height || tileY >= carte->map->width)
         continue; // Skip border lines as they should be blank
-
+      if(carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
+				char layerSprite[7];
+		    layerToString(carte->sprite->currentLayer, layerSprite);
+		    if(strcmp(layer->name, layerSprite) == 0){
+		  		renderSprite(carte->sprite, ren);
+		  	}
+		  }
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
 			tile = carte->map->tiles[gid];
 			if (tile != NULL) {
@@ -156,7 +162,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
           carte->sprite->futureTile.tileX = i + 1;
           carte->sprite->futureTile.tileY = j;
         	carte->isSpriteInitialized = true;
-          isTileOK(carte);
+          if(isTileOK(carte)){
+          	updateCurrentTile(carte->sprite);
+          }
         }
     		if (image) {
     			texture = (SDL_Texture*)image->resource_image;
@@ -165,13 +173,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 			}
 		}
 	}
-	if(carte->isSpriteInitialized){
-		char layerSprite[7];
-    layerToString(carte->sprite->currentLayer, layerSprite);
-    if(strcmp(layer->name, layerSprite) == 0){
-  		renderSprite(carte->sprite, ren);
-  	}
-  }
 }
 
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte) {
@@ -205,14 +206,18 @@ bool findSectionHouse(struct Carte *carte){
 	int j;
 	unsigned int caseCourrante;
 	unsigned int gid;
+	printf("Height : %d, Width : %d\n",carte->map->height, carte->map->width);
 	for(i = 0; i < carte->map->height; ++i){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
 			gid = layer->content.gids[caseCourrante];
 			if(carte->map->tiles[gid] != NULL){
 				if(carte->map->tiles[gid]->id == 16){
+					printf("i : %d, j : %d, Case : %d\n", i, j, caseCourrante);
 					carte->xSection = (i-1)/15;
 					carte->ySection = (j-1)/15;
+					//layer->content.gids[caseCourrante-carte->map->width] = 3;
+					//layer->content.gids[caseCourrante-(carte->map->width*2)] = 3;
 					break;
 				}
 			}

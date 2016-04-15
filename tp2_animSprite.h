@@ -69,6 +69,8 @@ struct Sprite{
 	int nbRoches;
 	// Rendering
 	SDL_Texture *texture;
+
+	int lastUpdateTime;
 	bool show;
 };
 

@@ -373,6 +373,19 @@ bool changeSousMap(struct Carte *carte){
 bool minerRoche(struct Carte *carte){
 	if(carte->sprite->futureTile.tileGIDly == 14){
 		carte->sprite->nbRoches += 1;
+		int currTime = SDL_GetTicks();
+		int endTime = currTime + 3000;
+		int nextSound = currTime + 50;
+		while(currTime < endTime){
+			currTime = SDL_GetTicks();
+			if(nextSound < currTime){
+				tp2Sound_playShort(carte->pickaxeSound);
+				nextSound += 1000;
+			}
+			// Drop all events
+			SDL_Event e;
+			SDL_PollEvent(&e);
+		}
 		return true;
 	}
 	return false;

@@ -397,7 +397,6 @@ bool tp2tmx_boireEau(struct Carte *carte){
 	int id = carte->sprite->futureTile.tileGID;
 	if(id == 2 || id == 4){
 		tp2jauge_refill(carte->waterJauge);
-		refillJauge(carte->waterJauge);
 		int currTime = SDL_GetTicks();
 		int endTime = currTime + 2000;
 		int nextSound = currTime + 50;
@@ -422,8 +421,6 @@ bool tp2tmx_reposManger(struct Carte *carte){
 		tp2jauge_refill(carte->sleepJauge);
 		tp2jauge_refill(carte->foodJauge);
 		// In the house, victory condition is verfied 
-		refillJauge(carte->sleepJauge);
-		refillJauge(carte->foodJauge);
 		if(carte->nbRock == carte->sprite->nbRoches){
     	carte->allMined = true; 
     	return true;

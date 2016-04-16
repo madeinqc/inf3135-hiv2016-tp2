@@ -81,6 +81,9 @@ void moveSprite(struct Sprite *sprite, int direction, struct Carte *carte){
 
 bool handleEventsSprite(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
+	if(!carte->sprite->show){
+		return false;
+	}
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){

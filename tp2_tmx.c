@@ -123,6 +123,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 	SDL_Rect srcrect, dstrect;
 	SDL_Texture* texture;
 	bool transit = false;
+	if(carte->sprite->nextTimeShow < SDL_GetTicks()){
+		carte->sprite->show = true;
+	}
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
 			transit = false;
@@ -132,7 +135,6 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
       if (tileX == -1 || tileY == -1 ||
           tileX >= carte->map->height || tileY >= carte->map->width)
         continue; // Skip border lines as they should be blank
-
       if(carte->sprite->show && carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
 				char layerSprite[7];
 		    layerToString(carte->sprite->currentLayer, layerSprite);
@@ -418,10 +420,14 @@ bool reposManger(struct Carte *carte){
 	if(id == 17){
 		refillJauge(carte->sleepJauge);
 		refillJauge(carte->foodJauge);
-		// In the house, victory condition is verfied 
 		if(carte->nbRock == carte->sprite->nbRoches){
     	carte->allMined = true; 
+    	return true;
   	}
+		carte->sprite->show = false;
+		tp2Sound_playShort(carte->snoringSound);
+		carte->sprite->nextTimeShow = SDL_GetTicks() + 5000;
+		// In the house, victory condition is verfied 
 		return true;
 	}
 	return false;

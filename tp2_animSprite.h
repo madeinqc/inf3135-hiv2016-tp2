@@ -70,7 +70,7 @@ struct Sprite{
 	// Rendering
 	SDL_Texture *texture;
 
-	int lastUpdateTime;
+	int nextTimeShow;
 	bool show;
 };
 

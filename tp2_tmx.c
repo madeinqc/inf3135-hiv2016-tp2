@@ -209,18 +209,14 @@ bool findSectionHouse(struct Carte *carte){
 	int j;
 	unsigned int caseCourrante;
 	unsigned int gid;
-	printf("Height : %d, Width : %d\n",carte->map->height, carte->map->width);
 	for(i = 0; i < carte->map->height; ++i){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
 			gid = layer->content.gids[caseCourrante];
 			if(carte->map->tiles[gid] != NULL){
 				if(carte->map->tiles[gid]->id == 16){
-					printf("i : %d, j : %d, Case : %d\n", i, j, caseCourrante);
 					carte->xSection = (i-1)/15;
 					carte->ySection = (j-1)/15;
-					//layer->content.gids[caseCourrante-carte->map->width] = 3;
-					//layer->content.gids[caseCourrante-(carte->map->width*2)] = 3;
 					break;
 				}
 			}
@@ -305,14 +301,14 @@ bool fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
 bool setTileInformations(struct Carte *carte, tmx_layer *layer){
 	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
 	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
-	
+
 	carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
 	if(carte->sprite->futureTile.tileNumber < 0){
 		return false;
 	}
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
 	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
-	if(carte->sprite->futureTile.tileGID > 100 || carte->sprite->futureTile.tileGIDly > 100){
+	if(carte->sprite->futureTile.tileGID > 20 || carte->sprite->futureTile.tileGIDly > 20){
 		return false;
 	}
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
@@ -354,19 +350,19 @@ bool changeSousMap(struct Carte *carte){
   int caseY = carte->sprite->futureTile.tileY;
   if(caseX == 16 && carte->sprite->lastDirection == EAST){
     carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -15;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -16;
     return true;
   }else if(caseX == -1 && carte->sprite->lastDirection == WEST){
     carte->xSection -= carte->xSection == 0 ? 0 : 1;
-    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +15;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +16;
     return true;
   }else if(caseY == 16 && carte->sprite->lastDirection == SOUTH){
     carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -15;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -16;
     return true;
   }else if(caseY == -1 && carte->sprite->lastDirection == NORTH){
     carte->ySection -= carte->ySection == 0 ? 0 : 1;
-    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +15;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +16;
     return true;
   }
   return false;
@@ -480,15 +476,16 @@ bool gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX+=1;
 			break;
-		case 8: // Fonctionne
+		case 8:
+
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX-=1;
 			break;
-		case 9: // Fonctionne
+		case 9:
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileY-=1;
 			break;
-		case 10: // Fonctionne
+		case 10:
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileY+=1;
 			break;

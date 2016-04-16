@@ -1,9 +1,3 @@
-/**
- * @file
- * Description a venir... 
- *
-*/
-
 #include "tp2_accueil.h"
 
 struct Scene* tp2Accueil_getScene(struct Application *app) {
@@ -24,11 +18,6 @@ void* tp2Accueil_initScene(struct Application *app) {
   return menu;
 }
 
-/**
- * Charge les ressources graphiques en mémoire.
- * @param app Un pointeur vers la structure Application à utiliser.
- * @return True si le chargement a réussi.
- */
 bool tp2Accueil_loadMedia(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
   char *images[] = {PE, PM, PH, DE, DM, DH, QE, QM, QH};
@@ -54,11 +43,6 @@ void tp2Accueil_viewWillAppear(struct Application *app, void *state) {
   tp2Sound_playLong(menu->backMusic);
 }
 
-/**
- * 
- * @params app Un pointeur vers la structure Application à utiliser.
- * @return True si on commence le jeu, False si on quitte.
- */
 bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Menu *menu = (struct Menu*) state;
   bool isConsumed = false;

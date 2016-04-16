@@ -1,6 +1,6 @@
 /**
  * @file
- * Description a venir...
+ * Contient toutes les méthodes relatives au menu d'acceuil
  *
 */
 
@@ -45,8 +45,18 @@ struct Menu{
   Mix_Music* backMusic;
 };
 
+/**
+ * Creation de la scene du menu d'acceuil.
+ * @param app Pointeur vers l'application.
+ * @return void* Pointeur vers la scène créée.
+ */
 struct Scene* tp2Accueil_getScene(struct Application *app);
 
+/**
+ * Initialise la structure du menu d'acceuil.
+ * @param app Pointeur vers l'application.
+ * @return void* Pointeur vers la structure créée.
+ */
 void* tp2Accueil_initScene(struct Application *app);
 
 /**
@@ -56,22 +66,33 @@ void* tp2Accueil_initScene(struct Application *app);
  */
 bool tp2Accueil_loadMedia(struct Application *app, void *state);
 
+/**
+ * Méthode qui sert à démarrer certains processus avant l'affichage de la scène.
+ * @param app Pointeur vers l'application.
+ * @param state Pointeur vers la structure du menu.
+ */
 void tp2Accueil_viewWillAppear(struct Application *app, void *state);
 
 /**
- * 
- * @params app Un pointeur vers la structure Application à utiliser.
- * @return True si on commence le jeu, False si on quitte.
+ * Méthode qui gère les événements du menu d'acceuil
+ * @param app Pointeur vers l'application.
+ * @param state Pointeur vers la structure du menu.
+ * @param event Pointeur vers l'événement à gérer.
+ * @return True si l'événement a été géré par la méthode.
  */
 bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event);
 
 /**
- *
+ * Méthode qui gère l'affichage du menu d'acceuil.
+ * @param app Pointeur vers l'application.
+ * @param state Pointeur vers la structure du menu.
  */
 void tp2Accueil_draw(struct Application *app, void *state);
 
 /**
- *
+ * Méthode qui libère les ressources chargées par loadMedia()
+ * @param app Pointeur vers l'application.
+ * @param state Pointeur vers la structure du menu.
  */
 void tp2Accueil_release(struct Application *app, void *state);
 

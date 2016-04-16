@@ -127,6 +127,9 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 	SDL_Rect srcrect, dstrect;
 	SDL_Texture* texture;
 	bool transit = false;
+	if(carte->sprite->nextTimeShow < SDL_GetTicks()){
+		carte->sprite->show = true;
+	}
 	for (i = 0; i < 16; i++) {
 		for (j = 0; j < 16; j++) {
 			transit = false;
@@ -136,7 +139,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
       if (tileX == -1 || tileY == -1 ||
           tileX >= carte->map->height || tileY >= carte->map->width)
         continue; // Skip border lines as they should be blank
-      if(carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
+      if(carte->sprite->show && carte->isSpriteInitialized && carte->sprite->currTile.tileY == j && carte->sprite->currTile.tileX == i){
 				char layerSprite[7];
 				tp2animSprite_layerToString(carte->sprite->currentLayer, layerSprite);
 		    if(strcmp(layer->name, layerSprite) == 0){
@@ -210,18 +213,14 @@ bool tp2tmx_findSectionHouse(struct Carte *carte){
 	int j;
 	unsigned int caseCourrante;
 	unsigned int gid;
-	printf("Height : %d, Width : %d\n",carte->map->height, carte->map->width);
 	for(i = 0; i < carte->map->height; ++i){
 		for(j = 0; j < carte->map->width; ++j){
 			caseCourrante = (i*carte->map->width)+j;
 			gid = layer->content.gids[caseCourrante];
 			if(carte->map->tiles[gid] != NULL){
 				if(carte->map->tiles[gid]->id == 16){
-					printf("i : %d, j : %d, Case : %d\n", i, j, caseCourrante);
 					carte->xSection = (i-1)/15;
 					carte->ySection = (j-1)/15;
-					//layer->content.gids[caseCourrante-carte->map->width] = 3;
-					//layer->content.gids[caseCourrante-(carte->map->width*2)] = 3;
 					break;
 				}
 			}
@@ -277,7 +276,7 @@ bool tp2tmx_isTileOK(struct Carte *carte){
 	}else if(tp2tmx_gestionEscaliersDown(idTile, carte, layer)){
 		return true;
 	}
-	if(idTile == 1 || idTile == 5 || idTile == 3){
+	if(idTile == 1 || idTile == 5 || idTile == 3 || idTile == 12 || idTile == 13){
 		return false;
 	}
 	return tp2tmx_fromPositionToCoordinates(carte, layer);
@@ -306,14 +305,14 @@ bool tp2tmx_fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
 bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer){
 	int newX = carte->sprite->futureTile.tileX + carte->xSection * 15 - 1;
 	int newY = carte->sprite->futureTile.tileY + carte->ySection * 15 - 1;
-	
+
 	carte->sprite->futureTile.tileNumber = (newX * carte->map->width) + newY;
 	if(carte->sprite->futureTile.tileNumber < 0){
 		return false;
 	}
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
 	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
-	if(carte->sprite->futureTile.tileGID > 100 || carte->sprite->futureTile.tileGIDly > 100){
+	if(carte->sprite->futureTile.tileGID > 20 || carte->sprite->futureTile.tileGIDly > 20){
 		return false;
 	}
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];
@@ -355,19 +354,19 @@ bool tp2tmx_changeSousMap(struct Carte *carte){
   int caseY = carte->sprite->futureTile.tileY;
   if(caseX == 16 && carte->sprite->lastDirection == EAST){
     carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -15;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX -16;
     return true;
   }else if(caseX == -1 && carte->sprite->lastDirection == WEST){
     carte->xSection -= carte->xSection == 0 ? 0 : 1;
-    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +15;
+    carte->sprite->futureTile.tileX = carte->sprite->futureTile.tileX +16;
     return true;
   }else if(caseY == 16 && carte->sprite->lastDirection == SOUTH){
     carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -15;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY -16;
     return true;
   }else if(caseY == -1 && carte->sprite->lastDirection == NORTH){
     carte->ySection -= carte->ySection == 0 ? 0 : 1;
-    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +15;
+    carte->sprite->futureTile.tileY = carte->sprite->futureTile.tileY +16;
     return true;
   }
   return false;
@@ -376,6 +375,19 @@ bool tp2tmx_changeSousMap(struct Carte *carte){
 bool tp2tmx_minerRoche(struct Carte *carte){
 	if(carte->sprite->futureTile.tileGIDly == 14){
 		carte->sprite->nbRoches += 1;
+		int currTime = SDL_GetTicks();
+		int endTime = currTime + 3000;
+		int nextSound = currTime + 50;
+		while(currTime < endTime){
+			currTime = SDL_GetTicks();
+			if(nextSound < currTime){
+				tp2Sound_playShort(carte->pickaxeSound);
+				nextSound += 1000;
+			}
+			// Drop all events
+			SDL_Event e;
+			SDL_PollEvent(&e);
+		}
 		return true;
 	}
 	return false;
@@ -385,6 +397,20 @@ bool tp2tmx_boireEau(struct Carte *carte){
 	int id = carte->sprite->futureTile.tileGID;
 	if(id == 2 || id == 4){
 		tp2jauge_refill(carte->waterJauge);
+		refillJauge(carte->waterJauge);
+		int currTime = SDL_GetTicks();
+		int endTime = currTime + 2000;
+		int nextSound = currTime + 50;
+		while(currTime < endTime){
+			currTime = SDL_GetTicks();
+			if(nextSound < currTime){
+				tp2Sound_playShort(carte->drinkSound);
+				nextSound += 1000;
+			}
+			// Drop all events
+			SDL_Event e;
+			SDL_PollEvent(&e);
+		}
 		return true;
 	}
 	return false;
@@ -396,9 +422,15 @@ bool tp2tmx_reposManger(struct Carte *carte){
 		tp2jauge_refill(carte->sleepJauge);
 		tp2jauge_refill(carte->foodJauge);
 		// In the house, victory condition is verfied 
+		refillJauge(carte->sleepJauge);
+		refillJauge(carte->foodJauge);
 		if(carte->nbRock == carte->sprite->nbRoches){
     	carte->allMined = true; 
+    	return true;
   	}
+		carte->sprite->show = false;
+		tp2Sound_playShort(carte->snoringSound);
+		carte->sprite->nextTimeShow = SDL_GetTicks() + 5000;
 		return true;
 	}
 	return false;
@@ -451,15 +483,16 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX+=1;
 			break;
-		case 8: // Fonctionne
+		case 8:
+
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX-=1;
 			break;
-		case 9: // Fonctionne
+		case 9:
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileY-=1;
 			break;
-		case 10: // Fonctionne
+		case 10:
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileY+=1;
 			break;

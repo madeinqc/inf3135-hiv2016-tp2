@@ -44,7 +44,7 @@ void tp2Sound_playShort(Mix_Chunk* toPlay){
 }
 
 void tp2Sound_playLong(Mix_Music* toPlay){
-	if(Mix_PlayMusic(toPlay,0)){
+	if(Mix_PlayMusic(toPlay,-1)){
 		printf("Sound could not be played! SDL_Error: %s\n", Mix_GetError());
 	}
 }

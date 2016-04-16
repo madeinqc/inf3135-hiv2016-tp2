@@ -23,6 +23,7 @@ bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int
 	newSprite->speed = speed;
 	newSprite->currentLayer = 1;
 	newSprite->nbRoches = 0;
+	newSprite->show = true;
 
 	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);
@@ -80,6 +81,9 @@ void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *cart
 
 bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
+	if(!carte->sprite->show){
+		return false;
+	}
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){

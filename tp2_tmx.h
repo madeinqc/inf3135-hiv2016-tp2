@@ -15,6 +15,34 @@
 #define INITIAL_CAPACITY 8
 #define ASSETS_PATH "./assets/"
 
+struct Carte {
+  tmx_map *map;
+  Mix_Chunk* pickaxeSound;
+  Mix_Chunk* snoringSound;
+  Mix_Chunk* drinkSound;
+  Mix_Music* gameMusic;
+  int xSection;
+  int ySection;
+  int maxXSection;
+  int maxYSection;
+  int maxXDisplacement;
+  int maxYDisplacement;
+  struct Scene *pause;
+  struct Pause *sPause; 
+  struct Scene *defaite;
+  struct Defaite *sDefaite; 
+  struct Scene *victoire;
+  struct Victoire *sVictoire; 
+  bool allMined; 
+  struct Jauge *foodJauge; 
+  struct Jauge *waterJauge; 
+  struct Jauge *sleepJauge; 
+  bool isSpriteInitialized;
+  struct Sprite *sprite;
+  SDL_Texture *background;
+  int nbRock;
+};
+
 struct mapsName {
   char** names;
   long count;

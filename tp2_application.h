@@ -1,15 +1,17 @@
+/**
+ * @file
+ * La structure Application contient toutes les informations requises par la SDL. 
+ *
+*/
+
 #ifndef TP2_APPLICATION_H
 #define TP2_APPLICATION_H
-
 
 /**
  * Enumération des difficultés possibles.
  */
 enum Difficulty{EASY, MEDIUM, HARD};
 
-/**
- * La structure Application contient toutes les informations requises par la SDL.
- */
 struct Application {
   /**
    * La fenêtre utilisée par le jeu.

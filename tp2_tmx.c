@@ -311,7 +311,7 @@ bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer){
 	}
 	carte->sprite->futureTile.tileGID = layer->content.gids[carte->sprite->futureTile.tileNumber];
 	carte->sprite->futureTile.tileGIDly = layer->next->content.gids[carte->sprite->futureTile.tileNumber];
-	if(carte->sprite->futureTile.tileGID > 20 || carte->sprite->futureTile.tileGIDly > 20){
+	if(carte->sprite->futureTile.tileGID > 18 || carte->sprite->futureTile.tileGIDly > 18){
 		return false;
 	}
 	tmx_tile *tile = carte->map->tiles[carte->sprite->futureTile.tileGID];

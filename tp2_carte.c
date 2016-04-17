@@ -37,14 +37,6 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   carte->snoringSound = tp2Sound_loadShort(SOUND_SNORING);
   carte->gameMusic = tp2Sound_loadLong(MUSIC_GAME);
 
-  tp2tmx_loadRandomMap(app->gRenderer, carte);
-
-  carte->xSection = 0;
-  carte->ySection = 0;
-
-  carte->maxXSection = (carte->map->height + 1)/ 15;
-  carte->maxYSection = (carte->map->width + 1)/ 15;
-
   carte->pause = tp2Pause_getScene(app); 
   carte->sPause = carte->pause->initScene(app);
   carte->pause->loadMedia(app, carte->sPause);
@@ -96,12 +88,7 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
 
   carte->background = tp2image_load(app, IMG_BACK);
 
-  tp2tmx_findSectionHouse(carte);
-
-  // Detruire le personnage dans la map
-  tp2tmx_destroyElement(carte->map->ly_head->next, 127);
-
-  tp2tmx_findNbRocks(carte);
+  tp2tmx_loadRandomMap(app->gRenderer, carte);
 
   return true;
 }
@@ -137,27 +124,11 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
-        case SDLK_q:
-          carte->ySection -= carte->ySection == 0 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_s:
-          carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_a:
-          carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_w:
-          carte->xSection -= carte->xSection == 0 ? 0 : 1;
-          isConsumed = true;
-          break;
         case SDLK_SPACE:
         	tp2tmx_actions(carte);
           break;
         case SDLK_ESCAPE:
-          app->isPause = true; 
+          app->isPause = true;
           break;
         case SDLK_RETURN:
           tp2Sound_playShort(carte->pickaxeSound);

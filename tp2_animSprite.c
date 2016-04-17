@@ -55,65 +55,64 @@ void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren){
   SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
-void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte){
-	switch(direction){
-		case EAST:
-			sprite->futureTile.tileX+=1;
-			break;
-		case WEST:
-			sprite->futureTile.tileX-=1;
-			break;
-		case SOUTH:
-			sprite->futureTile.tileY+=1;
-			break;
-		case NORTH:
-			sprite->futureTile.tileY-=1;
-			break;
-	}
+void tp2animSprite_move(struct Sprite *sprite, struct Carte *carte){
+  if (tp2tmx_isNextTileWalkable(sprite, carte)) {
+    switch (sprite->direction) {
+      case SOUTHEAST:
+        sprite->futureTile.tileX += 1;
+        break;
+      case NORTHWEST:
+        sprite->futureTile.tileX -= 1;
+        break;
+      case SOUTHWEST:
+        sprite->futureTile.tileY -= 1;
+        break;
+      case NORTHEAST:
+        sprite->futureTile.tileY += 1;
+        break;
+    }
+  }
 	tp2tmx_changeSousMap(carte);
-	if(tp2tmx_isTileOK(carte)){
-		tp2tmx_updateCurrentTile(sprite);
-	}else{
-		tp2tmx_restartFutureTile(sprite);
-	}
+  // TODO check this ???
+//	if(tp2tmx_isTileOK(carte)){
+//		tp2tmx_updateCurrentTile(sprite);
+//	}else{
+//		tp2tmx_restartFutureTile(sprite);
+//	}
 }
 
 bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
 	bool isConsumed = false;
-	switch(event->type){
-		case SDL_KEYDOWN:
-			switch(event->key.keysym.sym){
-				case SDLK_UP:
-					tp2animSprite_move(sprite, NORTH, carte);
-					sprite->lastDirection = NORTH;
-					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
-					isConsumed = true;
-					break;
-				case SDLK_DOWN:
-					tp2animSprite_move(sprite, SOUTH, carte);
-					sprite->lastDirection = SOUTH;
-					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
-					isConsumed = true;
-					break;
-				case SDLK_RIGHT:
-					tp2animSprite_move(sprite, WEST, carte);
-					sprite->lastDirection = WEST;
-					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
-					isConsumed = true;
-					break;
-				case SDLK_LEFT:
-					tp2animSprite_move(sprite, EAST, carte);
-					sprite->lastDirection = EAST;
-					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);
-					isConsumed = true;
-					break;
-			}
-			break;
-		case SDL_KEYUP:
-			sprite->currentFrame = sprite->lastDirection*20;
-			isConsumed = true;
-			break;
-	}
+
+  if (sprite->direction == NONE) {
+    switch (event->type) {
+      case SDL_KEYDOWN:
+        switch (event->key.keysym.sym) {
+          case SDLK_w:
+            sprite->direction = NORTHEAST;
+//            sprite->currentFrame = ((sprite->currentFrame + 1) % (sprite->nbFrames)) + (20 * NORTHEAST);
+            isConsumed = true;
+            break;
+          case SDLK_a:
+            sprite->direction = SOUTHWEST;
+            isConsumed = true;
+            break;
+          case SDLK_q:
+            sprite->direction = NORTHWEST;
+            isConsumed = true;
+            break;
+          case SDLK_s:
+            sprite->direction = SOUTHEAST;
+            isConsumed = true;
+            break;
+        }
+        break;
+    }
+  }
+
+  if (sprite->direction != NONE) {
+    tp2animSprite_move(sprite, carte);
+  }
 	return isConsumed;
 }
 

@@ -21,10 +21,6 @@
  * Image du personnage principal
  */
 #define IMG_PERSO "assets/walking.png"
-/**
- * Enumeration des directions
- */
-enum Direction{EAST,SOUTH,WEST,NORTH};
 
 struct Position{
 	// Varie entre 0 et 15
@@ -61,8 +57,9 @@ struct Sprite{
 	int posY;
 	struct Position currTile;
 	struct Position futureTile;
-	int lastDirection;
+	int orientation;
 	int currentLayer;
+	enum Direction direction;
 	// Speed
 	int speed;
 	// Nombre de roche minees
@@ -96,10 +93,9 @@ void tp2animSprite_delete(struct Sprite *sprite, struct Application *app);
  */
 void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren);
 /**
- * Bouge le sprite dans une direction
- * @params direction La direction dans laquelle bouger le sprite
+ * Bouge le sprite dans une direction si possible
  */
-void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte);
+void tp2animSprite_move(struct Sprite *sprite, struct Carte *carte);
 /**
  * Gestion des evenements lies au sprite
  * @params *event L'evenement a gerer

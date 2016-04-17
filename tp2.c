@@ -7,6 +7,11 @@
 #include "tp2_window.h"
 
 int main() {
+
+  char c[] = "c";
+  char s[] = "lawl string";
+  char *ss[] = {c, s};
+
   struct Application app = {NULL, NULL, NULL, NULL, NULL, true, NULL, NULL, false, false, false};
   if (initialize(&app)) {
     initMainScene(&app);

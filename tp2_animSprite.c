@@ -1,8 +1,3 @@
-/**
- * @file
- * Description a venir... 
- *
-*/
 #include "tp2_animSprite.h"
 
 bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int numFrames,
@@ -71,6 +66,7 @@ void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *cart
 			sprite->futureTile.tileY-=1;
 			break;
 	}
+	// Vérifie si la nouvelle case est valide
 	tp2tmx_changeSousMap(carte);
 	if(tp2tmx_isTileOK(carte)){
 		tp2tmx_updateCurrentTile(sprite);

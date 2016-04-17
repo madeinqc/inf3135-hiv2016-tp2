@@ -1,9 +1,7 @@
 /**
  * @file
- * Fichier permettant de gerer les sprites animes
- *
+ * Fichier permettant de gérer le personnage principal.
 */
-
 #ifndef TP2_ANIMSPRITE_H
 #define TP2_ANIMSPRITE_H
 
@@ -18,14 +16,17 @@
 #include "tp2_tmx.h"
 
 /**
- * Image du personnage principal
+ * Image du personnage principal.
  */
 #define IMG_PERSO "assets/walking.png"
 /**
- * Enumeration des directions
+ * Enumeration des directions.
  */
 enum Direction{EAST,SOUTH,WEST,NORTH};
 
+/**
+ * Structure d'une position
+ */
 struct Position{
 	// Varie entre 0 et 15
 	int tileX;
@@ -69,46 +70,54 @@ struct Sprite{
 	int nbRoches;
 	// Rendering
 	SDL_Texture *texture;
-
+	// Render ou non le sprite
 	int nextTimeShow;
 	bool show;
 };
 
 /**
- * Creer un spritesheet
- * @params *filename Chemin vers le fichier du sprite
- * @params numRows Le nombre de ligne du fichier sprite
- * @params numColumns Le nombre de colonne du fichier sprite
- * @params numFrames Le nombre de frames par direction du sprite
- * @params initialFrame La frame initiale
- * @params delayBetweenFrame Le delai entre les frames
- * @params speed La vitesse pour bouger le sprite
- * @params *app L'application
- * @return False si la creation echoue
+ * Creer un spritesheet animé.
+ * @param filename Chemin vers le fichier du sprite.
+ * @param numRows Le nombre de ligne du fichier sprite.
+ * @param numColumns Le nombre de colonne du fichier sprite.
+ * @param numFrames Le nombre de frames par direction du sprite.
+ * @param initialFrame La frame initiale.
+ * @param delayBetweenFrame Le delai entre les frames.
+ * @param speed La vitesse pour bouger le sprite.
+ * @param app L'application.
+ * @return True si la création réussi.
  */
 bool tp2animSprite_create(const char *filename, int numRows, int numColumns, int numFrames,
 													int initialFrame, int delayBetweenFrame, int speed, struct Application *app);
 /**
- * Libere les ressources du sprite
- * @params *app L'application
+ * Libere les ressources du sprite.
+ * @param sprite Le sprite à supprimer.
+ * @param app L'application.
  */
 void tp2animSprite_delete(struct Sprite *sprite, struct Application *app);
 /**
- * Prepare le sprite pour le renderer
- * @params *app L'application
+ * Prépare le sprite pour le renderer.
+ * @param sprite Le sprite à render.
+ * @param app L'application
  */
 void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren);
 /**
- * Bouge le sprite dans une direction
- * @params direction La direction dans laquelle bouger le sprite
+ * Bouge le sprite dans une direction.
+ * @param sprite Le sprite à bouger.
+ * @param direction La direction dans laquelle bouger le sprite.
+ * @param carte La carte sur laquelle le sprite bouge.
  */
 void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte);
-/**
- * Gestion des evenements lies au sprite
- * @params *event L'evenement a gerer
- * @params *app L'application
- */
+
 void tp2animSprite_layerToString(int layer, char *string);
 
+/**
+ * Gestion des evenements lies au sprite.
+ * @param sprite Le sprite.
+ * @param event L'événement à gérer.
+ * @param app L'application.
+ * @param carte La carte sur laquelle l'événement est appelé.
+ * @return True si l'événement est géré par la méthode.
+ */
 bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
 #endif

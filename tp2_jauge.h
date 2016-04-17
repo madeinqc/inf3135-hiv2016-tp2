@@ -84,7 +84,7 @@ void tp2jauge_update(struct Jauge *jauge, struct Application* app);
  */
 void tp2jauge_refill(struct Jauge *jauge);
 /**
- * Libere les ressources de la jauge.
+ * Libère les ressources de la jauge.
  * @param jauge Pointeur vers la jauge. 
  * @param app Pointeur vers l'application.
  */

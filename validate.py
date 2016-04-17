@@ -1,20 +1,25 @@
+# -*- coding: utf-8 -*-
+''' 
+Fichier python qui test la validité des cartes tmx disponibles dans le répertoire assets.
+Pour changer de répertoire, modifier la variable path à la fin du fichier. 
+''' 
 import pytmx
 import os
 import glob
 
 ''' 
-CONDITIONS DE VALIDITE:
-	Toute tuile doit reposer sur une tuile de sable, terre ou gason seulement a l'exeption d'une tuile de terre qui peut etre sur une tuile d'eau (pont).
-	Au niveau 0, une tuile peut etre sur une tuile vide si celle-ci est dans l'axe transitoire (sinon map2 invalide).
-	Il est necessaire d'avoir une et une seule maison par carte.
-	Il est necessaire d'avoir au moins une roche par carte.  
+CONDITIONS DE VALIDITÉ:
+	Toute tuile doit reposer sur une tuile de sable, terre ou gason seulement a l'exeption d'une tuile de terre qui peut être sur une tuile d'eau (pont).
+	Au niveau 0, une tuile peut être sur une tuile vide si celle-ci est dans l'axe transitoire.
+	Il est nécessaire d'avoir une et une seule maison par carte.
+	Il est nécessaire d'avoir au moins une roche par carte.  
 '''
 
 ''' ---------------------------------------------------------------------------------
---	Methodes pour test seulement 
+--	Méthodes pour test seulement 
 --------------------------------------------------------------------------------- '''
 def print_GID_by_layer():
-	''' Imprime les tuiles diponibles dans chaque niveau avec le GID et proprietes '''
+	''' Imprime les tuiles diponibles dans chaque niveau avec le GID et propriétés. '''
 	tileSet = set()
 
 	for noLayer in data.visible_tile_layers:
@@ -27,7 +32,7 @@ def print_GID_by_layer():
 	o = [(i,data.get_tile_properties_by_gid(i)) for i in tileSet]
 
 def print_GID_by_map():
-	''' Imprime les tuiles diponibles dans la carte avec le GID et proprietes '''
+	''' Imprime les tuiles diponibles dans la carte avec le GID et propriétés. '''
 	tileSet = set()
 
 	for noLayer in data.visible_tile_layers:
@@ -42,7 +47,7 @@ def print_GID_by_map():
 ''' -------------------------------------------------------------------------------- '''
 
 def get_set_GID():
-	''' Retourne un set de tous les GIDs diponibles dans la carte '''
+	''' Retourne un set de tous les GIDs diponibles dans la carte. '''
 	tileSet = set()
 
 	for noLayer in data.visible_tile_layers:
@@ -68,15 +73,14 @@ def get_tile_dict():
 	return tileDict
 
 def get_dict_by_GID(gid):
-	''' Retourne le le nom correspondant au GID demande
-	ATTENTION!: cette methode est specifique au nom du path utilise dans la carte'''
+	''' Retourne le le nom correspondant au GID demandé.'''
 	tileSet = get_set_GID()
 	tileDict = dict((i, data.get_tile_properties_by_gid(i)['source'][:-4]) for i in tileSet)
 	tileDict[0] = 'empty'
 	return tileDict[gid]
 
 def get_dict_by_type(name):
-	''' Retourne le le GID correspondant au nom demande.'''
+	''' Retourne le le GID correspondant au nom demandé.'''
 	tileDict = get_tile_dict()
 	tileDict['empty'] = 0
 	return tileDict[name]
@@ -93,7 +97,7 @@ def validate_level0():
 		return True
 
 def is_tile_type(tile, tileType):
-	''' Retourne True si le type de la tuile est celui demande. ''' 
+	''' Retourne True si le type de la tuile est celui demandé. ''' 
 	tileGID = data.get_tile_gid(tile[0], tile[1], tile[2])
 	tileName = get_dict_by_GID(tileGID)
 	if tileName == tileType:
@@ -122,7 +126,7 @@ def is_valide_tile(tile):
 	return True
 
 def validate_levels():
-	''' Recupere chaque tuple de tuile qui n'est pas au level 0. Pour chaque tuile recuperees, appelle la function is_valide_tile(). 
+	''' Recupere chaque tuple de tuile qui n'est pas au niveau 0. Pour chaque tuile récuperée, on appelle la function is_valide_tile(). 
 	Retourne False si une tuile est invalide.'''
 	locationList = []
 	tileSet = get_set_GID()
@@ -138,7 +142,7 @@ def validate_levels():
 
 
 def is_map_complete():
-	''' Verifie le nombre de maisons et roches dans la carte. Retourne False is la carte est incomplete.'''
+	''' Vérifie le nombre de maisons et roches dans la carte. Retourne False is la carte est incomplete ou invalide.'''
 	elemList = []
 	elemList.extend(list(data.get_tile_locations_by_gid(get_dict_by_type('house'))))
 	if len(elemList) != 1:
@@ -150,7 +154,7 @@ def is_map_complete():
 	return True
 
 def continuous_levels():
-	''' Verifie le nombre de niveaux consecutifs dans la carte. Retourne False s'il n'y a pas 4 niveaux consecutifs. '''
+	''' Vérifie le nombre de niveaux consécutifs dans la carte. Retourne False s'il n'y a pas 4 niveaux consécutifs. '''
 	layerList = list(data.visible_tile_layers)
 	if len(layerList) != 4:
 		return False
@@ -160,8 +164,8 @@ def continuous_levels():
 	return True
 
 def validate_size():
-	''' Verifie que la largeur et la longueur de la carte permet d'avoir des sous-cartes de dimention 14x14 avec des tules de transition entre chanque sous-carte.
-	Retourne False si la carte a des dimentions illegales.'''
+	''' Vérifie que la largeur et la longueur de la carte permet d'avoir des sous-cartes de dimention 14x14 avec des tules de transition entre chanque sous-carte.
+	Retourne False si la carte a des dimentions invalides.'''
 	width = get_map_size()[0]
 	height = get_map_size()[1]
 	if width // 14 != width % 14 +1:
@@ -173,7 +177,7 @@ def validate_size():
 	return True
 
 def main(path):
-	''' Pour chaque fichier .tmx dans le repertoire, verifie la validite et affiche le message approprie. '''
+	''' Pour chaque fichier .tmx dans le repertoire, verifie la validité et affiche le message approprié. '''
 	if not continuous_levels():
 		print '%s is invalid! It is required to have 4 continuous levels.' % path
 	elif not validate_size():

@@ -1,6 +1,6 @@
 /**
  * @file
- * Description a venir... 
+ * Sous-scène de carte qui gère l'événement de défaite. 
  *
 */
 

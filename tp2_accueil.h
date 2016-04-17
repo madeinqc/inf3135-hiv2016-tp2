@@ -35,44 +35,43 @@
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
 #define SOUND_ACCEUIL "assets/sounds/acceuilSong2.wav"
-
+/**
+ * Énumération des options du menu disponibles. 
+ */
 enum State{PLAY, DIFFICULTY, QUIT};
-
+/**
+ * Structure de medu d'acceuil. 
+ */
 struct Menu{
 	enum State state;
 	SDL_Texture *tabImages[9];
   Mix_Chunk* choiceSound;
   Mix_Music* backMusic;
 };
-
 /**
  * Creation de la scene du menu d'acceuil.
  * @param app Pointeur vers l'application.
  * @return void* Pointeur vers la scène créée.
  */
 struct Scene* tp2Accueil_getScene(struct Application *app);
-
 /**
  * Initialise la structure du menu d'acceuil.
  * @param app Pointeur vers l'application.
  * @return void* Pointeur vers la structure créée.
  */
 void* tp2Accueil_initScene(struct Application *app);
-
 /**
  * Charge les ressources graphiques en mémoire.
  * @param app Un pointeur vers la structure Application à utiliser.
  * @return True si le chargement a réussi.
  */
 bool tp2Accueil_loadMedia(struct Application *app, void *state);
-
 /**
  * Méthode qui sert à démarrer certains processus avant l'affichage de la scène.
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  */
 void tp2Accueil_viewWillAppear(struct Application *app, void *state);
-
 /**
  * Méthode qui gère les événements du menu d'acceuil
  * @param app Pointeur vers l'application.
@@ -81,14 +80,12 @@ void tp2Accueil_viewWillAppear(struct Application *app, void *state);
  * @return True si l'événement a été géré par la méthode.
  */
 bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event);
-
 /**
  * Méthode qui gère l'affichage du menu d'acceuil.
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  */
 void tp2Accueil_draw(struct Application *app, void *state);
-
 /**
  * Méthode qui libère les ressources chargées par loadMedia()
  * @param app Pointeur vers l'application.

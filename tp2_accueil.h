@@ -19,7 +19,7 @@
 #include "tp2_carte.h"
 
 /**
- * Image du menu principal
+ * Image du menu principal.
  */
 #define PE "assets/imagesAccueil/PlayEasy.png"
 #define PM "assets/imagesAccueil/PlayMedium.png"
@@ -31,7 +31,7 @@
 #define QM "assets/imagesAccueil/QuitMedium.png"
 #define QH "assets/imagesAccueil/QuitHard.png"
 /**
- * Sons du menu principal
+ * Sons du menu principal.
  */
 #define SOUND_PICKAXE "assets/sounds/pickaxe.wav"
 #define SOUND_ACCEUIL "assets/sounds/acceuilSong2.wav"
@@ -63,6 +63,7 @@ void* tp2Accueil_initScene(struct Application *app);
 /**
  * Charge les ressources graphiques en mémoire.
  * @param app Un pointeur vers la structure Application à utiliser.
+ * @param state Pointeur vers la structure du menu.
  * @return True si le chargement a réussi.
  */
 bool tp2Accueil_loadMedia(struct Application *app, void *state);

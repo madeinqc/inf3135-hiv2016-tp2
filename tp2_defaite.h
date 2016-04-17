@@ -26,7 +26,7 @@
  */
 enum defaiteState{DRESTART, DQUIT};
 /**
- * Structure de défaite
+ * Structure de défaite.
  */
 struct Defaite{
 	enum defaiteState state;
@@ -48,6 +48,7 @@ void* tp2Defaite_initScene(struct Application *app);
 /**
  * Charge les ressources graphiques en mémoire.
  * @param app Un pointeur vers la structure Application à utiliser.
+ * @param state Pointeur vers la structure du menu.
  * @return True si le chargement a réussi.
  */
 bool tp2Defaite_loadMedia(struct Application *app, void *state);
@@ -58,7 +59,7 @@ bool tp2Defaite_loadMedia(struct Application *app, void *state);
  */
 void tp2Defaite_viewWillAppear(struct Application *app, void *state);
 /**
- * Méthode qui gère les événements du menu de défaite
+ * Méthode qui gère les événements du menu de défaite.
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  * @param event Pointeur vers l'événement à gérer.

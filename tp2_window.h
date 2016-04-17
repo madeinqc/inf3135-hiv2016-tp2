@@ -1,7 +1,6 @@
 /**
  * @file
- * Description a venir...
- *
+ * Gestion de la fenêtre et de ce qui s'y affiche.
  */
 
 #ifndef TP2_WINDOW_H
@@ -14,7 +13,7 @@
 #include "tp2_accueil.h"
 
 /**
- * Title de la fenêtre principale.
+ * Titre de la fenêtre principale.
  */
 #define WINDOW_TITLE "Bob le mineur"
 /**
@@ -35,6 +34,7 @@ bool initialize(struct Application *application);
 
 /**
  * Initialise la scène d'accueil.
+ * @param application Un pointeur vers la structure Application.
  */
 void initMainScene(struct Application *app);
 
@@ -48,7 +48,6 @@ void gameLoop(struct Application *application);
 /**
  * Ferme la SDL correctement en libérant les ressources nécessaires.
  * @param application Un pointeur vers la structure Application à libérer.
- * @return True si la libération des ressources a réussi.
  */
 void shutDown(struct Application *application);
 

@@ -1,11 +1,5 @@
-/**
- * @file
- * Gestion de tout ce qui touche la fenetre
- *
-*/
 #include "tp2_window.h"
 
-// Initialisation
 bool initialize(struct Application *app) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -28,7 +22,6 @@ void initMainScene(struct Application *app) {
   app->nextScene = tp2Accueil_getScene(app);
 }
 
-// Boucle de jeu
 void gameLoop(struct Application *application) {
   application->isRunning = true;
   void* currentState = NULL;

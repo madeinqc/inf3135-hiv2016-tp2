@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Gestion des images
+ */
 #include "tp2_image.h"
 
 SDL_Texture* tp2image_load(struct Application *app, char *imagePath){

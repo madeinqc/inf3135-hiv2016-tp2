@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Contient toutes les méthodes relatives au menu d'acceuil
+ *
+*/
 #include "tp2_accueil.h"
 
 struct Scene* tp2Accueil_getScene(struct Application *app) {

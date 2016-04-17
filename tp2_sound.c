@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Fichier contenant les méthodes nécessaires au chargement des sons.
+*/
 #ifndef TP2_SOUND_H
 #define TP2_SOUND_H
 

@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Gestion de la fenêtre et de ce qui s'y affiche.
+ */
 #include "tp2_window.h"
 
 bool initialize(struct Application *app) {

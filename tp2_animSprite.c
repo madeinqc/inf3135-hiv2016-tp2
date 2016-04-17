@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Fichier permettant de gérer le personnage principal.
+*/
 #include "tp2_animSprite.h"
 
 bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int numFrames,

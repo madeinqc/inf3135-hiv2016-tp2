@@ -1,7 +1,6 @@
 /**
  * @file
- * Description a venir...
- *
+ * Gestion de tout ce qui touche au rendering du jeu.
  */
 #include "tp2_tmx.h"
 

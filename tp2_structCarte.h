@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Structure de la carte.
+ */
 #ifndef TP2_STRUCTCARTE_H
 #define TP2_STRUCTCARTE_H
 
@@ -5,6 +9,9 @@
 #include <tmx.h>
 #include "sdl2.h"
 
+/**
+ * Structure carte contenant les différentes informations relatives au jeu.
+ */
 struct Carte {
   tmx_map *map;
   Mix_Chunk* pickaxeSound;

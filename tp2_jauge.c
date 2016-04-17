@@ -1,3 +1,9 @@
+/**
+ * @file
+ * Gestion d'une jauge générique. 
+ *
+*/
+
 #include "tp2_jauge.h"
 
 struct Jauge* tp2jauge_create(char *tabImages[8], int timespan, struct Application* app){
@@ -16,10 +22,6 @@ struct Jauge* tp2jauge_create(char *tabImages[8], int timespan, struct Applicati
 	newJauge->timespan = timespan;
 	}
 	return newJauge; 
-}
-
-void tp2jauge_delete(struct Jauge *jauge, struct Application* app){
-	free(jauge); 
 }
 
 void tp2jauge_render(struct Jauge *jauge, struct Application* app){
@@ -47,4 +49,8 @@ void tp2jauge_update(struct Jauge *jauge, struct Application* app){
 void tp2jauge_refill(struct Jauge *jauge){
 	jauge->state =7; 
 	jauge->lastUpdate = SDL_GetTicks(); 
+}
+
+void tp2jauge_delete(struct Jauge *jauge, struct Application* app){
+	free(jauge); 
 }

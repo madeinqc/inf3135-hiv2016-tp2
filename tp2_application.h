@@ -24,34 +24,40 @@ struct Application {
    */
   SDL_Surface* gImage;
   /**
-   * Texture principale de l'application
+   * Texture principale de l'application.
    */
   SDL_Texture* texture;
   /**
-   * Le sprite courrant
+   * Le sprite courrant.
    */
   struct Sprite *currSprite;
   /**
-   * Is the game running
+   * Est-ce que l'application doit toujours fonctionner.
    */
   bool isRunning;
   /**
-   * The current scene
+   * La scène courrante.
    */
   struct Scene *scene;
   /**
-   * The scene to load
+   * La nouvelle scène à charger.
    */
   struct Scene *nextScene;
   /**
-   * The difficulty of the game.
+   * La difficulté du jeu.
    */
   enum Difficulty diff;
-
+  /**
+   * Est-ce que le jeu est sur pause.
+   */
   bool isPause;
-
+  /**
+   * Est-ce que le jeu a été gagné.
+   */
   bool isWon; 
-
+  /**
+   * Est-ce que le jeu a été perdu.
+   */
   bool isLost; 
 };
 

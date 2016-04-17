@@ -10,7 +10,7 @@
 #include "sdl2.h"
 
 /**
- * Structure carte contenant les différentes informations relatives au jeu.
+ * Structure carte contenant les différentes informations relatives au jeu. 
  */
 struct Carte {
   tmx_map *map;

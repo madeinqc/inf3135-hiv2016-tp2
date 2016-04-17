@@ -1,9 +1,3 @@
-/**
- * @file
- * Description a venir...
- *
-*/
-
 #ifndef TP2_SOUND_H
 #define TP2_SOUND_H
 

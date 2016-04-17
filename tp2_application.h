@@ -1,6 +1,6 @@
 /**
  * @file
- * La structure Application contient toutes les informations requises par la SDL. 
+ * La structure application contient toutes les informations requises par la SDL. 
  *
 */
 

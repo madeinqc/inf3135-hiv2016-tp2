@@ -1,6 +1,6 @@
 /**
  * @file
- * Description a venir... 
+ * Gestion de la scène carte.
  *
 */
 
@@ -24,11 +24,6 @@ void* tp2Carte_initScene(struct Application *app) {
   return carte;
 }
 
-/**
- * Charge les ressources graphiques en mémoire.
- * @param app Un pointeur vers la structure Application à utiliser.
- * @return True si le chargement a réussi.
- */
 bool tp2Carte_loadMedia(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
 
@@ -113,11 +108,6 @@ void tp2Carte_viewWillAppear(struct Application *app, void *state) {
   tp2Sound_playLong(carte->gameMusic);
 }
 
-/**
- * 
- * @params app Un pointeur vers la structure Application à utiliser.
- * @return True si on commence le jeu, False si on quitte.
- */
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Carte *carte = (struct Carte*) state;
   bool isConsumed = false;
@@ -171,9 +161,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   return isConsumed;
 }
 
-/**
- *
- */
 void tp2Carte_draw(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
   SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -194,9 +181,6 @@ void tp2Carte_draw(struct Application *app, void *state) {
   SDL_DestroyTexture(texture);
 }
 
-/**
- *
- */
 void tp2Carte_release(struct Application *app, void *state) {
   struct Carte *carte = (struct Carte*) state;
   tp2Sound_freeShort(carte->pickaxeSound);

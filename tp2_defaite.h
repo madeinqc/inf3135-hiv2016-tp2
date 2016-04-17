@@ -73,7 +73,7 @@ bool tp2Defaite_handleEvents(struct Application *app, void *state, SDL_Event *ev
  */
 void tp2Defaite_draw(struct Application *app, void *state);
 /**
- * Méthode qui libère les ressources chargées par loadMedia()
+ * Méthode qui libère les ressources chargées par loadMedia().
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  */

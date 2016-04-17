@@ -74,7 +74,7 @@ bool tp2Accueil_loadMedia(struct Application *app, void *state);
  */
 void tp2Accueil_viewWillAppear(struct Application *app, void *state);
 /**
- * Méthode qui gère les événements du menu d'acceuil
+ * Méthode qui gère les événements du menu d'acceuil.
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  * @param event Pointeur vers l'événement à gérer.
@@ -88,7 +88,7 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
  */
 void tp2Accueil_draw(struct Application *app, void *state);
 /**
- * Méthode qui libère les ressources chargées par loadMedia()
+ * Méthode qui libère les ressources chargées par loadMedia().
  * @param app Pointeur vers l'application.
  * @param state Pointeur vers la structure du menu.
  */

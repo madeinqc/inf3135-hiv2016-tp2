@@ -18,56 +18,48 @@
  * Structure 
  */
 struct mapsName {
-  char **names;
+  char** names;
   long count;
   long capacity;
 };
-
 /**
  * Méthode qui charge une image.
  * @param path Le chemin de l'image
  * @return Un pointeur vers une texture chargée.
  */
-void *sdl_img_loader(const char *path);
-
+void* sdl_img_loader(const char *path);
 /**
  * Méthode qui charge une des cartes choisies au hasard.
  * @param renderer Le rendu de l'application.
  * @param carte La carte courante.
  */
 void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte);
-
 /**
  * Méthode qui établie les valeurs de la carte dans la structure carte.
  * @param carte La structure de la carte.
  */
 void tp2tmx_initMapValues(struct Carte *carte);
-
 /**
  * Méthode qui décharge une map tmx.
  * @param map La map à décharger.
  */
 void tp2tmx_mapFree(tmx_map *map);
-
 /**
  * Méthode qui génère un chiffre pseudo-aléatoire.
  * @param max Le chiffre maximum du générateur.
  * @return Le chiffre généré.
  */
 long tp2tmx_pseudoRandom(long max);
-
 /**
  * Méthode qui gérère les différentes maps possibles.
  * @param mapsName La structure qui contient les informations des cartes.
  */
 void tp2tmx_getAllMapsName(struct mapsName *mapsName);
-
 /**
  * Méthode qui décharge la structure mapsName.
  * @param mapsName La structure à décharger.
  */
 void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
-
 /**
  * Méthode qui affiche un layer de la carte courante.
  * @param ren Le renderer sur lequel render le layer.
@@ -75,34 +67,30 @@ void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
  * @param layer Le layer à afficher.
  */
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
-
 /**
  * Méthode qui affiche la carte courante.
  * @param ren Le renderer sur lequel render le layer.
  * @param carte La structure de la carte courante.
  * @return La texture contenant la carte.
  */
-SDL_Texture *tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
-
+SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 /**
  * Trouve la sous-section qui contient la maison pour initialiser le jeu sur cette sous-carte.
  * @param carte La carte courante.
+ * @return True si une sous-section a été trouvée.
  */
-void tp2tmx_findSectionHouse(struct Carte *carte);
-
+bool tp2tmx_findSectionHouse(struct Carte *carte);
 /**
  * Trouve le nombre de roches à miner dans la carte.
  * @param carte La carte courante.
  */
 void tp2tmx_findNbRocks(struct Carte *carte);
-
 /**
  * Vérifie si la future case est accessible par le personnage.
  * @param carte La carte courante.
  * @return True si elle est accessible.
  */
 bool tp2tmx_isTileOK(struct Carte *carte);
-
 /**
  * Trouve toutes les informations de la future case à partir de son x et son y.
  * @param carte La carte courante.
@@ -110,7 +98,6 @@ bool tp2tmx_isTileOK(struct Carte *carte);
  * @return True si la case cherchée existe et est une case valide.
  */
 bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer);
-
 /**
  * Transforme la position dans la grille de la sous-carte du personnage en coordonnées pour le renderer.
  * @param carte La carte courante.
@@ -118,55 +105,47 @@ bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer);
  * @return True si l'opération réussi.
  */
 bool tp2tmx_fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer);
-
 /**
  * Remet la future position à la position courante.
  * @param sprite Le sprite courant.
  */
 void tp2tmx_restartFutureTile(struct Sprite *sprite);
-
 /**
  * Met à jour la position courante à partir de la future position.
  * @param sprite Le sprite courant.
  * @return 
  */
 void tp2tmx_updateCurrentTile(struct Sprite *sprite);
-
 /**
  * Change la sous-carte affichée si nécessaire.
  * @param carte La carte courante.
  * @return True si la sous-carte a été changée.
  */
 bool tp2tmx_changeSousMap(struct Carte *carte);
-
 /**
  * Vérifie et mine une roche si possible.
  * @param carte La carte courante.
  * @return True si une roche a été minée.
  */
 bool tp2tmx_minerRoche(struct Carte *carte);
-
 /**
  * Vérifie et boit de l'eau si possible.
  * @param carte La carte courante.
  * @return True si l'eau a été bu.
  */
 bool tp2tmx_boireEau(struct Carte *carte);
-
 /**
  * Vérifie et dort/mange si c'est possible.
  * @param carte La carte courante.
  * @return True si le personnage s'est reposé/a mangé.
  */
 bool tp2tmx_reposManger(struct Carte *carte);
-
 /**
  * Vérifie les informations de la tuile devant le personnage.
  * @param carte La carte courante.
  * @param layer Le layer sur lequel est le personnage.
  */
 void tp2tmx_setIdEnFace(struct Carte *carte, tmx_layer *layer);
-
 /**
  * Verifie et monte un escalier si c'est possible.
  * @param id Le id de la case devant le sprite.
@@ -175,7 +154,6 @@ void tp2tmx_setIdEnFace(struct Carte *carte, tmx_layer *layer);
  * @return True si un escalier a été monté.
  */
 bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer);
-
 /**
  * Verifie et descend un escalier si c'est possible.
  * @param idTile Le id de la case devant (et dessous) le sprite.
@@ -184,19 +162,16 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer);
  * @return True si un escalier a été descendu.
  */
 bool tp2tmx_gestionEscaliersDown(int idTile, struct Carte *carte, tmx_layer *layer);
-
 /**
  * Détruit une tuile (change son gid pour 0)
  * @param layer Le layer sur lequel se trouve la tuile.
  * @param tileNumber Le numéro de la tuile à supprimer.
  */
 void tp2tmx_destroyElement(tmx_layer *layer, int tileNumber);
-
 /**
  * Gère les différentes actions possibles du personnage.
  * @param carte La carte courante.
  * @return True si une action a été effectuée par le personnage.
  */
 bool tp2tmx_actions(struct Carte *carte);
-
 #endif

@@ -58,7 +58,6 @@ void tp2animSprite_render(struct Carte *carte, struct Sprite *sprite, SDL_Render
       tp2tmx_updateCurrentTile(sprite);
       sprite->xOffset = 0;
       sprite->yOffset = 0;
-      printf("\n");
     } else {
       sprite->currentFrame += 2;
       tp2animSprite_updateOffsets(carte, sprite);

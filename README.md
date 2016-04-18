@@ -106,5 +106,6 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 ## Statut
 
 - Jeu fonctionnel
+- Sans animation de sprite
 
-- Compilable sans erreurs et sans warnings
+- Compilable sans erreurs

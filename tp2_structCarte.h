@@ -14,10 +14,10 @@
  */
 struct Carte {
   tmx_map *map;
-  Mix_Chunk* pickaxeSound;
-  Mix_Chunk* snoringSound;
-  Mix_Chunk* drinkSound;
-  Mix_Music* gameMusic;
+  Mix_Chunk *pickaxeSound;
+  Mix_Chunk *snoringSound;
+  Mix_Chunk *drinkSound;
+  Mix_Music *gameMusic;
   int xSection;
   int ySection;
   int maxXSection;
@@ -25,15 +25,15 @@ struct Carte {
   int maxXDisplacement;
   int maxYDisplacement;
   struct Scene *pause;
-  struct Pause *sPause; 
+  struct Pause *sPause;
   struct Scene *defaite;
-  struct Defaite *sDefaite; 
+  struct Defaite *sDefaite;
   struct Scene *victoire;
-  struct Victoire *sVictoire; 
-  bool allMined; 
-  struct Jauge *foodJauge; 
-  struct Jauge *waterJauge; 
-  struct Jauge *sleepJauge; 
+  struct Victoire *sVictoire;
+  bool allMined;
+  struct Jauge *foodJauge;
+  struct Jauge *waterJauge;
+  struct Jauge *sleepJauge;
   bool isSpriteInitialized;
   struct Sprite *sprite;
   SDL_Texture *background;

@@ -10,15 +10,15 @@ bool initialize(struct Application *app) {
     return false;
   }
   app->gWindow = SDL_CreateWindow(WINDOW_TITLE,
-      SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+                                  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                  SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   if (app->gWindow == NULL) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
-	if (!(app->gRenderer = SDL_CreateRenderer(app->gWindow, -1, SDL_RENDERER_ACCELERATED))) {
-		printf("SDL create renderer not working: %s", SDL_GetError());
-	}
+  if (!(app->gRenderer = SDL_CreateRenderer(app->gWindow, -1, SDL_RENDERER_ACCELERATED))) {
+    printf("SDL create renderer not working: %s", SDL_GetError());
+  }
   return true;
 }
 
@@ -28,7 +28,7 @@ void initMainScene(struct Application *app) {
 
 void gameLoop(struct Application *application) {
   application->isRunning = true;
-  void* currentState = NULL;
+  void *currentState = NULL;
 
   while (application->isRunning) {
 

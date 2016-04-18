@@ -99,13 +99,13 @@ bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct 
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
 					isConsumed = true;
 					break;
-				case SDLK_a:
+				case SDLK_w:
 					tp2animSprite_move(sprite, WEST, carte);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
 					isConsumed = true;
 					break;
-				case SDLK_w:
+				case SDLK_a:
 					tp2animSprite_move(sprite, EAST, carte);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);

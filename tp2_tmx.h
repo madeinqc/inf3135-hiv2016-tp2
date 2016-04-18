@@ -9,6 +9,7 @@
 
 #include <dirent.h>
 #include <time.h>
+#include <string.h>
 #include "tp2_animSprite.h"
 #include "tp2_structCarte.h"
 
@@ -22,7 +23,7 @@ struct MapsName {
 };
 
 enum Tiles {
-  SAND, WATER, WATER_SW_SE, WATER_SW, GRASS, WATER_SE, DIRT, STAIRCASE_NE = 8, STAIRCASE_NW, STAIRCASE_SE, STAIRCASE_SW, TREE, ROCK, HOUSE = 16, PLAYER = 18
+  NO_TILE = -1, SAND, WATER, WATER_SW_SE, WATER_SW, GRASS, WATER_SE, DIRT, STAIRCASE_NE = 8, STAIRCASE_NW, STAIRCASE_SE, STAIRCASE_SW, TREE, ROCK, HOUSE = 16, PLAYER = 18
 };
 
 void* sdl_img_loader(const char *path);
@@ -69,7 +70,7 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer);
 
 bool tp2tmx_gestionEscaliersDown(int idTile, struct Carte *carte, tmx_layer *layer);
 
-void tp2tmx_destroyElement(tmx_layer *layer, int tileNumber);
+void tp2tmx_destroyElement(struct Carte *carte, tmx_layer *layer, int x, int y);
 
 bool tp2tmx_actions(struct Carte *carte);
 
@@ -82,4 +83,8 @@ void tp2tmx_initCharacterValues(struct Carte *carte);
 tmx_tile* tp2tmx_getTile(int x, int y, struct Carte *carte, tmx_layer *layer);
 tmx_tile *tp2tmx_getAbsoluteTile(int x, int y, struct Carte *carte, tmx_layer *layer);
 void tp2tmx_setNbRocks(struct Carte *carte);
+
+void tp2tmx_getNextPosition(const int x, const int y, int *newX, int *newY, const enum Direction orientation);
+
+tmx_layer *tp2tmx_getCurrentLayer(struct Carte *carte);
 #endif

@@ -59,12 +59,12 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
   int timespanWater;
   int timespanSleep;
   switch(app->diff){ // sets timespan accoring to the difficutly of the game chosen
-    case 0: 
+    case 0:
       timespanFood = 15000; // 15sec
       timespanWater = 10000; // 10sec
       timespanSleep = 20000; // 20sec
       break;
-    case 1: 
+    case 1:
       timespanFood = 10000;
       timespanWater = 10000; 
       timespanSleep = 10000; 
@@ -74,16 +74,15 @@ bool tp2Carte_loadMedia(struct Application *app, void *state) {
       timespanWater = 5000; // 5sec
       timespanSleep = 10000; // 10sec
       break;
-  } 
+  }
   carte->foodJauge = tp2jauge_create(imagesFood, timespanFood, app);
   carte->waterJauge = tp2jauge_create(imagesWater, timespanWater, app);
   carte->sleepJauge = tp2jauge_create(imagesSleep, timespanSleep, app);
 
-  if(!tp2animSprite_create(IMG_PERSO, 4, 20, 20, 20, 0, 2, app)){
+  if(!tp2animSprite_create(IMG_PERSO, 4, 20, 0, 1000/16, app)){
   	printf("Probleme lors de l'initialisation du personnage!");
   	return false;
   }
-  carte->isSpriteInitialized = false;
   carte->sprite = app->currSprite;
 
   carte->background = tp2image_load(app, IMG_BACK);

@@ -8,7 +8,7 @@
 /**
  * Enumeration des directions
  */
-enum Direction{NONE, SOUTHEAST, SOUTHWEST, NORTHWEST, NORTHEAST};
+enum Direction{NONE, SOUTHWEST, SOUTHEAST, NORTHEAST, NORTHWEST};
 
 struct Carte {
   tmx_map *map;
@@ -36,7 +36,6 @@ struct Carte {
   struct Jauge *waterJauge;
   struct Jauge *sleepJauge;
 
-  bool isSpriteInitialized;
   struct Sprite *sprite;
 
   SDL_Texture *background;

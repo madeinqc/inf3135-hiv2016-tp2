@@ -60,7 +60,7 @@ void tp2animSprite_render(struct Carte *carte, struct Sprite *sprite, SDL_Render
       sprite->yOffset = 0;
       printf("\n");
     } else {
-      sprite->currentFrame++;
+      sprite->currentFrame += 2;
       tp2animSprite_updateOffsets(carte, sprite);
     }
   }
@@ -95,10 +95,6 @@ void tp2animSprite_updateOffsets(struct Carte *carte, struct Sprite *sprite) {
     default:
       break;
   }
-
-  printf("%d, %d\n", sprite->xOffset, sprite->yOffset);
-  //sprite->xOffset = 0;
-  //sprite->yOffset = 0;
 }
 
 void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte) {

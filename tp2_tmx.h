@@ -23,61 +23,55 @@ struct mapsName {
   long capacity;
 };
 /**
- * 
- * @param
- * @return 
+ * Méthode qui charge une image.
+ * @param path Le chemin de l'image
+ * @return Un pointeur vers une texture chargée.
  */
 void* sdl_img_loader(const char *path);
 /**
- * 
- * @param
- * @param
- * @return 
+ * Méthode qui charge une des cartes choisies au hasard.
+ * @param renderer Le rendu de l'application.
+ * @param carte La carte courante.
  */
 void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte);
 /**
- * 
- * @param
- * @return 
+ * Méthode qui établie les valeurs de la carte dans la structure carte.
+ * @param carte La structure de la carte.
  */
 void tp2tmx_initMapValues(struct Carte *carte);
 /**
- * 
- * @param
- * @return 
+ * Méthode qui décharge une map tmx.
+ * @param map La map à décharger.
  */
 void tp2tmx_mapFree(tmx_map *map);
 /**
- * 
- * @param
- * @return 
+ * Méthode qui génère un chiffre pseudo-aléatoire.
+ * @param max Le chiffre maximum du générateur.
+ * @return Le chiffre généré.
  */
 long tp2tmx_pseudoRandom(long max);
 /**
- * 
- * @param
- * @return 
+ * Méthode qui gérère les différentes maps possibles.
+ * @param mapsName La structure qui contient les informations des cartes.
  */
 void tp2tmx_getAllMapsName(struct mapsName *mapsName);
 /**
- * 
- * @param
- * @return 
+ * Méthode qui décharge la structure mapsName.
+ * @param mapsName La structure à décharger.
  */
 void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 /**
- * 
- * @param
- * @param
- * @param
- * @return 
+ * Méthode qui affiche un layer de la carte courante.
+ * @param ren Le renderer sur lequel render le layer.
+ * @param carte La structure de la carte courante.
+ * @param layer Le layer à afficher.
  */
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 /**
- * 
- * @param
- * @param
- * @return 
+ * Méthode qui affiche la carte courante.
+ * @param ren Le renderer sur lequel render le layer.
+ * @param carte La structure de la carte courante.
+ * @return La texture contenant la carte.
  */
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 /**

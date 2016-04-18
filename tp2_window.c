@@ -1,27 +1,24 @@
 /**
  * @file
- * Description a venir...
- *
-*/
+ * Gestion de la fenêtre et de ce qui s'y affiche.
+ */
 #include "tp2_window.h"
 
-// Initialisation
-bool initialize(struct Application *application) {
+bool initialize(struct Application *app) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
-  application->gWindow = SDL_CreateWindow(WINDOW_TITLE,
-      SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-  if (application->gWindow == NULL) {
+  app->gWindow = SDL_CreateWindow(WINDOW_TITLE,
+                                  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                  SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  if (app->gWindow == NULL) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
-  application->gScreenSurface = SDL_GetWindowSurface(application->gWindow);
-  SDL_FillRect(application->gScreenSurface, NULL,
-      SDL_MapRGB(application->gScreenSurface->format, 0xFF, 0xFF, 0xFF));
-  SDL_UpdateWindowSurface(application->gWindow);
+  if (!(app->gRenderer = SDL_CreateRenderer(app->gWindow, -1, SDL_RENDERER_ACCELERATED))) {
+    printf("SDL create renderer not working: %s", SDL_GetError());
+  }
   return true;
 }
 
@@ -29,10 +26,9 @@ void initMainScene(struct Application *app) {
   app->nextScene = tp2Accueil_getScene(app);
 }
 
-// Boucle de jeu
 void gameLoop(struct Application *application) {
   application->isRunning = true;
-  void* currentState = NULL;
+  void *currentState = NULL;
 
   while (application->isRunning) {
 
@@ -61,11 +57,12 @@ void gameLoop(struct Application *application) {
       if (e.type == SDL_QUIT) {
         application->isRunning = false;
       }
+
       application->scene->handleEvents(application, currentState, &e);
     }
-    // TODO Scene rendering
+    SDL_RenderClear(application->gRenderer);
     application->scene->drawScene(application, currentState);
-    SDL_UpdateWindowSurface(application->gWindow);
+    SDL_RenderPresent(application->gRenderer);
 
     // Délais de 16ms pour avoir environ 60 fps
     SDL_Delay(16);
@@ -74,8 +71,8 @@ void gameLoop(struct Application *application) {
   application->scene->releaseMedia(application, currentState);
 }
 
-// Liberation des ressources et de SDL
 void shutDown(struct Application *application) {
+  SDL_DestroyRenderer(application->gRenderer);
   SDL_DestroyWindow(application->gWindow);
   application->gWindow = NULL;
   SDL_Quit();

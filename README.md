@@ -102,11 +102,10 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 
 - Il est possible de monter les escaliers à partir du côté.
 - Collisions avec la maison ne sont pas gérés correctement.
-- Le personnage disparait après une transition si on garde le bouton enforcé.
 
 ## Statut
 
-- Jeu fonctionnel
-- Sans animation de sprite
+Jeu fonctionnel
+Pas d'animation entre les tuiles
 
-- Compilable sans erreurs
+Compilable sans erreurs et sans warnings

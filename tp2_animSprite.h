@@ -73,7 +73,6 @@ struct Sprite{
 	// Render ou non le sprite
 	int nextTimeShow;
 	bool show;
-	bool isAnimating;
 };
 
 /**
@@ -98,11 +97,10 @@ bool tp2animSprite_create(const char *filename, int numRows, int numColumns, int
 void tp2animSprite_delete(struct Sprite *sprite, struct Application *app);
 /**
  * Prépare le sprite pour le renderer.
- * @param carte La carte où render.
  * @param sprite Le sprite à render.
  * @param app L'application
  */
-void tp2animSprite_render(struct Carte *carte, struct Sprite *sprite, SDL_Renderer *ren);
+void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren);
 /**
  * Bouge le sprite dans une direction.
  * @param sprite Le sprite à bouger.
@@ -122,11 +120,4 @@ void tp2animSprite_layerToString(int layer, char *string);
  * @return True si l'événement est géré par la méthode.
  */
 bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte);
-
-/**
- * Ajuste les offsets du sprite pour s'ajusté à l'animation.
- * @param carte La carte contenant le sprite.
- * @param sprite Le sprite à ajuster.
- */
-void tp2animSprite_updateOffsets(struct Carte *carte, struct Sprite *sprite);
 #endif

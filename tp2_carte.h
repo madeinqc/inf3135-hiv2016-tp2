@@ -36,52 +36,50 @@
 #define IMG_BACK "assets/background_game.png"
 
 /**
- * Création de la scène carte.
+ * 
  * @param app L'application courante.
- * @return La scène créée.
+ * @return
  */
 struct Scene* tp2Carte_getScene(struct Application *app);
 /**
- * Initialise la structure de la carte.
+ * 
  * @param app L'application courante.
- * @return Un pointeur vers la structure de la carte.
+ * @return
  */
 void* tp2Carte_initScene(struct Application *app);
 
 /**
  * Charge les ressources graphiques en mémoire.
  * @param app Un pointeur vers la structure Application à utiliser.
- * @param state Un pointeur vers la structure de la carte.
+ * @param state 
  * @return True si le chargement a réussi.
  */
 bool tp2Carte_loadMedia(struct Application *app, void *state);
 /**
- * Démarrage de certains processus avant l'affichage de la scène.
+ * 
  * @param app L'application courante.
- * @param state Un pointeur vers la structure de la carte.
+ * @param state 
  */
 void tp2Carte_viewWillAppear(struct Application *app, void *state);
 
 /**
- * Méthode qui gère les événements de la scène carte.
+ * 
  * @param app Un pointeur vers la structure Application à utiliser.
- * @param state Un pointeur vers la structure de la carte.
- * @param event L'événement à gérer.
- * @return True si l'événement a été géré par la méthode.
+ * @param state
+ * @param event
+ * @return
  */
 bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *event);
 
 /**
- * Méthode qui render la scène carte.
- * @param app Un pointeur vers la structure Application à utiliser.
- * @param state Un pointeur vers la structure de la carte.
+ * @param
+ * @param
  */
 void tp2Carte_draw(struct Application *app, void *state);
 
 /**
- * Méthode qui décharge les médias chargés par la scène carte.
- * @param app Un pointeur vers la structure Application à utiliser.
- * @param state Un pointeur vers la structure de la carte.
+ * @param
+ * @param
  */
 void tp2Carte_release(struct Application *app, void *state);
 

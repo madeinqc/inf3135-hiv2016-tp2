@@ -51,7 +51,7 @@ struct Menu{
 /**
  * Creation de la scene du menu d'acceuil.
  * @param app Pointeur vers l'application.
- * @return void* Pointeur vers la scène créée.
+ * @return Pointeur vers la scène créée.
  */
 struct Scene* tp2Accueil_getScene(struct Application *app);
 /**

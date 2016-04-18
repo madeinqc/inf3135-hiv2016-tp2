@@ -99,12 +99,9 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - SDL Wiki: https://wiki.libsdl.org/FrontPage
 
 ## Bogues connus
-
-- Il est possible de monter les escaliers à partir du côté.
-- Collisions avec la maison ne sont pas gérés correctement.
+- Collisions avec la maison ne sont pas gérés correctement
 
 ## Statut
 
-- Jeu fonctionnel
-
-- Compilable sans erreurs et sans warnings
+Jeu fonctionnel
+Compilable sans erreurs et sans warnings

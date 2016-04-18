@@ -145,25 +145,25 @@ bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct 
 	switch(event->type){
 		case SDL_KEYDOWN:
 			switch(event->key.keysym.sym){
-				case SDLK_q:
+				case SDLK_UP:
 					tp2animSprite_move(sprite, NORTH, carte);
 					sprite->lastDirection = NORTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*NORTH);
 					isConsumed = true;
 					break;
-				case SDLK_s:
+				case SDLK_DOWN:
 					tp2animSprite_move(sprite, SOUTH, carte);
 					sprite->lastDirection = SOUTH;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*SOUTH);
 					isConsumed = true;
 					break;
-				case SDLK_w:
+				case SDLK_RIGHT:
 					tp2animSprite_move(sprite, WEST, carte);
 					sprite->lastDirection = WEST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*WEST);
 					isConsumed = true;
 					break;
-				case SDLK_a:
+				case SDLK_LEFT:
 					tp2animSprite_move(sprite, EAST, carte);
 					sprite->lastDirection = EAST;
 					sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*EAST);

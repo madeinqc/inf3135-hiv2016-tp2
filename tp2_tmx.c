@@ -476,13 +476,10 @@ bool tp2tmx_actions(struct Carte *carte) {
 bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 	switch(id){
 		case 11:
-			if (carte->sprite->lastDirection == EAST) {
-				carte->sprite->currentLayer += 1;
-				carte->sprite->futureTile.tileX += 1;
-			}
+			carte->sprite->currentLayer+=1;
+			carte->sprite->futureTile.tileX+=1;
 			break;
 		case 8:
-
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX-=1;
 			break;
@@ -496,7 +493,6 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			break;
 		default:
 			return false;
-			break;
 	}
 	tp2tmx_setTileInformations(carte, layer);
 	tp2tmx_updateCurrentTile(carte->sprite);
@@ -526,7 +522,6 @@ bool tp2tmx_gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
 			break;
 		default:
 			return false;
-			break;
 	}
 	layer = carte->map->ly_head;
 	int i;

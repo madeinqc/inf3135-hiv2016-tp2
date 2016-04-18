@@ -23,6 +23,9 @@ bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int
 	newSprite->currentLayer = 1;
 	newSprite->nbRoches = 0;
 	newSprite->show = true;
+    newSprite->xOffset = 0;
+    newSprite->yOffset = 0;
+    newSprite->lastDirection = EAST;
 
 	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);

@@ -225,6 +225,7 @@ bool tp2tmx_findSectionHouse(struct Carte *carte){
 			}
 		}
 	}
+  return true;
 }
 
 void tp2tmx_findNbRocks(struct Carte *carte){

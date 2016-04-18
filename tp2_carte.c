@@ -128,22 +128,6 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
   switch(event->type){
     case SDL_KEYDOWN:
       switch(event->key.keysym.sym){
-        case SDLK_q:
-          carte->ySection -= carte->ySection == 0 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_s:
-          carte->ySection += carte->ySection == carte->maxYSection - 1 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_a:
-          carte->xSection += carte->xSection == carte->maxXSection - 1 ? 0 : 1;
-          isConsumed = true;
-          break;
-        case SDLK_w:
-          carte->xSection -= carte->xSection == 0 ? 0 : 1;
-          isConsumed = true;
-          break;
         case SDLK_SPACE:
         	tp2tmx_actions(carte);
           break;

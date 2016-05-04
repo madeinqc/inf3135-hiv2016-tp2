@@ -23,55 +23,61 @@ struct mapsName {
   long capacity;
 };
 /**
- * Méthode qui charge une image.
- * @param path Le chemin de l'image
- * @return Un pointeur vers une texture chargée.
+ * 
+ * @param
+ * @return 
  */
 void* sdl_img_loader(const char *path);
 /**
- * Méthode qui charge une des cartes choisies au hasard.
- * @param renderer Le rendu de l'application.
- * @param carte La carte courante.
+ * 
+ * @param
+ * @param
+ * @return 
  */
 void tp2tmx_loadRandomMap(SDL_Renderer *renderer, struct Carte *carte);
 /**
- * Méthode qui établie les valeurs de la carte dans la structure carte.
- * @param carte La structure de la carte.
+ * 
+ * @param
+ * @return 
  */
 void tp2tmx_initMapValues(struct Carte *carte);
 /**
- * Méthode qui décharge une map tmx.
- * @param map La map à décharger.
+ * 
+ * @param
+ * @return 
  */
 void tp2tmx_mapFree(tmx_map *map);
 /**
- * Méthode qui génère un chiffre pseudo-aléatoire.
- * @param max Le chiffre maximum du générateur.
- * @return Le chiffre généré.
+ * 
+ * @param
+ * @return 
  */
 long tp2tmx_pseudoRandom(long max);
 /**
- * Méthode qui gérère les différentes maps possibles.
- * @param mapsName La structure qui contient les informations des cartes.
+ * 
+ * @param
+ * @return 
  */
 void tp2tmx_getAllMapsName(struct mapsName *mapsName);
 /**
- * Méthode qui décharge la structure mapsName.
- * @param mapsName La structure à décharger.
+ * 
+ * @param
+ * @return 
  */
 void tp2tmx_freeAllMapsName(struct mapsName *mapsName);
 /**
- * Méthode qui affiche un layer de la carte courante.
- * @param ren Le renderer sur lequel render le layer.
- * @param carte La structure de la carte courante.
- * @param layer Le layer à afficher.
+ * 
+ * @param
+ * @param
+ * @param
+ * @return 
  */
 void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer);
 /**
- * Méthode qui affiche la carte courante.
- * @param ren Le renderer sur lequel render le layer.
- * @param carte La structure de la carte courante.
- * @return La texture contenant la carte.
+ * 
+ * @param
+ * @param
+ * @return 
  */
 SDL_Texture* tp2tmx_renderMap(SDL_Renderer *ren, struct Carte *carte);
 /**

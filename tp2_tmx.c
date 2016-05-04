@@ -142,7 +142,7 @@ void tp2tmx_drawLayer(SDL_Renderer *ren, struct Carte *carte, tmx_layer *layer) 
 				char layerSprite[7];
 				tp2animSprite_layerToString(carte->sprite->currentLayer, layerSprite);
 		    if(strcmp(layer->name, layerSprite) == 0){
-					tp2animSprite_render(carte, carte->sprite, ren);
+					tp2animSprite_render(carte->sprite, ren);
 		  	}
 		  }
 			gid = layer->content.gids[(tileX * carte->map->width) + tileY];
@@ -225,6 +225,7 @@ bool tp2tmx_findSectionHouse(struct Carte *carte){
 			}
 		}
 	}
+  return true;
 }
 
 void tp2tmx_findNbRocks(struct Carte *carte){
@@ -283,22 +284,22 @@ bool tp2tmx_isTileOK(struct Carte *carte){
 
 bool tp2tmx_fromPositionToCoordinates(struct Carte *carte, tmx_layer *layer){
 	int halfMapWidth = carte->map->tile_width/2;
-	int halfMapHeight = carte->map->tile_height/2;
-	int i = carte->sprite->futureTile.tileX;
-	int j = carte->sprite->futureTile.tileY;
-	int gid = carte->sprite->futureTile.tileGID;
-	int offset = 25; // Decalage visuel su sprite
-	tmx_tile *tile;
-	tile = carte->map->tiles[gid];
-	if(tile == NULL){
-		return false;
-	}
+  int halfMapHeight = carte->map->tile_height/2;
+  int i = carte->sprite->futureTile.tileX;
+  int j = carte->sprite->futureTile.tileY;
+  int gid = carte->sprite->futureTile.tileGID;
+  int offset = 25; // Decalage visuel su sprite
+  tmx_tile *tile;
+  tile = carte->map->tiles[gid];
+  if(tile == NULL){
+  	return false;
+  }
 	tmx_tileset *tileset = carte->map->tiles[gid]->tileset;
 	tmx_image *image = carte->map->tiles[carte->sprite->futureTile.tileGID]->image;
 	carte->sprite->posX = ((j - i) * halfMapWidth + layer->offsetx) + 75 * carte->map->tile_width / 10 + carte->maxXDisplacement;
 	carte->sprite->posY = ((j + i) * halfMapHeight + layer->offsety) + carte->maxYDisplacement - 64
-						  + ((tileset->tile_height / image->height) - 1) * 64 + offset;
-	return true;
+  		+ ((tileset->tile_height / image->height) - 1) * 64 + offset;
+  return true;
 }
 
 bool tp2tmx_setTileInformations(struct Carte *carte, tmx_layer *layer){
@@ -480,6 +481,7 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			carte->sprite->futureTile.tileX+=1;
 			break;
 		case 8:
+
 			carte->sprite->currentLayer+=1;
 			carte->sprite->futureTile.tileX-=1;
 			break;
@@ -493,6 +495,7 @@ bool tp2tmx_gestionEscaliersUp(int id, struct Carte *carte, tmx_layer *layer){
 			break;
 		default:
 			return false;
+			break;
 	}
 	tp2tmx_setTileInformations(carte, layer);
 	tp2tmx_updateCurrentTile(carte->sprite);
@@ -522,6 +525,7 @@ bool tp2tmx_gestionEscaliersDown(int id, struct Carte *carte, tmx_layer *layer){
 			break;
 		default:
 			return false;
+			break;
 	}
 	layer = carte->map->ly_head;
 	int i;

@@ -6,7 +6,7 @@
 
 bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int numFrames,
 		int initialFrame, int delayBetweenFrame, int speed, struct Application* app){
-
+	
 	struct Sprite *newSprite = (struct Sprite*)malloc(sizeof(struct Sprite));
 
 	// Image informations et frames
@@ -23,9 +23,6 @@ bool tp2animSprite_create(const char* filename, int numRows, int numColumns, int
 	newSprite->currentLayer = 1;
 	newSprite->nbRoches = 0;
 	newSprite->show = true;
-    newSprite->xOffset = 0;
-    newSprite->yOffset = 0;
-    newSprite->lastDirection = EAST;
 
 	// Load Image
 	SDL_Surface *surface = IMG_Load(filename);
@@ -50,94 +47,39 @@ void tp2animSprite_delete(struct Sprite *sprite, struct Application* app){
   app->currSprite = NULL;
 }
 
-void tp2animSprite_render(struct Carte *carte, struct Sprite *sprite, SDL_Renderer *ren) {
-  if (sprite->isAnimating) {
-    if (sprite->currentFrame % 20 == 19) {
-      sprite->currentFrame = ((sprite->currentFrame+1)%(sprite->nbFrames))+(20*sprite->lastDirection);
-      sprite->isAnimating = false;
-      tp2tmx_updateCurrentTile(sprite);
-      sprite->xOffset = 0;
-      sprite->yOffset = 0;
-      printf("\n");
-    } else {
-      sprite->currentFrame++;
-      tp2animSprite_updateOffsets(carte, sprite);
-    }
-  }
-
+void tp2animSprite_render(struct Sprite *sprite, SDL_Renderer *ren){
   int srcx = sprite->spriteWidth * (sprite->currentFrame % sprite->nbColumns);
   int srcy = sprite->spriteHeight * (sprite->currentFrame / sprite->nbColumns);
   SDL_Rect srcrect = {srcx, srcy, sprite->spriteWidth, sprite->spriteHeight};
-  SDL_Rect dstrect = {sprite->posX + sprite->xOffset, sprite->posY + sprite->yOffset, sprite->spriteWidth, sprite->spriteHeight};
+  SDL_Rect dstrect = {sprite->posX, sprite->posY, sprite->spriteWidth, sprite->spriteHeight};
   SDL_RenderCopy(ren, sprite->texture, &srcrect, &dstrect);
 }
 
-void tp2animSprite_updateOffsets(struct Carte *carte, struct Sprite *sprite) {
-  sprite->xOffset = carte->map->tile_width / 2 - (sprite->currentFrame % sprite->nbColumns * (carte->map->tile_width / 2) / sprite->nbColumns);
-  sprite->yOffset = carte->map->tile_height / 2 - (sprite->currentFrame % sprite->nbColumns * (carte->map->tile_height / 2) / sprite->nbColumns);
-
-  switch (sprite->lastDirection) {
-    case EAST:
-      sprite->xOffset *= 1;
-      sprite->yOffset *= -1;
-      break;
-    case SOUTH:
-      sprite->xOffset *= -1;
-      sprite->yOffset *= -1;
-      break;
-    case WEST:
-      sprite->xOffset *= -1;
-      sprite->yOffset *= 1;
-      break;
-    case NORTH:
-      sprite->xOffset *= 1;
-      sprite->yOffset *= 1;
-    default:
-      break;
-  }
-
-  printf("%d, %d\n", sprite->xOffset, sprite->yOffset);
-  //sprite->xOffset = 0;
-  //sprite->yOffset = 0;
-}
-
-void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte) {
-  switch (direction) {
-    case EAST:
-      sprite->futureTile.tileX += 1;
-      break;
-    case WEST:
-      sprite->futureTile.tileX -= 1;
-      break;
-    case SOUTH:
-      sprite->futureTile.tileY += 1;
-      break;
-    case NORTH:
-      sprite->futureTile.tileY -= 1;
-      break;
-  }
-  // Vérifie si la nouvelle case est valide
-  if (!tp2tmx_changeSousMap(carte)) {
-    if (tp2tmx_isTileOK(carte)) {
-      // Start animation
-      sprite->isAnimating = true;
-    } else {
-      tp2tmx_restartFutureTile(sprite);
-    }
-  } else {
-    if (tp2tmx_isTileOK(carte)) {
-      tp2tmx_updateCurrentTile(sprite);
-    } else {
-      tp2tmx_restartFutureTile(sprite);
-    }
-  }
+void tp2animSprite_move(struct Sprite *sprite, int direction, struct Carte *carte){
+	switch(direction){
+		case EAST:
+			sprite->futureTile.tileX+=1;
+			break;
+		case WEST:
+			sprite->futureTile.tileX-=1;
+			break;
+		case SOUTH:
+			sprite->futureTile.tileY+=1;
+			break;
+		case NORTH:
+			sprite->futureTile.tileY-=1;
+			break;
+	}
+	// Vérifie si la nouvelle case est valide
+	tp2tmx_changeSousMap(carte);
+	if(tp2tmx_isTileOK(carte)){
+		tp2tmx_updateCurrentTile(sprite);
+	}else{
+		tp2tmx_restartFutureTile(sprite);
+	}
 }
 
 bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct Application *app, struct Carte *carte){
-  if (sprite->isAnimating) {
-    return false;
-  }
-
 	bool isConsumed = false;
 	if(!carte->sprite->show){
 		return false;
@@ -181,16 +123,16 @@ bool tp2animSprite_handleEvents(struct Sprite *sprite, SDL_Event *event, struct 
 
 void tp2animSprite_layerToString(int layer, char* string){
 	switch(layer){
-		case 0:
+		case 0: 
 			strcpy(string,"Level0");
 			break;
-		case 1:
+		case 1: 
 			strcpy(string,"Level1");
 			break;
-		case 2:
+		case 2: 
 			strcpy(string,"Level2");
 			break;
-		case 3:
+		case 3: 
 			strcpy(string,"Level3");
 			break;
 		default:

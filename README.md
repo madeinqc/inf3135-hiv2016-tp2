@@ -105,6 +105,7 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 
 ## Statut
 
-- Jeu fonctionnel
+Jeu fonctionnel
+Pas d'animation entre les tuiles
 
-- Compilable sans erreurs et sans warnings
+Compilable sans erreurs et sans warnings

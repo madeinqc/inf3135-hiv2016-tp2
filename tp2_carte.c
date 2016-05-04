@@ -134,6 +134,9 @@ bool tp2Carte_handleEvents(struct Application *app, void *state, SDL_Event *even
         case SDLK_ESCAPE:
           app->isPause = true; 
           break;
+        case SDLK_RETURN:
+          tp2Sound_playShort(carte->pickaxeSound);
+          break;
         default: break;
       }
       break;

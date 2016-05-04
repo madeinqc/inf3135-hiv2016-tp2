@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Includes gérériques pour tous les fichiers.
+ */
 #ifndef SDL2_h
 #define SDL2_h
 #ifdef Darwin

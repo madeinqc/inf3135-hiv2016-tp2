@@ -20,6 +20,9 @@ Ce projet utilise le système de branchage [Git Flow](http://nvie.com/posts/a-su
 - SDL2 Mixer 2.0.1
 - SDL2 ttf 2.0.13
 - Doxygen 1.8.11
+- TMX C Loader [476ac9b](https://github.com/baylej/tmx/commit/476ac9b6f84278af89dadb2ccc4131caaa855ffd)
+- libxml2 2.9.3
+- zlib 1.2.8
 
 ## Fonctionnement
 
@@ -51,13 +54,24 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - `Makefile` : Fichier Makefile pour compiler, tester, nettoyer et générer la documentation du projet;
 - `README.md` : Ceci est ce fichier. Explique le projet et les informations associées;
 - `sdl2.h` : Inclue les fichiers requis pour la librarie SDL2;
-- `tp2_accueil.c/tp2_accueil.h` : Fichier pour la scène du menu d'accueil;
+- `tp2_accueil.c/tp2_accueil.h` : Module contenant la scène du menu d'accueil;
 - `tp2_application.h` : Fichier définissant la struct Application utilisée pour conserver l'état global de l'application;
 - `tp2.c` : Point d'entrée qui appelle les fonctions nécessaire à l'initialisation de l'application;
 - `tp2_image.c/tp2_image.h` : Module d'aide pour la gestion des images;
 - `tp2_scene.h` : Fichier définissant la struct Scene utilisé pour simuler un polymorphisme pour les scènes;
 - `tp2_sound.c/tp2_sound.h` : Module d'aide pour la gestion des sons;
 - `tp2_window.c/tp2_window.h` : Module contenant la création de la fenêtre et la gestion de la boucle de jeu;
+- `tp2_carte.c/tp2_carte.h` : Module contenant la scene de la carte du jeu;
+- `tp2_image.c/tp2_image.h` : Module contenant les méthodes de gestion des images;
+- `tp2_sound.c/tp2_sound.h` : Module contenant les méthodes de gestion des sons;
+- `tp2_pause.c/tp2_pause.h` : Module contenant la scène du menu de pause;
+- `tp2_defaite.c/tp2_defaite.h` : Module contenant la scène du menu de defaite;
+- `tp2_victoire.c/tp2_victoire.h` : Module contenant la scène du menu de victoire;
+- `tp2_tmx.c/tp2_tmx.h` : Module contenant les méthodes de gestion de tous les événements relatifs à la carte;
+- `tp2_animSprite.c/tp2_animSprite.h` : Module contenant les méthodes de gestion du personnage;
+- `tp2_jauge.c/tp2_jauge.h` : Module contenant les méthodes de gestion des jauges de vie, repos et soif;
+- `tp2_structCarte.h` : Module contenant la structure de carte;
+
 
 ## Division des tâches
 
@@ -65,28 +79,33 @@ Le projet se maintient grâce à un Makefile qui permet de compiler, générer l
 - [X] (5) Créer le squelette de l'application (fenêtre vide) (Marc-Antoine Sauvé)
 - [X] (3) Design du menu d'accueil (En groupe)
 - [X] (5) Gestion des événements du menu d'accueil (Samuel Pilon)
-- [ ] (5) Créer le menu de pause (Giulia Cantoni)
-- [ ] (8) Créer des cartes de test (Samuel Pilon)
-- [ ] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
-- [ ] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)
-- [ ] (3) Gestion des collisions et des cases marchable (Samuel Pilon)
-- [ ] (5) Gestion des transitions entre cartes (Samuel Pilon)
-- [ ] (8) Création de Drawables qui savent se dessiner/charger/libérer (Samuel Pilon)
+- [X] (5) Créer le menu de pause (Giulia Cantoni)
+- [X] (5) Chargement aléatoire d'une carte / lecture TMX (Marc-Antoine Sauvé)
+- [X] (8) Mise à jour des structures de cartes selon le chargement de la carte TMX (Marc-Antoine Sauvé)
+- [X] (3) Gestion des collisions et des cases marchable (Samuel Pilon)
+- [X] (5) Gestion des transitions entre cartes (Samuel Pilon)
+- [X] (8) Création de Drawables qui savent se dessiner/charger/libérer (Samuel Pilon)
 - [X] (8) Création de Scenes pour gérer les Drawable et les Event SDL (Marc-Antoine Sauvé)
-- [ ] (8) Gestion des animations et mouvement du personnage et animation d'escalier (Samuel Pilon)
-- [ ] (5) Gestion de la condition de victoire et de défaite et message approprié (Giulia Cantoni)
-- [ ] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) (Giulia Cantoni)
-- [ ] (5) Gestion des jauges (Giulia Cantoni)
-- [ ] (5) Chargement des cartes en python (Giulia Cantoni)
-- [ ] (8) Tests automatisés pour les cartes (Giulia Cantoni)
+- [X] (8) Gestion des animations et mouvement du personnage et animation d'escalier (Samuel Pilon)
+- [X] (5) Gestion de la condition de victoire et de défaite et message approprié (Giulia Cantoni)
+- [X] (8) Minage des pierres, boire de l'eau et dormir (animation/actions/vérification) (Giulia Cantoni)
+- [X] (5) Gestion des jauges (Giulia Cantoni)
+- [X] (5) Chargement des cartes en python (Giulia Cantoni)
+- [X] (8) Tests automatisés pour les cartes (Giulia Cantoni)
 
 ## Références
 
 - Documentation Doxygen: https://www.stack.nl/~dimitri/doxygen/manual/index.html
 - SDL Wiki: https://wiki.libsdl.org/FrontPage
 
+## Bogues connus
+
+- Il est possible de monter les escaliers à partir du côté.
+- Collisions avec la maison ne sont pas gérés correctement.
+
 ## Statut
 
-Projet en développement
-Menu d'acceuil fonctionnel pour quitter
+Jeu fonctionnel
+Pas d'animation entre les tuiles
+
 Compilable sans erreurs et sans warnings

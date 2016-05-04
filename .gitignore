@@ -1,6 +1,10 @@
 # Retrait de l'executable
 tp2
 
+# Retrait de l'IDE CLion et CMake
+.idea/
+CMakeLists.txt
+
 # Retrait de la documentation compilé
 doc
 

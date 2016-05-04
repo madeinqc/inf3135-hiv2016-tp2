@@ -1,3 +1,7 @@
+/**
+ * @file
+ * Gestion des images
+ */
 #ifndef TP2_IMAGE_H
 #define TP2_IMAGE_H
 
@@ -5,10 +9,11 @@
 #include "tp2_window.h"
 
 /**
- * Charge une image dans un SDL_Surface.
- * @params application Un pointeur vers la structure Application à utiliser.
- * @return SDL_Surface contenant l'image ou NULL.
+ * Charge une image dans un SDL_Texture.
+ * @param app Un pointeur vers la structure Application à utiliser.
+ * @param	imagePath Le chemin vers l'image à charger.
+ * @return SDL_Texture contenant l'image ou NULL.
  */
-SDL_Surface* tp2image_load(struct Application *application, char *imagePath);
+SDL_Texture* tp2image_load(struct Application *app, char *imagePath);
 
 #endif

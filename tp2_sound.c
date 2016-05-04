@@ -1,9 +1,7 @@
 /**
  * @file
- * Description a venir...
- *
+ * Fichier contenant les méthodes nécessaires au chargement des sons.
 */
-
 #ifndef TP2_SOUND_H
 #define TP2_SOUND_H
 
@@ -33,6 +31,7 @@ Mix_Music* tp2Sound_loadLong(const char *pathToSound){
 		printf("Sound could not be loaded! SDL_Error: %s\n", Mix_GetError());
 		return NULL;
 	}
+    Mix_VolumeMusic(30);
 	return longSound;
 }
 
@@ -43,7 +42,7 @@ void tp2Sound_playShort(Mix_Chunk* toPlay){
 }
 
 void tp2Sound_playLong(Mix_Music* toPlay){
-	if(Mix_PlayMusic(toPlay,0)){
+	if(Mix_PlayMusic(toPlay,-1)){
 		printf("Sound could not be played! SDL_Error: %s\n", Mix_GetError());
 	}
 }

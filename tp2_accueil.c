@@ -1,9 +1,8 @@
 /**
  * @file
- * Description a venir... 
+ * Contient toutes les méthodes relatives au menu d'acceuil
  *
 */
-
 #include "tp2_accueil.h"
 
 struct Scene* tp2Accueil_getScene(struct Application *app) {
@@ -14,7 +13,7 @@ struct Scene* tp2Accueil_getScene(struct Application *app) {
   scene->viewWillAppear = &tp2Accueil_viewWillAppear;
   scene->handleEvents = &tp2Accueil_handleEvents;
   scene->drawScene = &tp2Accueil_draw;
-  scene->releaseMedia = &tp2Accueil_release;
+  scene->releaseMedia = &tp2Accueil_release; 
 
   return scene;
 }
@@ -24,17 +23,12 @@ void* tp2Accueil_initScene(struct Application *app) {
   return menu;
 }
 
-/**
- * Charge les ressources graphiques en mémoire.
- * @param app Un pointeur vers la structure Application à utiliser.
- * @return True si le chargement a réussi.
- */
 bool tp2Accueil_loadMedia(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
   char *images[] = {PE, PM, PH, DE, DM, DH, QE, QM, QH};
   int i;
   for (i = 0; i < 9; ++i) {
-    SDL_Surface *image = tp2image_load(app, images[i]);
+    SDL_Texture *image = tp2image_load(app, images[i]);
     if(image == NULL){
       printf("Unable to load image %s! SDL Error : %s\n", images[i], SDL_GetError());
       return false;
@@ -45,7 +39,7 @@ bool tp2Accueil_loadMedia(struct Application *app, void *state) {
 	tp2Sound_openChannel();
 	menu->choiceSound = tp2Sound_loadShort(SOUND_PICKAXE);
 	menu->backMusic = tp2Sound_loadLong(SOUND_ACCEUIL);
-
+  
   return true;
 }
 
@@ -54,11 +48,6 @@ void tp2Accueil_viewWillAppear(struct Application *app, void *state) {
   tp2Sound_playLong(menu->backMusic);
 }
 
-/**
- * 
- * @params app Un pointeur vers la structure Application à utiliser.
- * @return True si on commence le jeu, False si on quitte.
- */
 bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *event) {
   struct Menu *menu = (struct Menu*) state;
   bool isConsumed = false;
@@ -82,8 +71,8 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
           break;
         case SDLK_RIGHT:
           if(menu->state == DIFFICULTY){
-            if(menu->diff != HARD){
-              menu->diff++;
+            if(app->diff != HARD){
+              app->diff++;
               tp2Sound_playShort(menu->choiceSound);
             }
           }
@@ -91,8 +80,8 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
           break;
         case SDLK_LEFT:
           if(menu->state == DIFFICULTY){
-            if(menu->diff != EASY){
-              menu->diff--;
+            if(app->diff != EASY){
+              app->diff--;
               tp2Sound_playShort(menu->choiceSound);
             }
           }
@@ -101,15 +90,14 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
         case SDLK_RETURN:
           if(menu->state == QUIT){
             app->isRunning = false;
+          } else if (menu->state == PLAY) {
+            app->nextScene = tp2Carte_getScene(app);
           }
-          isConsumed = true;
-          break;
         default: break;
       }
       break;
     default: break;
   }
-
   return isConsumed;
 }
 
@@ -118,10 +106,10 @@ bool tp2Accueil_handleEvents(struct Application *app, void *state, SDL_Event *ev
  */
 void tp2Accueil_draw(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
-  int imageIndex = (menu->state * 3) + menu->diff;
-  SDL_Surface *image = menu->tabImages[imageIndex];
-  SDL_BlitSurface(image, NULL, app->gScreenSurface, NULL);
-  SDL_UpdateWindowSurface(app->gWindow);
+  int imageIndex = (menu->state * 3) + app->diff;
+  SDL_Texture *image = menu->tabImages[imageIndex];
+  SDL_Rect texr = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+  SDL_RenderCopy(app->gRenderer, image, NULL, &texr);
 }
 
 /**
@@ -131,7 +119,7 @@ void tp2Accueil_release(struct Application *app, void *state) {
   struct Menu *menu = (struct Menu*) state;
   int i;
   for (i = 0; i < 9; ++i) {
-    SDL_FreeSurface(menu->tabImages[i]);
+    SDL_DestroyTexture(menu->tabImages[i]);
     menu->tabImages[i] = NULL;
   }
   tp2Sound_freeShort(menu->choiceSound);
